@@ -1,0 +1,136 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Cloud Detail{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li><a href="{% url 'app:cloudList' %}">Cloud Management</a></li>
+	<li>Cloud Detail</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">Cloud Detail</div>
+<br>
+{% include "gui_app/includes/message.html" %}
+{% if cloud %}
+	{% if cloud.id %}
+	{% if request.session.cloud.manage or request.session.cloud.update %}
+		<div class="btn_group_top">
+			<button type="button" class="btn btn-success btn-sm" onclick="location.href='{% url 'app:cloudEdit' cloud.id %}'">
+				<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>&nbsp;　edit
+			</button>
+		</div>
+	{% endif %}
+	{% endif %}
+	<table class="table table-hover">
+			<tr>
+				<th>ID</th><td>{{ cloud.id }}</td>
+			</tr>
+			<tr>
+				<th>Cloud name</th><td>{{ cloud.name }}</td>
+			</tr>
+			<tr>
+				<th>Description</th><td>{{ cloud.description }}</td>
+			</tr>
+			<tr>
+				<th>Type</th><td>{{ cloud.type }}</td>
+			</tr>
+			<tr>
+				<th>Entry_point</th><td>{{ cloud.entry_point }}</td>
+			</tr>
+			<tr>
+				<th>tenant_name</th><td>{{ cloud.tenant_name }}</td>
+			</tr>
+			<tr>
+				<th>Create date</th><td>{{ cloud.created_at }}</td>
+			</tr>
+			<tr>
+				<th>Update date</th><td>{{ cloud.updated_at }}</td>
+			</tr>
+	</table>
+{% if cloud.id %}
+	{% if request.session.cloud.manage or request.session.cloud.destroy %}
+	<div class="btn_group_bottom">
+		<button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal">
+			<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>&nbsp;　delete
+		</button>
+	</div>
+	{% endif %}
+{% endif %}
+	<!-- baseimage -->
+	 <div class="panel panel-default">
+		<div class="panel-heading">BaseImage List</div>
+		<div class="panel-body">
+		{% if cloud.id %}
+		{% if request.session.base_image.manage or request.session.base_image.create %}
+			<button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'app:baseImageCreate' cloud.id %}'" style="float:right">
+	  				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;　new
+  			</button>
+		{% endif %}
+		{% endif %}
+
+			{% if baseImage %}
+			<table class="table table-hover">
+			    <thead>
+			      <tr>
+			        <th>No</th>
+			        <th>OS</th>
+			        <th>Create date</th>
+			      </tr>
+			    </thead>
+			    <tbody>
+				{% for b in baseImage %}
+			      <tr>
+			        <td><a href="{% url 'app:baseImageDetail' b.id %}">{{ b.id }}</a></td>
+			        <td>{{ b.os_version }}</td>
+			        <td>{{ b.created_at }}</td>
+			      </tr>
+				{% endfor %}
+			    </tbody>
+			  </table>
+		{% else %}
+	  		There is no baseimage.<br>
+	  	{% endif %}
+		</div>
+	</div>
+
+	<span class="back_btn">
+		<button type="button" class="btn btn-default btn-sm" onclick="location.href='{% url 'app:cloudList' %}'">
+			<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+			 &nbsp;　back
+		</button>
+	</span>
+
+<!-- Button trigger modal -->
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Delete</h4>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete the cloud ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+        	<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+		</button>
+		{% if cloud.id %}
+        <button type="button" class="btn btn-danger" onclick="location.href='{% url 'app:cloudDelete' cloud.id %}'">
+			<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+		</button>
+		{% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% else %}
+	There is no cloud.
+{% endif %}
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

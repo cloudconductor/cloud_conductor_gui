@@ -1,0 +1,32 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Application Environment{% endblock %}
+{% block headerscript %}
+<script type="text/javascript" src="/static/gui_app/js/file.js"></script>
+{% endblock %}
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li>Applicatioon Environment</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">Application Environment</div>
+<br>
+	<form method="post" action="{% url 'app:envapp_environmentCreate' %}">
+		{% include "gui_app/envApplication/includes/formEnvironment.html" %}
+
+		<div class="button_left">
+			<button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'app:envapp_bluprintSelect' %}'" >
+				<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+				 &nbsp;&nbsp;back
+			</button>
+			<span class="delete_btn">
+				<button type="submit" class="btn btn-primary btn-sm" >
+					<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>&nbsp;　next
+				</button>
+			</span>
+		</div>
+	</form>
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

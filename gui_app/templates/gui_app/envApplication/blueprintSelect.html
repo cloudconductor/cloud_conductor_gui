@@ -1,0 +1,108 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Applicatioon Environment{% endblock %}
+{% block headerscript %}{% endblock %}
+{% block bodyscripttop %}{% endblock %}
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li>Application Environment</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">Application Environment</div>
+		{% if request.session.blueprint.manage or request.session.blueprint.create and request.session.pattern.manage or request.session.pattern.create and request.session.blueprint_history.manage or request.session.blueprint_history.create %}
+		<div>
+			<button class="btn btn-primary btn-sm" style="float:right" data-toggle="modal" data-target="#myModal" type="button">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;　new
+			</button>
+		</div>
+		{% endif %}
+<form method="post" action="{% url 'app:envapp_bluprintSelect'%}">
+	<div class="cc-select">
+
+		{% csrf_token %}
+		{% include "gui_app/includes/message.html" %}
+		<h3>Blueprint select</h3>
+		<div class="form-group">
+	    	<label><span id="req">*</span>Blueprint&nbsp;:&nbsp;Version</label>
+			<select class="form-control" name="id" id="id">
+		        <option value=""></option>
+				{% for b in list %}
+				<option value="{'id': {{ b.id }}, 'version': {{ b.version }}, 'name': '{{ b.name }}'}" {% ifequal b.id|add:"0"  blueprint.id|add:"0" %}{% ifequal b.version|add:"0"  blueprint.version|add:"0" %} selected="selected"{% endifequal %}{% endifequal %}
+				data-name="{{ b.name }}" data-description="{{ b.description }}"
+				>
+					{{ b.name }}&nbsp;:&nbsp;{{ b.version }}
+				</option>
+				{% endfor %}
+
+		    </select>
+		    {{ form.id.errors }}
+	    </div>
+
+    	<div class="cc-desc" id="contents-reload">
+   	    		    <table>
+	    <tr><td>Blueprint Name：</td><td id="name"></td></tr>
+	    <tr><td>Description：</td><td id="description"></td></tr>
+	    </table>
+    	</div>
+		<div class="button_left">
+			<button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'app:envapp_systemSelect'%}'" >
+				<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+				 &nbsp;　back
+			</button>
+			<span class="delete_btn">
+				<button type="submit" class="btn btn-primary btn-sm">
+					<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>&nbsp;　next
+				</button>
+			</span>
+		</div>
+	</div>
+</form>
+
+<!-- Button trigger modal -->
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Wizard is terminated.</h4>
+      </div>
+      <div class="modal-body">
+        {{ wizard_code }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" onclick="location.href='{% url 'app:envapp_blueprintCreate' %}'">
+        	<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span>
+		</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+			<span class="glyphicon glyphicon glyphicon-share-alt" aria-hidden="true"></span>
+		</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+
+$(function(){
+
+	if($("#id").val() != ''){
+		$("#name").html( $("#id").find("option:selected").data('name') );
+		$("#description").html( $("#id").find("option:selected").data('description') );
+	}
+});
+
+$('#id').on('change', function(){
+	if($(this).val() == ''){
+		$("#name").html("");
+		$("#description").html("");
+	}else{
+		$("#name").html( $(this).find("option:selected").data('name') );
+		$("#description").html( $(this).find("option:selected").data('description') );
+	}
+});
+
+</script>
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

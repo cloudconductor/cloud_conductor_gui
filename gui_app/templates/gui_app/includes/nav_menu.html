@@ -1,0 +1,110 @@
+{% block nav %}
+
+<aside class="aside">
+	<div class="aside-inner">
+		<nav class="sidebar" data-sidebar-anyclick-close="">
+
+				<div class="btn-group" role="group">
+			    <button type="button" class="btn dropdown-toggle " style="width: 214px;" data-toggle="dropdown" aria-expanded="false">
+			       &nbsp; {{ request.session.project_name }}
+			      <span class="caret"></span>
+			    </button>
+			    <ul class="dropdown-menu" role="menu">
+			    {% for p in request.session.project_list %}
+					<li><a href="{% url 'app:projectChange' p.id %}">{{ p.name }}</a></li>
+				{% endfor %}
+			    </ul>
+			  </div>
+
+			<div class="menu-menu"></div>
+			<ul class="nav">
+				<li class="active">
+					<a href="{% url 'app:top' %}" id="var-menu">
+						<span class="glyphicon glyphicon-home cc-icon" aria-hidden="true"></span>&nbsp;&nbsp;Home
+					</a>
+				</li>
+			</ul>
+			<div class="var-heading">Project</div>
+			<ul class="nav">
+					</li>
+				{% if request.session.role.m_role %}
+					<li>
+						<a href="{% url 'app:roleList' %}" id="var-menu" >
+						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;Role</a>
+					</li>
+				{% endif %}
+				{% if request.session.cloud.m_cloud %}
+					<li>
+						<a href="{% url 'app:cloudList' %}" id="var-menu" >
+						<span class="glyphicon glyphicon-cloud cc-icon" aria-hidden="true"></span>&nbsp;&nbsp;Cloud</a>
+					</li>
+				{% endif %}
+				{% if request.session.pattern.m_pattern %}
+					<li>
+						<a href="{% url 'app:patternList' %}" id="var-menu" >
+						<span class="glyphicon glyphicon-cloud cc-icon" aria-hidden="true"></span>&nbsp;&nbsp;Pattern</a>
+					</li>
+				{% endif %}
+				{% if request.session.blueprint.m_blueprint %}
+					<li>
+						<a href="{% url 'app:blueprintList' %}" id="var-menu" >
+						<span class="glyphicon glyphicon-cloud cc-icon" aria-hidden="true"></span>&nbsp;&nbsp;Blueprint</a>
+					</li>
+				{% endif %}
+				{% if request.session.system.m_system %}
+					<li>
+						<a href="{% url 'app:systemList' %}" id="var-menu" >
+						<span class="glyphicon glyphicon-cloud cc-icon" aria-hidden="true"></span>&nbsp;&nbsp;System</a>
+					</li>
+				{% endif %}
+				{% if request.session.environment.m_environment %}
+					<li>
+						<a href="{% url 'app:environmentList' %}" id="var-menu" >
+						<span class="glyphicon glyphicon-cloud cc-icon" aria-hidden="true"></span>&nbsp;&nbsp;Environment</a>
+					</li>
+				{% endif %}
+				{% if request.session.application.m_application %}
+					<li>
+						<a href="{% url 'app:applicationList' %}" id="var-menu" >
+						<span class="glyphicon glyphicon-cloud cc-icon" aria-hidden="true"></span>&nbsp;&nbsp;Application</a>
+					</li>
+				{% endif %}
+
+					<li class="accordion-heading"><a class="accordion-toggle" data-toggle="collapse" href="#supportThree" href="#" id="var-menu"><span class="glyphicon glyphicon-cog cc-icon" aria-hidden="true"></span>&nbsp;&nbsp;Setting wizards</a></li>
+					<div id="supportThree" class="collapse menu-menu">
+						<ul class="nav spacer navbar-static-top">
+						{% if request.session.w_cloud_registrarion %}
+							<li><a href="{% url 'app:cloudregistCloud'%}" id="var-menu">&nbsp;&nbsp;Cloud registration</a></li>
+						{% endif %}
+						{% if request.session.w_app_env %}
+							<li><a href="{% url 'app:envapp_systemSelect'%}" id="var-menu">&nbsp;&nbsp;Application environment</a></li>
+						{% endif %}
+						{% if request.session.w_make_new_app %}
+							<li><a href="{% url 'app:mkappSystemSelect'%}" id="var-menu">&nbsp;&nbsp;Make new application</a></li>
+						{% endif %}
+						{% if request.session.w_deploying_app %}
+							<li><a href="{% url 'app:appdeployApplicationSelect'%}" id="var-menu">&nbsp;&nbsp;Deploying applications</a></li>
+						{% endif %}
+						</ul>
+					</div>
+			</ul>
+			<div class="var-heading">Management</div>
+			<ul class="nav">
+					</li>
+				{% if request.session.project.m_project %}
+					<li>
+						<a href="{% url 'app:projectList' %}" id="var-menu" >
+						<span class="glyphicon glyphicon-folder-close cc-icon" aria-hidden="true"></span>&nbsp;&nbsp;Project</a>
+					</li>
+				{% endif %}
+				{% if request.session.account.m_account %}
+					<li>
+						<a href="{% url 'app:accountList' %}" id="var-menu" >
+						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;Account</a>
+					</li>
+				{% endif %}
+			</ul>
+		</nav>
+	</div>
+</aside>
+{% endblock %}

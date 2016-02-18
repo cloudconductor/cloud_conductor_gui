@@ -1,0 +1,38 @@
+ <div class="panel panel-default">
+	<div class="panel-heading">Application History List</div>
+	<div class="panel-body">
+	{% if app.id %}
+	{% if request.session.application_history.manage or request.session.application_history.create %}
+		<button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'app:applicationHistoryCreate' app.id %}'" style="float:right">
+			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;　new
+		</button>
+	{% endif %}
+ 	{% endif %}
+		{% if history_list %}
+		<table class="table table-hover">
+		    <thead>
+		      <tr>
+		        <th>No</th>
+		        <th>version</th>
+		        <th>type</th>
+		        <th>revision</th>
+		        <th>Create date</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+			{% for his in history_list %}
+		      <tr>
+		        <td><a href="{% url 'app:applicationHistoryDetail' app.id his.id %}">{{ his.id }}</a></td>
+		        <td>{{ his.version }}</td>
+		        <td>{{ his.type }}</td>
+		        <td>{{ his.revision }}</td>
+		        <td>{{ his.created_at }}</td>
+		      </tr>
+			{% endfor %}
+		    </tbody>
+		  </table>
+	{% else %}
+  		There is no application history.<br>
+  	{% endif %}
+	</div>
+</div>

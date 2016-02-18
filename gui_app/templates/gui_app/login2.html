@@ -1,0 +1,24 @@
+{% extends "gui_app/base2.html" %}
+{% block title %}login{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+
+{% endblock %}
+
+{% block content %}
+	<div class="login-body">
+		<div class="cc-login">
+			<form class="form-signin" role="form" method="post" action="{% url 'app:login' %}">
+				 {% csrf_token %}
+				<input class="form-control" type="id" id="loginid" name="lodinid" placeholder="Login ID">
+				<input class="form-control" type="password" id ="password" name="email" placeholder="Password">
+
+				<button class="btn btn-wizard btn-block" type="submit">Sign in</button>
+			</form>
+		</div>
+	</div>
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

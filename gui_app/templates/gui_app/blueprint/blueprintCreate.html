@@ -1,0 +1,45 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Blueprint Create{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li><a href="{% url 'app:blueprintList' %}">Blueprint Management</a></li>
+	<li>Blueprint Create</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">Blueprint Create</div>
+<br>
+	<form method="post" action="{% url 'app:blueprintCreate' %}">
+		{% include "gui_app/blueprint/includes/formBlueprint.html" %}
+	</form>
+
+<!-- Button trigger modal -->
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Wizard is terminated.</h4>
+      </div>
+      <div class="modal-body">
+        {{ wizard_code }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" onclick="location.href='{% url 'app:blueprintCreate' %}'">
+        	<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span>
+		</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+			<span class="glyphicon glyphicon glyphicon-share-alt" aria-hidden="true"></span>
+		</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

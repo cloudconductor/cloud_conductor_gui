@@ -1,0 +1,27 @@
+{% csrf_token %}
+{% include "gui_app/includes/message.html" %}
+	<input id="project_id" type="hidden" name="project_id" value="{{ system.project_id }}">
+	{{ form.non_field_errors }}
+	<div class="cc-select">
+	    <div class="form-group">
+	    	<label><span id="req">*</span>System name</label>
+	        <input id="name" name="name" type="text" class="form-control" value="{{ system.name }}">
+	        {{ form.name.errors }}
+	    </div>
+	    <div class="form-group">
+	    	<label>Domain</label>
+	        <input id="domain" name="domain" type="text" class="form-control" value="{{ system.domain}}">
+	        {{ form.domain.errors }}
+	    </div>
+	    <div class="form-group">
+	    	<label>Description</label>
+	        <textarea id="description" name="description" class="form-control">{{ system.description }}</textarea>
+	        {{ form.description.errors }}
+	    </div>
+	    {% if save %}
+   		<div class="button_center">
+			<button class="btn btn-success" type="submit"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;save</button>
+		</div>
+		{% endif %}
+    </div>
+

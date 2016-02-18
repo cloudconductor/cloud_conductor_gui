@@ -1,0 +1,42 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Application Environment{% endblock %}
+{% block headerscript %}
+{% endblock %}
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li>Application Environment</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">Application Environment</div>
+		{% if request.session.environment_manage or request.session.environment_create  %}
+		<div>
+			<button class="btn btn-primary btn-sm" style="float:right" onclick="location.href='#'" type="button">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;　new
+			</button>
+		</div>
+		{% endif %}
+<form method="post" action="{% url 'app:envapp_environmentSelect'%}">
+	<div class="cc-select">
+		{% csrf_token %}
+		{% include "gui_app/includes/message.html" %}
+		<h3>Environment select</h3>
+		{% include "gui_app/applicationDeploy/includes/formEnvironmentSelect.html" %}
+
+		<div class="button_left">
+			<button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'app:envapp_bluprintSelect' %}'" >
+				<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+				 &nbsp;　back
+			</button>
+			<span class="delete_btn">
+				<button type="submit" class="btn btn-primary btn-sm">
+					<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>&nbsp;　next
+				</button>
+			</span>
+		</div>
+	</div>
+</form>
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

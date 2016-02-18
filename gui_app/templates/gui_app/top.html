@@ -1,0 +1,23 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Top{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="panel panel-default" style="width: 115px;">
+  <div class="panel-heading">Project</div>
+  <div class="btn-group btn-group-sm" aria-label="Small button group" role="group">
+	<button class="btn btn-default" type="button" style="-moz-border-radius-topleft: 0px; -webkit-border-top-left-radius: 0px; border-top-left-radius: 0px;">C</button>
+	<button class="btn btn-default" type="button">R</button>
+	<button class="btn btn-default" type="button">U</button>
+	<button class="btn btn-default" type="button" style="-moz-border-radius-topright: 0px; -webkit-border-top-right-radius: 0px; border-top-right-radius: 0px;">D</button>
+</div>
+</div>
+
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

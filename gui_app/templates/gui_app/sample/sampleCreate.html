@@ -1,0 +1,25 @@
+{% extends "gui_app/base.html" %}
+{% block title %}《Sample》 Create{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+<!--
+	<li><a href="{% url 'app:《val》List' %}">《Sample》 Management</a></li>
+	<li>《Sample》 Create</li>
+-->
+{% endblock %}
+{% block content %}
+<div class="cc-title">《Sample》 Create</div>
+<br>
+<!--
+	<form method="post" action="{% url 'app:《val》Create' %}">
+		{% include "gui_app/《val》/includes/form《Sample》.html" %}
+	</form>
+-->
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

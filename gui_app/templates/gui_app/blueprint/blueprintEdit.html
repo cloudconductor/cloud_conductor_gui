@@ -1,0 +1,28 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Blueprint Edit{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li><a href="{% url 'app:blueprintList' %}">Blueprint management</a></li>
+	{% if blueprint.id %}
+	<li><a href="{% url 'app:blueprintDetail' blueprint.id %}">Blueprint Detail</a></li>
+	{% endif %}
+	<li>Blueprint Edit</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">Blueprint Edit</div>
+	{% if blueprint %}
+		<form method="post" action="{% url 'app:blueprintEdit' blueprint.id %}">
+			<input id="id" type="hidden" name="id" value="{{ blueprint.id }}">
+			{% include "gui_app/blueprint/includes/formBlueprint.html" %}
+		</form>
+	{% else %}
+		This is no Blueprint.
+	{% endif %}
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

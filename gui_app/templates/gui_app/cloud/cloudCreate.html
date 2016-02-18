@@ -1,0 +1,37 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Cloud Create{% endblock %}
+
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li>
+        <a href="{% url 'app:cloudList' %}">Cloud Management</a>
+    </li>
+    <li>Cloud Create</li>
+{% endblock %}
+{% block content %}
+    <div class="cc-title">Cloud Create</div>
+    <br>
+    <form method="post" action="{% url 'app:cloudCreate' %}">
+        {% include "gui_app/cloud/includes/formCloud.html" %}
+        {{ cloudTypeList }}
+    </form>
+    
+    <script type="text/javascript">
+        $("[name=type]").change(function() {
+    
+            $("#tenant").show();
+            if ($(this).val() != 'openstack') {
+                $("[name=tenant_name]").val("");
+                $("#tenant").hide();
+            }
+        });
+    </script>
+{% endblock %}
+{% block bodyscript %}
+{% endblock %}

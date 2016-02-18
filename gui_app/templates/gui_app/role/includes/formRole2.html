@@ -1,0 +1,65 @@
+{% csrf_token %} {% include "gui_app/includes/message.html" %}
+<input id="project_id" type="hidden" name="project_id"
+	value="{{ cloud.project_id }}">
+<div class="cc-select">
+	<div class="form-group">
+		<label for="Blueprint"><span id="req">*</span> Role name</label>
+		<input id="name" name="name" type="text" class="form-control" value="{{role.name}}">
+	</div>
+	<div class="form-group">
+    	<label>Description</label>
+        <textarea id="description" name="description" class="form-control">{{role.description}}</textarea>
+    </div>
+
+	<div class="form-group">
+		<label for="Blueprint"><span id="req">*</span>Function Authority</label>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>No</th>
+					<th>Function name</th>
+					<th>manage</th>
+					<th>read</th>
+					<th>create</th>
+					<th>update</th>
+					<th>destroy</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+			{% for item in items %}
+				<tr>
+					<th>{{item.no}}</th>
+					<th>{{item.name}}</th>
+					{% for subitem in item.items %}
+					<td>
+						<div class="checkbox-inline">
+							<input name="{{subitem.item_name}}" id="{{subitem.item_name}}" {{subitem.checked}}
+							{% if 'manage' in subitem.item_name  %}
+								onchange="changeManage(this,'{{subitem.item_name}}')"
+							{% else %}
+								{% if item.items.0.checked  %}
+									disabled="disabled"
+								{% endif %}
+							{% endif %}
+							{% if subitem.item_name = 'project-read' or subitem.item_name = 'environment-read' or subitem.item_name = 'role-read' %}
+								onclick="return false"
+							{% endif %}
+							type="checkbox">
+						</div>
+					</td>
+					{% endfor %}
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+		{% if save %}
+		<div class="button_center">
+			<button class="btn btn-success" type="submit">
+				<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;save
+			</button>
+		</div>
+		{% endif %}
+	</div>
+
+</div>

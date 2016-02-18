@@ -1,0 +1,31 @@
+{% extends "gui_app/base.html" %}
+
+{% block title %}Account Edit{% endblock %}
+    {% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li>
+        <a href="{% url 'app:accountList' %}">Account List</a>
+    </li>
+    <li>
+        <a href="{% url 'app:accountDetail' account.id %}">Account Detail</a>
+    </li>
+
+    <li>Account Edit</li>
+{% endblock %}
+
+{% block content %}
+    <div class="cc-title">Account Edit</div>
+    <form method="post" action="{% url 'app:accountEdit' account.id %}">
+        <input id="id" type="hidden" name="id" value="{{ account.id }}">
+        {% include "gui_app/account/includes/formAccount.html" %}
+    </form>
+{% endblock %}
+
+{% block bodyscript %}
+{% endblock %}

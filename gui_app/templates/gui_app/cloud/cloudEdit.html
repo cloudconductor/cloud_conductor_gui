@@ -1,0 +1,45 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Cloud Edit{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li><a href="{% url 'app:cloudList' %}">Cloud management</a></li>
+	{% if cloud.id %}
+		<li><a href="{% url 'app:cloudDetail' cloud.id %}">Cloud Detail</a></li>
+	{% endif %}
+	<li>Cloud Edit</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">Cloud Edit</div>
+	{% if cloud %}
+		{% if cloud.id %}
+		<form method="post" action="{% url 'app:cloudEdit' cloud.id %}">
+			<input type="hidden" id="id" name="id" value="{{ cloud.project_id }}">
+			{% include "gui_app/cloud/includes/formCloud.html" %}
+		</form>
+		{% endif %}
+	{% else %}
+		This is no cloud.
+	{% endif %}
+
+<script type="text/javascript">
+
+$("[name=type]").change(function (){
+
+	$("#tenant").show();
+	if($(this).val() != 'openstack'){
+		$("[name=tenant_name]").val("");
+		$("#tenant").hide();
+	}
+});
+
+
+</script>
+
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

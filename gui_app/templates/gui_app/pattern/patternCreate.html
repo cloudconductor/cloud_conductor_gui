@@ -1,0 +1,21 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Pattern Create{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li><a href="{% url 'app:patternList' %}">Pattern Management</a></li>
+<li>Pattern Create</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">Pattern Create</div>
+<br>
+	<form method="post" action="{% url 'app:patternCreate' %}" enctype="multipart/form-data">
+		{% include "gui_app/pattern/includes/formPattern.html" %}
+	</form>
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

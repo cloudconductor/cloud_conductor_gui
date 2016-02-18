@@ -1,0 +1,54 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Environment Management{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li>Environment Management</li>
+{% endblock %}
+{% block content %}
+  <div class="cc-title">Environment management</div>
+	<br>
+	{% include "gui_app/includes/message.html" %}
+	{% if request.session.environment.manage or request.session.environment.create %}
+    <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'app:environmentCreate' %}'" style="float:right">
+    	<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;　new
+    </button>
+	{% endif %}
+	{% if envs %}
+		<table class="table table-hover">
+		    <thead>
+		      <tr>
+		        <th>No</th>
+		        <th>Status</th>
+		        <th>Environment Name</th>
+		        <th>System</th>
+		        <th>Blueprint</th>
+		        <th>Create date</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		    {% for e in envs %}
+			      <tr>
+			        <td>{{ e.id }}</td>
+			        <td >{{ e.status }}</td>
+			        <td>
+			        	<a href="{% url 'app:environmentDetail' e.id %}">{{ e.name }}</a>
+			        </td>
+			        <td>{{ e.system_name }}</td>
+			        <td>{{ e.bp_name }}</td>
+			        <td>{{ e.created_at }}</td>
+			      </tr>
+			{% endfor %}
+		    </tbody>
+	  </table>
+	{% else %}
+		There is no environment.
+	{% endif %}
+
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

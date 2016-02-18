@@ -1,0 +1,50 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Pattern Management{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li>Pattern Management</li>
+{% endblock %}
+{% block content %}
+  <div class="cc-title">Pattern management</div>
+	<br>
+	{% include "gui_app/includes/message.html" %}
+    {% if request.session.pattern.manage or request.session.pattern.create %}
+	<button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'app:patternCreate' %}'" style="float:right">
+    	<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;　new
+    </button>
+	{% endif %}
+	{% if patterns %}
+		<table class="table table-hover">
+		    <thead>
+		      <tr>
+		        <th>No</th>
+		        <th>Pattern name</th>
+		        <th>Type</th>
+		        <th>Create date</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		    {% for p in patterns %}
+			      <tr>
+			        <td>{{ p.id }}</td>
+			        <td>
+			        	<a href="{% url 'app:patternDetail' p.id %}">{{ p.name }}</a>
+			        </td>
+			        <td>{{ p.type }}</td>
+			        <td>{{ p.created_at }}</td>
+			      </tr>
+			{% endfor %}
+		    </tbody>
+	  </table>
+	{% else %}
+		There is no Pattern.
+	{% endif %}
+
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

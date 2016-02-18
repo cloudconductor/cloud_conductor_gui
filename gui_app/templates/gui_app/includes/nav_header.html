@@ -1,0 +1,19 @@
+{% block nav %}
+
+<div class="header clearfix" style="margin-bottom: 0px;background-image: url('/static/gui_app/images/logo_cloudconductor.gif');background-repeat:no-repeat;background-size: 300px;background-color:#FFFFFF ">
+	<div class="text-right">
+		<div class="btn-group" role="group" aria-label="...">
+		  <div class="btn-group" role="group">
+		    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+		      <span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp;{{ request.session.account_name }}
+		      <span class="caret"></span>
+		    </button>
+		    <ul class="dropdown-menu" role="menu">
+				<li><a href="{% url 'app:logout' %}">logout</a></li>
+		    </ul>
+		  </div>
+		</div>
+	</div>
+</div>
+<div style="height:5px;background-color:#059ee8 "></div>
+{% endblock %}

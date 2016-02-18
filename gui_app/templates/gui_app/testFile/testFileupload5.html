@@ -1,0 +1,49 @@
+{% extends "gui_app/base.html" %}
+{% block title %}File Upload Test{% endblock %}
+{% block headerscript %}{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li>《Sample》 Management</li>
+{% endblock %}
+{% block content %}
+{% block bodyscripttop %}
+<script>
+
+function read (ele) {
+	alert("きた１")
+    if (!ele.files.length) return;
+
+    var file = ele.files[0];
+    if (!/^text\//.test(file.type)) {
+
+    	return;  // text/plain, text/html, ...
+    }
+    alert("きた２")
+    var fr = new FileReader();
+    fr.onload = function () {
+        document.getElementById('text').value = fr.result;  // 読み込み結果をtextareaに
+    };
+
+    alert("きた３")
+    fr.readAsText(file);  // ファイルをテキストとして読み込む
+}
+
+</script>
+{% endblock %}
+
+
+  <div class="cc-title">File Upload Test</div>
+	<br>
+
+	<input type="file" onchange="read(this)" />
+
+	<hr />
+	<textarea id="text" cols="80" rows="20" wrap="off"></textarea>
+
+
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

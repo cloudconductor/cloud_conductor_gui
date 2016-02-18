@@ -1,0 +1,28 @@
+{% extends "gui_app/base.html" %}
+{% block title %}System Edit{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li><a href="{% url 'app:systemList' %}">System management</a></li>
+	{% if System.id %}
+	<li><a href="{% url 'app:systemDetail' system.id %}">System Detail</a></li>
+	{% endif %}
+	<li>System Edit</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">System Edit</div>
+	{% if system %}
+		<form method="post" action="{% url 'app:systemEdit' system.id %}">
+			<input id="id" type="hidden" name="id" value="{{ system.id }}">
+			{% include "gui_app/system/includes/formSystem.html" %}
+		</form>
+	{% else %}
+		This is no System.
+	{% endif %}
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

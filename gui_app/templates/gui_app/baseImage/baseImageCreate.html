@@ -1,0 +1,22 @@
+{% extends "gui_app/base.html" %}
+
+{% block title %}BaseImage Create{% endblock %}
+
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="cc-title">BaseImage Create</div>
+    <br>
+    <form method="post" action="{% url 'app:baseImageCreate' baseImage.cloud_id %}">
+        <input id="auth_token" type="hidden" name="auth_token" value="{{ baseImage.auth_token }}">
+        {% include "gui_app/baseImage/includes/formBaseImage.html" %}
+    </form>
+{% endblock %}
+
+{% block bodyscript %}
+{% endblock %}

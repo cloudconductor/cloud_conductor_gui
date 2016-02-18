@@ -1,0 +1,42 @@
+{% csrf_token %}
+	<div class="cc-select">
+	    <div class="form-group">
+	    	<label><span id="req">*</span>URL</label>
+	        <input id="url" name="url" type="text" class="form-control" value="{{ app.url }}">
+	    </div>
+	    <div class="form-group">
+	    	<label>Type</label>
+			<select class="form-control" name="type" id="type">
+				<option value=""></option>
+		        {% for type in apptype %}
+				   <option value="{{ type.value }}" {% if  app.type == type.value %} selected="selected" {% endif %}>{{ type.name }}</option>
+				{% endfor %}
+		    </select>
+	    </div>
+	    <div class="form-group">
+	    	<label>Protocol</label>
+			<select class="form-control" name="protocol" id="protocol">
+				<option value=""></option>
+		        {% for pro in protocol %}
+				   <option value="{{ pro.value }}" {% if  app.protocol == pro.value %} selected="selected" {% endif %}>{{ pro.name }}</option>
+				{% endfor %}
+		    </select>
+	    </div>
+	    <div class="form-group">
+	    	<label>Revision</label>
+	        <input id="revision" name="revision" type="text" class="form-control" value="{{ app.revision }}">
+	    </div>
+	    <div class="form-group">
+	    	<label>Pre deploy</label>
+	        <input id="pre_deploy" name="pre_deploy" type="text" class="form-control" value="{{ app.pre_deploy }}">
+	    </div>
+	    <div class="form-group">
+	    	<label>Post deploy</label>
+	        <input id="post_deploy" name="post_deploy" type="text" class="form-control" value="{{ app.post_deploy }}">
+	    </div>
+	    <div class="form-group">
+	    	<label>Parameters</label>
+	        <input id="parameters" name="parameters" type="text" class="form-control" value="{{ app.parameters }}">
+	    </div>
+
+    </div>

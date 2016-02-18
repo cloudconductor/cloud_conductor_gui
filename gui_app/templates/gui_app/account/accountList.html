@@ -1,0 +1,53 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Account management{% endblock %}
+
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li>Account management</li>
+{% endblock %}
+
+{% block content %}
+    <div class="cc-title" style="margin-top: 20px;">Account management</div>
+    <br> {% if request.session.account.manage or request.session.account.create %}
+    <div>
+        <button class="btn btn-primary btn-sm" style="float:right" onclick="location.href='{% url 'app:accountCreate' %}'" type="button">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;NEW
+        </button>
+    </div>
+{% endif %}
+
+{% if accounts %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Account Name</th>
+                <th>Email</th>
+                <th>Admin</th>
+                <th>Creation Date</th>
+            </tr>
+        </thead>
+        {% for ac in accounts %}
+            <tr>
+                <td>{{ ac.id }}</td>
+                <td>
+                    <a href="{% url 'app:accountDetail' ac.id %}">{{ ac.name }}</a>
+                </td>
+                <td>{{ ac.email }}</td>
+                <td>{{ ac.admin }}</td>
+                <td>{{ ac.created_at }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    There is no account. {% endif %}
+{% endblock %}
+
+{% block bodyscript %}
+{% endblock %}

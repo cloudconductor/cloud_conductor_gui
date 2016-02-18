@@ -1,0 +1,50 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Role management{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li>Role management</li>
+{% endblock %}
+{% block content %}
+
+<form method="post" action="{% url 'app:assignmentAdd' project_id %}">
+{% csrf_token %} {% include "gui_app/includes/message.html" %}
+<div class="cc-title" style="margin-top: 20px;">Account List</div>
+<br>
+    {% if accounts %}
+    	<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Check</th>
+					<th>Account Name</th>
+					<th>Email</th>
+					<th>Admin</th>
+				</tr>
+			</thead>
+        {% for account in accounts %}
+            	<tr>
+            		<td  style="width:20px"><input name="chk-{{account.id}}" id="chk-{{account.id}}" type="checkbox"></td>
+					<td>{{ account.name }}</td>
+					<td>{{ account.email }}</td>
+					<td>{{ account.admin }}</td>
+				</tr>
+        {% endfor %}
+        		<tr>
+				<td colspan="4">
+				<div class="button_center">
+					<button class="btn btn-success btn-sm" type="submit"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;　Add</button>
+				</div>
+				</td>
+				</tr>
+        </table>
+    {% else %}
+        There is no account.
+    {% endif %}
+</form>
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

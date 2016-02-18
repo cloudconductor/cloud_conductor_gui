@@ -1,0 +1,34 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Make new application{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li><a href="{% url 'app:applicationList' %}">Application Management</a></li>
+	<li>Make new application</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">Make new application</div>
+<br>
+	<form method="post" action="{% url 'app:mkappSystemCreate' %}">
+		<h3>System Create</h3>
+		{% include "gui_app/system/includes/formSystem.html" %}
+
+		<div class="button_left">
+			<button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'app:mkappSystemSelect' %}'" >
+				<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+				 &nbsp;　back
+			</button>
+			<span class="delete_btn">
+				<button type="submit" class="btn btn-primary btn-sm" >
+					<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>&nbsp;　next
+				</button>
+			</span>
+		</div>
+	</form>
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

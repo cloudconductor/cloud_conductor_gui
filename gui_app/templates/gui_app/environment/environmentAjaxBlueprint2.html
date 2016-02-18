@@ -1,0 +1,10 @@
+{% for key, value in blueprints.items %}
+<label><h5 style="margin-bottom: 5px;">{{ key }}</h5></label>
+	  	{% for key2, value2 in value.items %}
+	  	<div class="form-group">
+		    <label>{{ key2 }}</label>
+		    <div class="discription">{{ value2.Description }}</div>
+		    <input type="text" value="{{ value2.Default}}" maxlength="{{ value2.MaxLength }}" minlength="{{ value2.MinLength }}" class="form-control" name="json/{{ key }}/{{ key2 }}">
+	  	</div>
+	  	{% endfor %}
+{% endfor %}

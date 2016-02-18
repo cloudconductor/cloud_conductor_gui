@@ -1,0 +1,33 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Application Environment{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li>Make new application</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">Application Environment</div>
+<br>
+	<form method="post" action="{% url 'app:envapp_systemCreate' %}">
+		<h3>System select</h3>
+		{% include "gui_app/system/includes/formSystem.html" %}
+
+		<div class="button_left">
+			<button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'app:envapp_systemSelect' %}'" >
+				<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+				 &nbsp;　back
+			</button>
+			<span class="delete_btn">
+				<button type="submit" class="btn btn-primary btn-sm" >
+					<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>&nbsp;　next
+				</button>
+			</span>
+		</div>
+	</form>
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

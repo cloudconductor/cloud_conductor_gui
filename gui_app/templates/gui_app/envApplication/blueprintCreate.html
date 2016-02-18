@@ -1,0 +1,153 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Blueprint Create{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li><a href="{% url 'app:blueprintList' %}">Blueprint Management</a></li>
+	<li>Blueprint Create</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">Blueprint Create</div>
+<br>
+	<form method="post" action="{% url 'app:envapp_blueprintCreate' %}">
+		{% include "gui_app/envApplication/includes/formBlueprint.html" %}
+
+
+		<div class="button_left">
+			<button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'app:envapp_bluprintSelect'%}'" >
+				<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+				 &nbsp;　back
+			</button>
+			<span class="delete_btn">
+				<button type="submit" class="btn btn-primary btn-sm">
+					<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>&nbsp;　next
+				</button>
+			</span>
+		</div>
+
+
+<script>
+jQuery(document).ajaxSend(function(event, xhr, settings) {
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    function sameOrigin(url) {
+        // url could be relative or scheme relative or absolute
+        var host = document.location.host; // host + port
+        var protocol = document.location.protocol;
+        var sr_origin = '//' + host;
+        var origin = protocol + sr_origin;
+        // Allow absolute or scheme relative URLs to same origin
+        return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+            (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+            // or any other URL that isn't scheme relative or absolute i.e relative.
+            !(/^(\/\/|http:|https:).*/.test(url));
+    }
+    function safeMethod(method) {
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    if (!safeMethod(settings.type) && sameOrigin(settings.url)) {
+        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+    }
+});
+
+var myApp;
+myApp = myApp || (function () {
+	var html = '<div class="modal fade in" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">' +
+      '<div class="modal-dialog" style="margin-top:200px;width:100px;height:100px;"><div class="modal-content">' +
+    '<div class="modal-body" style="width:100px;height:100px;background-size: 96px;padding-top:40px;background-image: url(/static/gui_app/images/loading-icon.gif);background-repeat:no-repeat;text-align:center;vertical-align: middle;">Wait</div>'+
+    '</div></div>' +
+    '</div>';
+
+
+    var pleaseWaitDiv = $(html);
+    return {
+        showPleaseWait: function() {
+            pleaseWaitDiv.modal("show");
+        },
+        hidePleaseWait: function () {
+            pleaseWaitDiv.modal('hide');
+        },
+
+    };
+})();
+
+{% if blueprint_id  %}
+$(function(){
+	myApp.showPleaseWait();
+	var timerId;
+	var count = 0;
+	var job = function() {
+	    $.ajax({
+	        'url':'create',
+	        'type':'POST',
+	        'data':{"blueprint_id":"{{blueprint_id}}"},
+	        'dataType':'json',
+	        'success':function(data){
+	        	if(data.ret == 0){
+            		clearTimeout(timerId);
+            		timerId = setTimeout(job, 5000);
+	        	}else if(data.ret == 1){
+	        		clearTimeout(timerId);
+					myApp.hidePleaseWait();
+					location.href="{% url 'app:envapp_bluprintSelect'%}";
+	     		}else{
+	        		clearTimeout(timerId);
+					myApp.hidePleaseWait();
+					location.href="{% url 'app:envapp_environmentCreate'%}";
+	     		}
+	         },
+	     });
+	};
+	timerId = setTimeout(job, 1000);
+});
+{% endif %}
+
+</script>
+
+
+	</form>
+
+<!-- Button trigger modal -->
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Wizard is terminated.</h4>
+      </div>
+      <div class="modal-body">
+        {{ wizard_code }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" onclick="location.href='{% url 'app:blueprintCreate' %}'">
+        	<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span>
+		</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+			<span class="glyphicon glyphicon glyphicon-share-alt" aria-hidden="true"></span>
+		</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

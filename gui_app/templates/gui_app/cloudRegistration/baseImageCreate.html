@@ -1,0 +1,32 @@
+{% extends "gui_app/base.html" %}
+{% block title %}BaseImage Create{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="cc-title">BaseImage Create</div>
+<br>
+	<form method="post" action="{% url 'app:cloudregistBaseimage' %}">
+		<input id="auth_token" type="hidden" name="auth_token" value="{{ baseImage.auth_token }}">
+		{% include "gui_app/baseImage/includes/formBaseImage.html" %}
+
+		<div class="button_left">
+			<button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'app:cloudregistCloud' %}'" >
+				<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+				 &nbsp;&nbsp;back
+			</button>
+			<span class="delete_btn">
+				<button type="submit" class="btn btn-primary btn-sm">
+					<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>&nbsp;　next
+				</button>
+			</span>
+		</div>
+
+	</form>
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

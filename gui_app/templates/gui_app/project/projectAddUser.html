@@ -1,0 +1,56 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Add User{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li><a href="{% url 'app:projectList' %}">Project management</a></li>
+	<li>Add User</li>
+{% endblock %}
+{% block content %}
+
+	<div class="cc-title">Assign User</div>
+	<br>
+	<div class="col-lg-6" style="width: 350px;">
+	Account Serch:
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Search for...">
+	      <span class="input-group-btn">
+	        <button class="btn btn-default" type="button">Go!</button>
+	      </span>
+	    </div>
+	  </div>
+
+	{% include "gui_app/includes/message.html" %}
+	<br>
+   	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th></th>
+				<th>No</th>
+				<th>User Name</th>
+				<th>Role</th>
+				<th>Email</th>
+				<th>Project</th>
+			</tr>
+		</thead>
+           	<tr>
+				<td><input value="" type="checkbox"></td>
+				<td>1</td>
+				<td>PJ ADMIN</td>
+				<td></td>
+				<td></td>
+				<td>A-Project</td>
+			</tr>
+
+       </table>
+       <div class="button_center">
+		<button class="btn btn-success" onclick="location.href='{% url 'app:projectList' %}'" >save</button>
+	</div>
+
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

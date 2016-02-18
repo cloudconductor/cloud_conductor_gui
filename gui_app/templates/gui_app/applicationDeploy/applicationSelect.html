@@ -1,0 +1,132 @@
+{% extends "gui_app/base.html" %}
+:wqa
+:wa
+:wq
+
+{% block title %}Application Deploy{% endblock %}
+
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li>Make new application</li>
+{% endblock %}
+
+{% block content %}
+    <div class="cc-title">Application Deploy</div>
+    {% if request.session.application.manage or request.session.application.create and request.session.application_history.manage or request.session.application_history.create %}
+        <div>
+            <button class="btn btn-primary btn-sm" style="float:right" onclick="location.href='{% url 'app:appdeployApplicationCreate' %}'" type="button">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;　new
+            </button>
+        </div>
+    {% endif %}
+    <form method="post" action="{% url 'app:appdeployApplicationSelect'%}">
+        {{ form.non_field_errors }}
+        <div class="cc-select">
+            {% csrf_token %}
+            {% include "gui_app/includes/message.html" %}
+            <h3>Application select</h3>
+            <div class="form-group">
+                <label><span id="req">*</span>Application:Version</label>
+                <select class="form-control" name="id" id="id">
+                    <option value=""></option>
+                    {% for app in list %}
+                        <option value="{'id': {{ app.id }}, 'name': '{{ app.name }}'}" {% ifequal app.id|add: "0" application.id|add: "0" %} selected="selected" {% endifequal %} data-system_id="{{app.system_id}}" data-name="{{ app.name }}" data-description="{{app.description}}" data-domain="{{app.domain}}">
+                            {{ app.name }}&nbsp;:&nbsp;{{ app.version }}</option>
+                    {% endfor %}
+                </select>
+                {{ form.id.errors }}
+            </div>
+
+            <div class="cc-desc" id="contents-reload">
+                <table>
+                    <tr>
+                        <td>System：</td>
+                        <td id="system_id"></td>
+                    </tr>
+                    <tr>
+                        <td>Application name：</td>
+                        <td id="name"></td>
+                    </tr>
+                    <tr>
+                        <td>Description：</td>
+                        <td id="description"></td>
+                    </tr>
+                    <tr>
+                        <td>Domain：</td>
+                        <td id="domain"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="button_left">
+                <button type="button" class="btn btn-primary btn-sm hidden" onclick="location.href='#'">
+                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;　back
+                </button>
+                <span class="delete_btn">
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>&nbsp;　next
+                </button>
+                </span>
+            </div>
+        </div>
+    </form>
+
+    <!-- Button trigger modal -->
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Wizard is terminated.</h4>
+                </div>
+                <div class="modal-body">
+                    {{ wizard_code }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="location.href='{% url 'app:applicationCreate' %}'">
+                        <span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <span class="glyphicon glyphicon glyphicon-share-alt" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(function() {
+
+            if ($("#id").val() != '') {
+                $("#name").html($("#id").find("option:selected").data('name'));
+                $("#system_id").html($("#id").find("option:selected").data('system_id'));
+                $("#description").html($("#id").find("option:selected").data('description'));
+                $("#domain").html($("#id").find("option:selected").data('domain'));
+            }
+        });
+
+        $('#id').on('change', function() {
+            if ($(this).val() == '') {
+                $("#name").html("");
+                $("#system_id").html("");
+                $("#description").html("");
+                $("#domain").html("");
+            } else {
+                $("#name").html($(this).find("option:selected").data('name'));
+                $("#system_id").html($(this).find("option:selected").data('system_id'));
+                $("#description").html($(this).find("option:selected").data('description'));
+                $("#domain").html($(this).find("option:selected").data('domain'));
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block bodyscript %}
+{% endblock %}

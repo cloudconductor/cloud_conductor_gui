@@ -1,0 +1,21 @@
+{% extends "gui_app/base.html" %}
+{% block title %}BaseImage Edit{% endblock %}
+
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="cc-title">BaseImage Edit</div>
+    <br>
+    <form method="post" action="{% url 'app:baseImageEdit' baseImage.id %}">
+        <input id="id" type="hidden" name="id" value="{{ baseImage.id }}">
+        {% include "gui_app/baseImage/includes/formBaseImage.html" %}
+    </form>
+{% endblock %}
+
+{% block bodyscript %}
+{% endblock %}

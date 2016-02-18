@@ -1,0 +1,37 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Application History Edit{% endblock %}
+{% block headerscript %}
+<script type="text/javascript" src="/static/gui_app/js/file.js"></script>
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li><a href="{% url 'app:applicationList' %}">Application management</a></li>
+	{% if history.application_id %}
+	<li><a href="{% url 'app:applicationDetail' history.application_id %}">Application Detail</a></li>
+	{% endif %}
+	<li>Application History Detail</li>
+	<li>Application History Edit</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">Application History Edit</div>
+{% include "gui_app/includes/message.html" %}
+{% if history.application_id and history.id %}
+	{% if history and history.id %}
+		<form method="post" action="{% url 'app:applicationHistoryEdit' history.application_id history.id %}">
+			<input id="id" type="hidden" name="id" value="{{ history.id }}">
+			<input id="application_id" type="hidden" name="application_id" value="{{ history.application_id }}">
+			{% include "gui_app/application/includes/formApplicationHistory.html" %}
+			<div class="button_center">
+				<button class="btn btn-success" type="submit"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;save</button>
+			</div>
+		</form>
+	{% else %}
+		This is no Application history.
+	{% endif %}
+{% endif %}
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

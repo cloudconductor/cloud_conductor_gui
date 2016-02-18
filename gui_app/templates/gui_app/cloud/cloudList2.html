@@ -1,0 +1,56 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Cloud Management{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li>Cloud Management</li>
+{% endblock %}
+{% block content %}
+  <div class="cc-title">Cloud management</div>
+	<br>
+	{% include "gui_app/includes/message.html" %}
+	{% if request.session.cloud.manage or request.session.cloud.create  %}
+    <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'app:cloudCreate' %}'" style="float:right">
+    	<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;　new
+    </button>
+    {% endif %}
+	{% if cloud %}
+		<table class="table table-hover">
+		    <thead>
+		      <tr>
+		        <th>No</th>
+		        <th>Cloud name</th>
+		        <th>Description</th>
+		        <th>Type</th>
+		        <th>Create date</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		    {% for c in cloud %}
+			      <tr>
+			        <td>{{ c.id }}</td>
+			        <td>
+			        {% if request.session.cloud.manage or request.session.cloud.update or request.session.cloud.destroy  %}
+						<a href="{% url 'app:cloudDetail' c.id %}">{{ c.name }}</a>
+					{% else %}
+						{{ c.name }}
+					{% endif %}
+			        </td>
+			        <td>{{ c.description }}</td>
+			        <td>{{ c.type }}</td>
+			        <td>{{ c.created_at }}</td>
+			      </tr>
+			{% endfor %}
+		    </tbody>
+	  </table>
+	{% else %}
+		There is no cloud.
+	{% endif %}
+
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

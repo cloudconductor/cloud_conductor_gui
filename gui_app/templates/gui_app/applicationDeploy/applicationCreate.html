@@ -1,0 +1,39 @@
+{% extends "gui_app/base.html" %}
+
+{% block title %}Application Create{% endblock %}
+
+{% block headerscript %}
+    <script type="text/javascript" src="/static/gui_app/js/file.js"></script>
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="{% url 'app:applicationList' %}">Application Management</a>
+    </li>
+    <li>Application Create</li>
+{% endblock %}
+
+{% block content %}
+    <div class="cc-title">Application Create</div>
+    <br>
+    <form method="post" action="{% url 'app:appdeployApplicationCreate' %}">
+        {% include "gui_app/applicationDeploy/includes/formApplication.html" %}
+    
+        <div class="button_left">
+            <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'app:appdeployApplicationSelect' %}'">
+                <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> &nbsp;　back
+            </button>
+            <span class="delete_btn">
+                    <button type="submit" class="btn btn-primary btn-sm" >
+                        <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>&nbsp;　next
+            </button>
+            </span>
+        </div>
+    </form>
+{% endblock %}
+
+{% block bodyscript %}
+{% endblock %}

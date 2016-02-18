@@ -1,0 +1,38 @@
+{% csrf_token %}
+{% include "gui_app/includes/message.html" %}
+{{ form.non_field_errors }}
+<input id="cloud_id" type="hidden" name="cloud_id" value="{{ baseImage.cloud_id }}">
+<div class="cc-select">
+    {% if save %}
+        <div class="form-group">
+            <label><span id="req">*</span>Cloud</label>
+            <input id="cloud_id" name="cloud_id" type="text" class="form-control" value="{{ baseImage.cloud_id }}" disabled>
+            {{ form.cloud_id.errors }}
+        </div>
+    {% endif %}
+    <div class="form-group">
+        <label><span id="req">*</span>OS Version</label>
+        <select class="form-control" name="os_version" id="os_version">
+            {% for b in osversion %}
+                <option value="{{ b.value }}" {% if baseImage.os_version==b .value %} selected="selected" {% endif %}>
+                    {{ b.value }}
+                </option>
+            {% endfor %}
+        </select>
+        {{ form.os_version.errors }}
+    </div>
+    <div class="form-group">
+        <label><span id="req">*</span>source_image</label>
+        <input id="{{ form.os_version.errors }}" name="source_image" type="text" class="form-control" value="{{ baseImage.source_image }}"> {{ form.source_image.errors }}
+    </div>
+    <div class="form-group">
+        <label><span id="req">*</span>ssh_username</label>
+        <input id="ssh_username" name="ssh_username" type="text" class="form-control" value="{{ baseImage.ssh_username }}">
+    </div>
+    {{ form.ssh_username.errors }}
+    {% if save %}
+        <div class="button_center">
+            <button class="btn btn-success" type="submit"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;save</button>
+        </div>
+    {% endif %}
+</div>

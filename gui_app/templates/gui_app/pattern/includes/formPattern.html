@@ -1,0 +1,19 @@
+{% csrf_token %}
+{% include "gui_app/includes/message.html" %}
+{{ form.non_field_errors }}
+	<input id="project_id" type="hidden" name="project_id" value="{{ pattern.project_id }}">
+	<div class="cc-select">
+	    <div class="form-group">
+	    	<label><span id="req">*</span>URL or Pass</label>
+	        <input id="url" name="url" type="text" class="form-control" value="{{ pattern.url }}">
+	        {{ form.url.errors }}
+	    </div>
+	    <div class="form-group">
+	    	<label>revision</label>
+	        <input id="revision" name="revision" type="text" class="form-control" value="{{ pattern.revision }}">
+	        {{ form.revision.errors }}
+	    </div>
+	    <div class="button_center">
+			<button class="btn btn-success" type="submit"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;save</button>
+		</div>
+    </div>

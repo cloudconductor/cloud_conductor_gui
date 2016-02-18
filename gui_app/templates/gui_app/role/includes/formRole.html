@@ -1,0 +1,72 @@
+{% csrf_token %} {% include "gui_app/includes/message.html" %}
+<div class="cc-select">
+	<div class="form-group">
+		<label for="Blueprint"><span id="req">*</span> Role name</label>
+		<input id="name" name="name" type="text" class="form-control" value="{{role.name}}">
+		{{ form.name.errors }}
+	</div>
+	<div class="form-group">
+    	<label>Description</label>
+        <textarea id="description" name="description" class="form-control">{{role.description}}</textarea>
+        {{ form.description.errors }}
+    </div>
+
+	<div class="form-group">
+		<label for="Blueprint"><span id="req">*</span>Function Authority</label>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>No</th>
+					<th>Function name</th>
+					<th>manage</th>
+					<th>read</th>
+					<th>create</th>
+					<th>update</th>
+					<th>destroy</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+			{% for item in items %}
+				<tr>
+					<th>{{item.no}}</th>
+					<th>{{item.name}}</th>
+					<td>
+						<div class="checkbox-inline">
+							<input name="{{item.item_name}}-{{item.m}}" id="{{item.item_name}}-{{item.m}}" onchange="changeManage(this,'{{item.item_name}}')" type="checkbox">
+						</div>
+					</td>
+					<td>
+						<div class="checkbox-inline">
+							<input name="{{item.item_name}}-{{item.r}}" id="{{item.item_name}}-{{item.r}}" type="checkbox" {% if  item.read == True %} checked="checked"  onclick="return false" {% endif %}>
+						</div>
+					</td>
+					<td>
+						<div class="checkbox-inline">
+							<input name="{{item.item_name}}-{{item.c}}" id="{{item.item_name}}-{{item.c}}" type="checkbox">
+						</div>
+					</td>
+					<td>
+						<div class="checkbox-inline">
+							<input name="{{item.item_name}}-{{item.u}}" id="{{item.item_name}}-{{item.u}}" type="checkbox">
+						</div>
+					</td>
+					<td>
+						<div class="checkbox-inline">
+							<input name="{{item.item_name}}-{{item.d}}" id="{{item.item_name}}-{{item.d}}" type="checkbox">
+						</div>
+					</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+		{% if save %}
+		<div class="button_center">
+			<button class="btn btn-success" type="submit">
+				<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;save
+			</button>
+		</div>
+		{% endif %}
+	</div>
+
+</div>

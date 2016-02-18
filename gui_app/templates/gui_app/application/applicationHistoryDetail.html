@@ -1,0 +1,110 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Application History Detail{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li><a href="{% url 'app:applicationList' %}">Application Management</a></li>
+	<li><a href="{% url 'app:applicationDetail' history.application_id %}">Application Detail</a></li>
+	<li>Application History Detail</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">Application History Detail</div>
+<br>
+{% include "gui_app/includes/message.html" %}
+{% if history %}
+	{% if history.id %}
+	{% if request.session.application.manage or request.session.application_history.update %}
+		{% if history.application_id %}
+		<div class="btn_group_top">
+			<button type="button" class="btn btn-success btn-sm" onclick="location.href='{% url 'app:applicationHistoryEdit' history.application_id history.id %}'">
+				<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>&nbsp;　edit
+			</button>
+		</div>
+		{% endif %}
+	{% endif %}
+	{% endif %}
+	<table class="table table-hover">
+			<tr>
+				<th>ID</th><td>{{ history.id }}</td>
+			</tr>
+			<tr>
+				<th>Type</th><td>{{ history.type }}</td>
+			</tr>
+			<tr>
+				<th>Version</th><td>{{ history.version }}</td>
+			</tr>
+			<tr>
+				<th>Protocol</th><td>{{ history.protocol }}</td>
+			</tr>
+			<tr>
+				<th>revision</th><td>{{ history.revision }}</td>
+			</tr>
+			<tr>
+				<th>pre_deploy</th><td>{{ history.pre_deploy }}</td>
+			</tr>
+			<tr>
+				<th>post_deploy</th><td>{{ history.post_deploy }}</td>
+			</tr>
+			<tr>
+				<th>parameters</th><td>{{ history.parameters }}</td>
+			</tr>
+			<tr>
+				<th>Create date</th><td>{{ history.created_at }}</td>
+			</tr>
+			<tr>
+				<th>Update date</th><td>{{ history.updated_at }}</td>
+			</tr>
+	</table>
+
+	<div class="button_left">
+		<button type="button" class="btn btn-default btn-sm" onclick="location.href='{% url 'app:applicationList' %}'">
+			<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+			 &nbsp;　back
+		</button>
+		{% if history.id %}
+		{% if request.session.application_history.manage or request.session.application_history.destroy %}
+		<span class="delete_btn">
+			<button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal">
+				<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>&nbsp;&nbsp;delete
+			</button>
+		</span>
+		{% endif %}
+		{% endif %}
+	</div>
+
+<!-- Button trigger modal -->
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Delete</h4>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete the application ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+        	<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+		</button>
+		{% if history.id %}
+        <button type="button" class="btn btn-danger" onclick="location.href='#'">
+			<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+		</button>
+		{% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% else %}
+	There is no application history.
+{% endif %}
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

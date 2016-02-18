@@ -1,0 +1,52 @@
+{% csrf_token %}
+{{ form.non_field_errors }}
+	<input id="project_id" type="hidden" name="project_id" value="{{ app.project_id }}">
+	<input id="id" type="hidden" name="id" value="{{ app.id }}">
+	<div class="cc-select">
+	    <div class="form-group">
+	    	<label><span id="req">*</span>URL</label>
+	        <input id="url" name="url" type="text" class="form-control" value="{{ history.url }}">
+	        {{ form.url.errors }}
+	    </div>
+	    <div class="form-group">
+	    	<label>Type</label>
+			<select class="form-control" name="type" id="type">
+				<option value=""></option>
+		        {% for type in apptype %}
+				   <option value="{{ type.value }}" {% if  history.type == type.value %} selected="selected" {% endif %}>{{ type.name }}</option>
+				{% endfor %}
+		    </select>
+		    {{ form.type.errors }}
+	    </div>
+	    <div class="form-group">
+	    	<label>Protocol</label>
+			<select class="form-control" name="protocol" id="protocol">
+				<option value=""></option>
+		        {% for pro in protocol %}
+				   <option value="{{ pro.value }}" {% if  history.protocol == pro.value %} selected="selected" {% endif %}>{{ pro.name }}</option>
+				{% endfor %}
+		    </select>
+		    {{ form.protocol.errors }}
+	    </div>
+	    <div class="form-group">
+	    	<label>Revision</label>
+	        <input id="revision" name="revision" type="text" class="form-control" value="{{ history.revision }}">
+	        {{ form.revision.errors }}
+	    </div>
+	    <div class="form-group">
+	    	<label>Pre deploy</label>
+	        <input id="pre_deploy" name="pre_deploy" type="text" class="form-control" value="{{ history.pre_deploy }}">
+	        {{ form.pre_deploy.errors }}
+	    </div>
+	    <div class="form-group">
+	    	<label>Post deploy</label>
+	        <input id="post_deploy" name="post_deploy" type="text" class="form-control" value="{{ history.post_deploy }}">
+	        {{ form.post_deploy.errors }}
+	    </div>
+	    <div class="form-group">
+			<label style="float:left;">Parameters</label>
+			<div id="user_output" class="col-md-10 error_message"></div>
+			<textarea id="parameters" name="parameters" class="form-control" cols="80" rows="20" wrap="off" onchange="json_check('parameters', 'user_output')">{{ history.parameters }}</textarea>
+			{{ form.parameters.errors }}
+		</div>
+    </div>

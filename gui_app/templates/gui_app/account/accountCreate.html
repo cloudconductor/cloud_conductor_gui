@@ -1,0 +1,28 @@
+{% extends "gui_app/base.html" %}
+
+{% block title %}
+    Account Createssssss
+{% endblock %}
+
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+    {% endblock %}
+{% block breadcrumb %}
+    <li>
+        <a href="{% url 'app:accountList' %}">Account Management</a>
+    </li>
+    <li>Account Edit</li>
+{% endblock %}
+
+{% block content %}
+    <div class="cc-title">Account Create</div>
+    <form method="post" action="{% url 'app:accountCreate'%}">
+        {% include "gui_app/account/includes/formAccount.html" %}
+    </form>
+{% endblock %}
+
+{% block bodyscript %}
+{% endblock %}

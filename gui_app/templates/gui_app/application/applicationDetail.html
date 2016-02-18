@@ -1,0 +1,106 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Application Detail{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li><a href="{% url 'app:applicationList' %}">Application Management</a></li>
+	<li>Application Detail</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">Application Detail</div>
+<br>
+{% include "gui_app/includes/message.html" %}
+{% if app %}
+	{% if app.id %}
+		{% if request.session.application.manage or request.session.application.update %}
+		<div class="btn_group_top">
+		<button type="button" class="btn btn-success btn-sm" onclick="location.href='{% url 'app:applicationEdit' app.id %}'">
+			<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>&nbsp;　edit
+		</button>
+		</div>
+		{% endif %}
+	{% endif %}
+
+
+	<table class="table table-hover">
+			<tr>
+				<th>ID</th><td>{{ app.id }}</td>
+			</tr>
+			<tr>
+				<th>Application name</th><td>{{ app.name }}</td>
+			</tr>
+			<tr>
+				<th>System</th><td>{{ app.system_name }}</td>
+			</tr>
+			<tr>
+				<th>Domain</th><td>{{ app.domain }}</td>
+			</tr>
+			<tr>
+				<th>Description</th><td>{{ app.description }}</td>
+			</tr>
+			<tr>
+				<th>Create date</th><td>{{ app.created_at }}</td>
+			</tr>
+			<tr>
+				<th>Update date</th><td>{{ app.updated_at }}</td>
+			</tr>
+	</table>
+
+	<!-- application history -->
+	{% if history_list %}
+	{% include "gui_app/application/includes/applicationHistoryList.html" %}
+	{% else %}
+	  	There is no application history.
+	{% endif %}
+
+	<div class="button_left">
+		<button type="button" class="btn btn-default btn-sm" onclick="location.href='{% url 'app:applicationList' %}'">
+			<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+			 &nbsp;　back
+		</button>
+		{% if app.id %}
+		{% if request.session.application.manage or request.session.application.destroy %}
+		<span class="delete_btn">
+			<button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal">
+				<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>&nbsp;　delete
+			</button>
+		</span>
+		{% endif %}
+		{% endif %}
+	</div>
+<!-- Button trigger modal -->
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Delete</h4>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete the application ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+        	<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+		</button>
+		{% if app.id %}
+        <button type="button" class="btn btn-danger" onclick="location.href='{% url 'app:applicationDelete' app.id %}'">
+			<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+		</button>
+		{% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% else %}
+	There is no application.
+{% endif %}
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

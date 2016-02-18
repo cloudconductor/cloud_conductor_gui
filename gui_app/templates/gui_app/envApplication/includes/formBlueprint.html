@@ -1,0 +1,35 @@
+{% csrf_token %}
+{% include "gui_app/includes/message.html" %}
+{{ form.non_field_errors }}
+	<input id="project_id" type="hidden" name="project_id" value="{{ blueprint.project_id }}">
+	<div class="cc-select">
+	    <div class="form-group">
+	    	<label><span id="req">*</span>Blueprint name</label>
+	        <input id="name" name="name" type="text" class="form-control" value="{{ blueprint.name }}">
+	        {{ form.name.errors }}
+	    </div>
+	    <div class="form-group">
+	    	<label>Description</label>
+	        <textarea id="description" name="description" class="form-control">{{ blueprint.description }}</textarea>
+	        {{ form.description.errors }}
+	    </div>
+
+		<div class="form-group">
+			<label for="pattern"><span id="req">*</span> Pattern Select</label>
+			<p class="help-block">Please select one or more.</p>
+				<div class="cc-checkbox vertical_middle">
+					<div class="cc-checkbox-var">Pattern name : revison <span class="right">OS Version</span></div>
+			{% for pt in patterns %}
+					<div class="checkbox" style="height:40px;">
+						<label><input type="checkbox" name="pattern_id" value="{{ pt.id }}" {% for my in my_pattern %}{% if my.id == pt.id %} checked="checked" {% endif %}{% endfor %}>{{ pt.name }}:{{ pt.revision }}</label>
+						<select name="os_version" id="os_version" class="form-control input-sm pull-right pull_100" style="width: 100px;">
+							  {% for b in osversion %}
+							  <option value="{'id': {{ pt.id }}, 'revison': '{{ pt.revision }}', 'os_version': '{{ b.value }}'}" {% for my in my_pattern %}{% if my.id == pt.id %}{% if my.os_version == b.value %} selected="selected" {% endif %}{% endif %}{% endfor %}>
+							       {{ b.value }}
+							   </option>
+							  {% endfor %}
+						</select>
+					</div>
+			{% endfor %}
+    			</div>
+    	</div>

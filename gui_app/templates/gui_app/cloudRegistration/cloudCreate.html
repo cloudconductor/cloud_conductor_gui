@@ -1,0 +1,45 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Cloud Create{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li><a href="{% url 'app:cloudList' %}">Cloud Management</a></li>
+	<li>Cloud Create</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">Cloud Create</div>
+<br>
+	<form method="post" action="{% url 'app:cloudregistCloud' %}">
+		<input id="auth_token" type="hidden" name="auth_token" value="{{ cloud.auth_token }}">
+		{% include "gui_app/cloud/includes/formCloud.html" %}
+
+		<div class="button_left">
+			<button type="button" class="btn btn-primary btn-sm hidden" onclick="location.href=''" >
+				<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+				 &nbsp;　back
+			</button>
+			<span class="delete_btn">
+				<button type="submit" class="btn btn-primary btn-sm">
+					<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>&nbsp;　next
+				</button>
+			</span>
+		</div>
+
+	</form>
+<script type="text/javascript">
+$("[name=type]").change(function (){
+
+	$("#tenant").show();
+	if($(this).val() != 'openstack'){
+		$("[name=tenant_name]").val("");
+		$("#tenant").hide();
+	}
+});
+</script>
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

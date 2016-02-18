@@ -1,0 +1,102 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Role management{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li>Role management</li>
+{% endblock %}
+{% block content %}
+
+<form method="post" action="{% url 'app:assignmentEdit' project_id %}">
+{% csrf_token %} {% include "gui_app/includes/message.html" %}
+<div class="cc-title" style="margin-top: 20px;">Assignment Edit</div>
+<br>
+
+<div>
+	<button class="btn btn-primary btn-sm" style="float:right" onclick="location.href='{% url 'app:assignmentAdd' project_id %}'" type="button">
+		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;NEW
+	</button>
+</div>
+
+    {% if assignments %}
+    	<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Project<br/>Assign</th>
+					<th>No</th>
+					<th>Account Name</th>
+					<th>Email</th>
+					<th>Admin</th>
+					<th>Role</th>
+					<th></th>
+				</tr>
+			</thead>
+        {% for assignment in assignments %}
+            	<tr>
+            		<td><input name="chk-{{assignment.id}}{% if  assignment.id == '' %}-{{assignment.account_id}}{% endif %}" id="chk-{{assignment.id}}{% if  assignment.id == '' %}-{{assignment.account_id}}{% endif %}" checked type="checkbox"></td>
+					<td>{{assignment.id}}</td>
+					<td>{{ assignment.name }}</td>
+					<td>{{ assignment.email }}</td>
+					<td>{{ assignment.admin }}</td>
+					<td>
+				    <select class="form-control" name="sel-{{assignment.id}}{% if  assignment.id == '' %}-{{assignment.account_id}}{% endif %}" id="sel-{{assignment.id}}{% if  assignment.id == '' %}-{{assignment.account_id}}{% endif %}">
+				        <option value=""></option>
+				        {% for r in roleList %}
+						   <option value="{{ r.id }}" {% if  assignment.role == r.id %} selected="selected" {% endif %}>
+						       {{ r.name }}
+						   </option>
+						{% endfor %}
+				    </select>
+				    <input name="myself" id="myself" value="chk-{{assignment.id}}" type="hidden">
+				    <input name="sel_old-{{assignment.id}}" id="sel_old-{{assignment.id}}" value="{{ assignment.role }}" type="hidden">
+
+					</td>
+					<td>　</td>
+				</tr>
+        {% endfor %}
+        		</table>
+	        		<div class="button_center">
+						<a type=button class="btn btn-success btn-sm" data-toggle="modal" onclick="checkRole()" id="modalLink" data-target="#myModal"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;　Save</a>
+					</div>
+					{% include "gui_app/assignment/includes/assignmentPopup.html" %}
+</form>
+
+
+    {% else %}
+        There is no assignment.
+    {% endif %}
+
+<script>
+function checkRole(){
+	var role=true;
+	$("select").each(function(){
+	    if($(this).val() == '' ){
+	    	role=false;
+	    }
+	  });
+	if(role == false){
+		$("#modal-body").html("Please select a roll.");
+		$("#submit").hide();
+	}else{
+		if(!$("#" + $("#myself").val()).is(':checked')){
+			$("#modal-body").html("You will not be able to access the project from the next time. is it OK ?");
+			$("#submit").show();
+		}else{
+			$("#modalLink").attr("data-target","");
+			$("#submit").click();
+
+		}
+
+	}
+
+}
+
+</script>
+
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

@@ -1,0 +1,103 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Make new application{% endblock %}
+{% block headerscript %}{% endblock %}
+{% block bodyscripttop %}{% endblock %}
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li>Make new application</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">Make new application</div>
+		{% if request.session.system.manage or request.session.system.create  %}
+		<div>
+			<button class="btn btn-primary btn-sm" style="float:right" data-toggle="modal" data-target="#myModal" type="button">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;　new
+			</button>
+		</div>
+		{% endif %}
+<form method="post" action="{% url 'app:mkappSystemSelect'%}">
+	<div class="cc-select">
+
+		{% csrf_token %}
+		{% include "gui_app/includes/message.html" %}
+		<h3>System select</h3>
+		{% include "gui_app/makeApplication/includes/formSystemSelect.html" %}
+
+	    <div class="cc-desc" id="contents-reload">
+	    <table>
+	    <tr><td>primary_environment_id：</td><td id="primary_environment_id"></td></tr>
+	    <tr><td>System name：</td><td  id="name"></td></tr>
+	    <tr><td>Description：</td><td id="description"></td></tr>
+	    <tr><td>Domain：</td><td id="domain"></td></tr>
+	    </table>
+	    </div>
+		<div class="button_left">
+			<button type="button" class="btn btn-primary btn-sm hidden" onclick="location.href='#'" >
+				<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+				 &nbsp;　back
+			</button>
+			<span class="delete_btn">
+				<button type="submit" class="btn btn-primary btn-sm">
+					<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>&nbsp;　next
+				</button>
+			</span>
+		</div>
+	</div>
+</form>
+
+<!-- Button trigger modal -->
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Wizard is terminated.</h4>
+      </div>
+      <div class="modal-body">
+        {{ wizard_code }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" onclick="location.href='{% url 'app:mkappSystemCreate' %}'">
+        	<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span>
+		</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+			<span class="glyphicon glyphicon glyphicon-share-alt" aria-hidden="true"></span>
+		</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+$(function(){
+
+	if($("#id").val() != ''){
+		$("#name").html( $("#id").find("option:selected").data('name') );
+		$("#primary_environment_id").html( $("#id").find("option:selected").data('primary_environment_id') );
+		$("#description").html( $("#id").find("option:selected").data('description') );
+		$("#domain").html( $("#id").find("option:selected").data('domain') );
+	}
+});
+
+$('#id').on('change', function(){
+	if($(this).val() == ''){
+		$("#name").html("");
+		$("#primary_environment_id").html("");
+		$("#description").html("");
+		$("#domain").html("");
+	}else{
+		$("#name").html( $(this).find("option:selected").data('name') );
+		$("#primary_environment_id").html( $(this).find("option:selected").data('primary_environment_id') );
+		$("#description").html( $(this).find("option:selected").data('description') );
+		$("#domain").html( $(this).find("option:selected").data('domain') );
+	}
+});
+
+</script>
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

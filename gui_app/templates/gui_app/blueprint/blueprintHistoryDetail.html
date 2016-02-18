@@ -1,0 +1,63 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Blueprint History Detail{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li><a href="{% url 'app:blueprintList' %}">Blueprint Management</a></li>
+	{% if history.blueprint_id %}
+	<li><a href="{% url 'app:blueprintDetail' history.blueprint_id %}">Blueprint Detail</a></li>
+	{% endif %}
+	<li>Blueprint History Detail</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">Blueprint History Detail</div>
+<br>
+{% include "gui_app/includes/message.html" %}
+{% if history %}
+
+	<table class="table table-hover">
+			<tr>
+				<th>ID</th><td>{{ history.id }}</td>
+			</tr>
+			<tr>
+				<th>Blueprint Name</th><td>{{ history.blueprint_name }}</td>
+			</tr>
+			<tr>
+				<th>Description</th><td>{{ history.description }}</td>
+			</tr>
+			<tr>
+				<th>Create date</th><td>{{ history.created_at }}</td>
+			</tr>
+			<tr>
+				<th>Update date</th><td>{{ history.updated_at }}</td>
+			</tr>
+	</table>
+	<!-- pattern -->
+    {% if history.pattern_snapshots %}
+    	{% for pattern in history.pattern_snapshots %}
+			{% include "gui_app/blueprint/includes/patternSnapshotsList.html" %}
+		{% endfor %}
+	{% else %}
+		There is no pattern snapshot.
+	{% endif %}
+
+	{% if history.blueprint_id %}
+	<br/>
+	<div class="button_left">
+		<button type="button" class="btn btn-default btn-sm" onclick="location.href='{% url 'app:blueprintDetail' history.blueprint_id %}'">
+			<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+			 &nbsp;&nbsp;back
+		</button>
+	</div>
+	{% endif %}
+
+{% else %}
+	There is no blueprint history.
+{% endif %}
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

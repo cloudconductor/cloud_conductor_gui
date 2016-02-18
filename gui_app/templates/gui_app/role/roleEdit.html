@@ -1,0 +1,47 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Role Create{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li>Role management</li>
+	<li>Role Create</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">Role Edit</div>
+		<form method="post" action="{% url 'app:roleEdit' role.id %}">
+			{% include "gui_app/role/includes/formRole2.html" %}
+		</form>
+
+<script type="text/javascript">
+
+function changeManage(obj,param){
+	var name = param.split('-')[0];
+	//$('input[name^=' + name + '-]:not(:first)').prop("checked",false);
+	if($(obj).is(':checked')){
+		$('input[name^=' + name + '-]:not(:first)').attr("disabled",true);
+	}else{
+		$('input[name^=' + name + '-]:not(:first)').attr("disabled",false);
+	}
+
+}
+
+$("[name$=-create],[name$=-update],[name$=-destroy]").change(function (){
+
+	var name = $(this).attr("name");
+	var read = name.split('-')[0] + '-read';
+	if($(this).is(':checked')){
+		$("[name=" + read + "]").prop("checked",true);
+	}
+
+
+});
+
+
+</script>
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

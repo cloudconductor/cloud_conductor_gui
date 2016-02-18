@@ -1,0 +1,54 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Application Management{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li>Application Management</li>
+{% endblock %}
+{% block content %}
+  <div class="cc-title">Application management</div>
+	<br>
+	{% include "gui_app/includes/message.html" %}
+{% if request.session.application.manage or request.session.application.create and request.session.application_history.manage or request.session.application_history.create %}
+    <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'app:applicationCreate' %}'" style="float:right">
+    	<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;　new
+    </button>
+{% endif %}
+	{% if apps %}
+		<table class="table table-hover">
+		    <thead>
+		      <tr>
+		        <th>No</th>
+		        <th>Application Name</th>
+		        <th>System</th>
+		        <th>domain</th>
+		        <th>Description</th>
+		        <th>Create Date</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		    {% for a in apps %}
+			      <tr>
+			        <td>{{ a.id }}</td>
+			        <td>
+						<a href="{% url 'app:applicationDetail' a.id %}">{{ a.name }}</a>
+			        </td>
+			        <td>{{ a.system_name }}</td>
+			        <td>{{ a.domain }}</td>
+			        <td>{{ a.description }}</td>
+			        <td>{{ a.created_at }}</td>
+			      </tr>
+			{% endfor %}
+		    </tbody>
+	  </table>
+	{% else %}
+		There is no application.
+	{% endif %}
+
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

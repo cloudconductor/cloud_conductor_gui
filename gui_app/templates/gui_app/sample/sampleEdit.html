@@ -1,0 +1,32 @@
+{% extends "gui_app/base.html" %}
+{% block title %}《Sample》 Edit{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+<!--
+	<li><a href="{% url 'app:《Sample》List' %}">《Sample》 management</a></li>
+	{% if 《Sample》.id %}
+	<li><a href="{% url 'app:《Sample》Detail' 《val》.id %}">《Sample》 Detail</a></li>
+	{% endif %}
+	<li>《Sample》 Edit</li>
+-->
+{% endblock %}
+{% block content %}
+<div class="cc-title">《Sample》 Edit</div>
+<!--
+	{% if 《Sample》 %}
+		<form method="post" action="{% url 'app:《Sample》Edit' 《val》.id %}">
+			<input id="id" type="hidden" name="id" value="{{ 《val》.id }}">
+			{% include "gui_app/《Sample》/includes/form《Sample》.html" %}
+		</form>
+	{% else %}
+		This is no 《Sample》.
+	{% endif %}
+-->
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

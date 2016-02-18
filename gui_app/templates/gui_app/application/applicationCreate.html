@@ -1,0 +1,21 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Application Create{% endblock %}
+{% block headerscript %}
+<script type="text/javascript" src="/static/gui_app/js/file.js"></script>
+{% endblock %}
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li><a href="{% url 'app:applicationList' %}">Application Management</a></li>
+	<li>Application Create</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">Application Create</div>
+<br>
+	<form method="post" action="{% url 'app:applicationCreate' %}">
+		{% include "gui_app/application/includes/formApplication.html" %}
+	</form>
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

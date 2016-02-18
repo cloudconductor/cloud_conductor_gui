@@ -1,0 +1,51 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Project Select{% endblock %}
+{% block headerscript %}
+{% endblock %}
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li>Cloud registration</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">Project Select</div>
+<br>
+	<form method="post" action="{% url 'app:cloudregistProjectSelect'%}">
+		{% csrf_token %}
+		{% include "gui_app/includes/message.html" %}
+		<input id="auth_token" type="hidden" name="auth_token" value="{{ project.auth_token }}">
+
+		{% if request.session.project_manage or request.session.project_create  %}
+		<div>
+			<button class="btn btn-primary btn-sm" style="float:right" onclick="location.href='{% url 'app:cloudregistProject' %}'" type="button">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;　new
+			</button>
+		</div>
+		{% endif %}
+
+		<h3>Project</h3>
+		<table class="table">
+			<tbody>
+				<tr><th>Project name</th><td>{{ project.name }}</td></tr>
+				<tr><th>Decription</th><td>{{ project.description }}</td></tr>
+			</tbody>
+		</table>
+
+		<div class="button_left">
+			<button type="button" class="btn btn-primary btn-sm hidden" onclick="location.href='#'" >
+				<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+				 &nbsp;　back
+			</button>
+			<span class="delete_btn">
+				<button type="submit" class="btn btn-primary btn-sm">
+					<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>&nbsp;　next
+				</button>
+			</span>
+		</div>
+
+	</form>
+
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

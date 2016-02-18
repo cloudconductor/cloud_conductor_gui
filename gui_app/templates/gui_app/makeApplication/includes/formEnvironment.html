@@ -1,0 +1,213 @@
+{% csrf_token %} {% include "gui_app/includes/message.html" %}
+<input id="project_id" type="hidden" name="project_id" value="{{ env.project_id }}">
+<input id="auth_token" type="hidden" name="auth_token" value="{{ env.auth_token }}">
+<script>
+jQuery(document).ajaxSend(function(event, xhr, settings) {
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    function sameOrigin(url) {
+        // url could be relative or scheme relative or absolute
+        var host = document.location.host; // host + port
+        var protocol = document.location.protocol;
+        var sr_origin = '//' + host;
+        var origin = protocol + sr_origin;
+        // Allow absolute or scheme relative URLs to same origin
+        return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+            (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+            // or any other URL that isn't scheme relative or absolute i.e relative.
+            !(/^(\/\/|http:|https:).*/.test(url));
+    }
+    function safeMethod(method) {
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    if (!safeMethod(settings.type) && sameOrigin(settings.url)) {
+        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+    }
+});
+
+var myApp;
+myApp = myApp || (function () {
+	var html = '<div class="modal fade in" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">' +
+      '<div class="modal-dialog" style="margin-top:200px;width:100px;height:100px;"><div class="modal-content">' +
+    '<div class="modal-body" style="width:100px;height:100px;background-size: 96px;padding-top:40px;background-image: url(/static/gui_app/images/loading-icon.gif);background-repeat:no-repeat;text-align:center;vertical-align: middle;">Wait</div>'+
+    '</div></div>' +
+    '</div>';
+
+
+    var pleaseWaitDiv = $(html);
+    return {
+        showPleaseWait: function() {
+            pleaseWaitDiv.modal("show");
+        },
+        hidePleaseWait: function () {
+            pleaseWaitDiv.modal('hide');
+        },
+
+    };
+})();
+
+$(function(){
+  $("#blueprint").change(function () {
+    //alert($(this).val());
+    var param = {blueprint:$(this).val()};
+    if ($(this).val() === '' || param === null) {
+    	$('#template_parameters-div').html('');
+    } else {
+	    $.get('/ccgui/environment/ajax', param, function(data) {
+			$('#template_parameters-div').html(data);
+	    });
+	}
+  });
+});
+
+{% if env_id  %}
+$(function(){
+	myApp.showPleaseWait();
+	var timerId;
+	var count = 0;
+	var job = function() {
+	    $.ajax({
+	        'url':'.',
+	        'type':'POST',
+	        'data':{"env_id":"{{env_id}}"},
+	        'dataType':'json',
+	        'success':function(data){
+	        	if(data.ret == 0){
+            		clearTimeout(timerId);
+            		timerId = setTimeout(job, 5000);
+	        	}else if(data.ret == 1){
+	        		clearTimeout(timerId);
+					myApp.hidePleaseWait();
+					location.href="{% url 'app:mkappEnvironmentSelect'%}";
+	     		}else{
+	        		clearTimeout(timerId);
+					myApp.hidePleaseWait();
+					location.href="{% url 'app:mkappConfirm'%}";
+	     		}
+	         },
+	     });
+	};
+	timerId = setTimeout(job, 1000);
+});
+{% endif %}
+
+</script>
+<div class="cc-select">
+	<div class="form-group">
+		<label><span id="req">*</span>Environment name</label> <input
+			id="name" name="name" type="text" class="form-control"
+			value="{{ env.name }}">
+			{{ form.name.errors }}
+	</div>
+	{% if create %}
+	<div class="form-group">
+		<label><span id="req">*</span>System</label> <select
+			class="form-control" name="system_id" id="system_id">
+			<option value=""></option>
+			{% for s in systems %}
+				<option value="{{ s.id }}" {% if env.system_id|add:"0"  == s.id|add:"0"  %} selected="selected"{% endif %}>
+					{{ s.name }}
+				</option>
+			{% endfor %}
+		</select>
+		{{ form.system_id.errors }}
+	</div>
+	{% endif %}
+
+	{% if create %}
+	<div class="form-group">
+		<label><span id="req">*</span>Cloud priority</label>
+		<div class="input-group">
+			<span id="sizing-addon2" class="input-group-addon">1.</span>
+			<select class="form-control" name="candidates_attributes_1" id="candidates_attributes_1">
+				<option value=""></option>
+				{% for c in clouds %}
+					{{env}}
+					<option value="{{ c.id }}" {% if c.id|add:"0" == env.candidates_attributes_1|add:"0"  %} selected="selected"{% endif %}>
+					{{ c.name }}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<div class="input-group">
+			<span id="sizing-addon2" class="input-group-addon">2.</span>
+			<input type="hidden" id="candidates_attributes_2" name="candidates_attributes_2" value="{{ env.candidates_attributes_2 }}">
+				<select class="form-control" name="candidates_attributes_2" id="candidates_attributes_2">
+					<option value=""></option>
+					{% for c in clouds %}
+						<option value="{{ c.id }}" {% if c.id|add:"0"  == env.candidates_attributes_2|add:"0"  %} selected="selected"{% endif %}>
+						{{ c.name }}
+						</option>
+					{% endfor %}
+				</select>
+		</div>
+		<div class="input-group">
+			<span id="sizing-addon2" class="input-group-addon">3.</span>
+			<input type="hidden" id="candidates_attributes_3" name="candidates_attributes_3" value="{{ env.candidates_attributes_3 }}">
+			<select class="form-control" name="candidates_attributes_3" id="candidates_attributes_3">
+				<option value=""></option>
+				{% for c in clouds %}
+					<option value="{{ c.id }}" {% if c.id == env.candidates_attributes_3 %} selected="selected"{% endif %}>
+					{{ c.name }}
+					</option>
+				{% endfor %}
+			</select>
+		</div>
+		{{ form.candidates_attributes_1.errors }}
+		{{ form.candidates_attributes_2.errors }}
+		{{ form.candidates_attributes_3.errors }}
+	</div>
+
+	<div class="form-group">
+		<label><span id="req">*</span>Blueprint&nbsp;:&nbsp;version</label>
+		<select class="form-control" name="blueprint" id="blueprint">
+			<option value=""></option>
+			{% for b in blueprints %}
+			<option value="{'id': {{ b.id }}, 'version': {{ b.version }}}" {% ifequal b.id|add:"0"  env.blueprint_id|add:"0"  %}{% ifequal b.version env.version %} selected="selected"{% endifequal %}{% endifequal %}>
+				{{ b.name }}&nbsp;:&nbsp;{{ b.version }}
+			</option>
+			{% endfor %}
+		</select>
+		{{ form.blueprint_id.errors }}
+	</div>
+	{% endif %}
+
+	<div class="form-group">
+		<label>template_parameters</label>
+		<div id="template_parameters-div"></div>
+		{{ form.template_parameters.errors }}
+	</div>
+
+	<div class="form-group">
+		<label>user_attributes</label>
+		<input type="file" onchange="read(this, 'user_attributes', 'user_output')" accept="application/json"  />
+		<div id="user_output" class="col-md-10 error_message"></div>
+		<textarea id="user_attributes" name="user_attributes" class="form-control" cols="80" rows="20" wrap="off" onchange="json_check('user_attributes', 'user_output')">{{ env.user_attributes }}</textarea>
+		{{ form.user_attributes.errors }}
+	</div>
+
+	<div class="form-group">
+		<label>Description</label>
+		<textarea id="description" name="description" class="form-control">{{ env.description }}</textarea>
+		{{ form.description.errors }}
+	</div>
+	{% if save %}
+	<div class="button_center">
+		<button class="btn btn-success" type="submit">
+			<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;save
+		</button>
+	</div>
+	{% endif %}

@@ -1,0 +1,54 @@
+{% csrf_token %}
+{% include "gui_app/includes/message.html" %}
+{{ form.non_field_errors }}
+
+<div class="cc-select">
+    <input id="auth_token" type="hidden" name="auth_token" value="{{ account.auth_token }}">
+    <div class="form-group">
+        <label><span id="req">*</span>Account name</label>
+        <input id="name" name="name" type="text" class="form-control" value="{{ account.name }}"> {{ form.name.errors }}
+    </div>
+    <div class="form-group">
+        <label><span id="req">*</span>Email</label>
+        <input id="email" name="email" type="text" class="form-control" value="{{ account.email }}"> {{ form.email.errors }}
+    </div>
+    <div class="form-group">
+        <label><span id="req">*</span>password</label>
+        <input id="password" name="password" type="password" class="form-control" value="{{ account.password }}"> {{ form.password.errors }}
+    </div>
+    <div class="form-group">
+        <label><span id="req">*</span>password confirmation</label>
+        <input id="repassword" name="repassword" type="password" class="form-control" value="{{ account.repassword }}"> {{ form.repassword.errors }}
+    </div>
+
+    {% if not edit or request.session.account_admin %}
+
+        <div class="form-group">
+            <p class="control-label"><b><span id="req">*</span>Authority</b>
+            </p>
+            <div class="radio-inline">
+                <input type="radio" value="1" name="admin" id="admin" {% if account.admin %} checked {% endif %}>
+                <label for="adin">Admin</label>
+            </div>
+            <div class="radio-inline">
+                <input type="radio" value="0" name="admin" id="admin" {% if not account.admin %} checked {% endif %}>
+                <label for="nomal">normal</label>
+            </div>
+        </div>
+    {% else %}
+        {% if account.admin %}
+            <input id="admin" type="hidden" name="admin" value="1"> 
+        {% endif %}
+        {% if not account.admin %}
+            <input id="admin" type="hidden" name="admin" value="0">
+        {% endif %}
+    {% endif %}
+    {{ form.admin.errors }}
+
+    <div class="button_center">
+        <button class="btn btn-success" type="submit">
+            <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+            &nbsp;save
+        </button>
+    </div>
+</div>

@@ -1,0 +1,84 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Role management{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li>Role management</li>
+{% endblock %}
+{% block content %}
+
+<div class="cc-title" style="margin-top: 20px;">Role management</div>
+<br>
+{% include "gui_app/includes/message.html" %}
+
+{% if request.session.role.manage or request.session.role.create %}
+<div>
+	<button class="btn btn-primary btn-sm" style="float:right" onclick="location.href='{% url 'app:roleCreate' %}'" type="button">
+		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;NEW
+	</button>
+</div>
+{% endif %}
+    {% if roles %}
+    <form method="post" action="" id="form">
+    {% csrf_token %}
+    	<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>No</th>
+					<th>Role Name</th>
+					<th>Description</th>
+					<th>Create Date</th>
+					<th></th>
+				</tr>
+			</thead>
+        {% for role in roles %}
+            	<tr>
+					<td>{{role.id}}</td>
+					<td>
+						<a href="{% url 'app:roleEdit' role.id %}">{{role.name}}</a>
+					</td>
+					<td>{{ role.description }}</td>
+					<td>{{ role.created_at }}</td>
+					<td>
+					{% if role.id %}
+						{% if request.session.role.manage or request.session.role.destroy %}
+						<div class="btn_group_bottom">
+							<button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" onclick="deleteRole('{{role.id}}')">
+								<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>&nbsp;&nbsp;delete
+							</button>
+						</div>
+						{% endif %}
+					{% endif %}
+					</td>
+				</tr>
+        {% endfor %}
+        		</table>
+<script>
+function deleteRole(obj){
+
+$("#form").attr("action","/ccgui/role/"  + obj + "/delete/");
+//$(this).attr("href","#myModal");
+}
+
+function deleteSubmit(){
+
+$("#form").submit();
+}
+
+
+</script>
+	</form>
+    {% else %}
+        There is no role.
+    {% endif %}
+{% include "gui_app/role/includes/rolePopup.html" %}
+
+
+
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

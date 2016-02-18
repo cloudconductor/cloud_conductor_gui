@@ -1,0 +1,67 @@
+{% extends "gui_app/base.html" %}
+
+{% block title %}Project Create{% endblock %}
+
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li>Cloud registration</li>
+{% endblock %}
+
+{% block content %}
+    <div class="cc-title">Confirm</div>
+    <br>
+    <form method="post" action="{% url 'app:appdeployConfirm'%}">
+        {% csrf_token %} {% include "gui_app/includes/message.html" %}
+        <div class="cc-select">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <div class="panel-title" id="panel-title">Confirmation of input contents</div>
+                </div>
+                <div class="panel-body">
+                    <p class="help-block">Are you sure you want to be registered with this content?</p>
+                    <h3>Application</h3>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th>Application name</th>
+                                <td>{{ application.name }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>Environment</h3>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th>Environment name</th>
+                                <td>{{ environment.name }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        <div class="button_left">
+            <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'app:appdeployEnvironmentSelect' %}'">
+                <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> &nbsp;　back
+            </button>
+            <span class="delete_btn">
+                    <button type="submit" class="btn btn-success btn-sm">
+                        <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;　save
+            </button>
+            </span>
+        </div>
+
+    </form>
+
+{% endblock %}
+
+{% block bodyscript %}
+{% endblock %}

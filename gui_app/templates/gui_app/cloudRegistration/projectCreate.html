@@ -1,0 +1,34 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Project Create{% endblock %}
+{% block headerscript %}
+{% endblock %}
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li>Cloud registration</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">Project Create</div>
+<br>
+	<form method="post" action="{% url 'app:cloudregistProject'%}">
+		<input id="auth_token" type="hidden" name="auth_token" value="{{ project.auth_token }}">
+		{% include "gui_app/project/includes/formProject.html" %}
+
+		<div class="button_left">
+			<button type="button" class="btn btn-primary btn-sm hidden" onclick="location.href='#'" >
+				<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+				 &nbsp;　back
+			</button>
+			<span class="delete_btn">
+				<button type="submit" class="btn btn-primary btn-sm">
+					<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>&nbsp;　next
+				</button>
+			</span>
+		</div>
+
+	</form>
+
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

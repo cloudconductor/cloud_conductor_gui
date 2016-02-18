@@ -1,0 +1,50 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Blueprint Management{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li>Blueprint Management</li>
+{% endblock %}
+{% block content %}
+  <div class="cc-title">Blueprint management</div>
+	<br>
+	{% include "gui_app/includes/message.html" %}
+	{% if request.session.blueprint.manage or request.session.blueprint.create %}
+	<button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'app:blueprintCreate' %}'" style="float:right">
+    	<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;　new
+    </button>
+	{% endif %}
+	{% if blueprints %}
+		<table class="table table-hover">
+		    <thead>
+		      <tr>
+		        <th>No</th>
+		        <th>Blueprint Name</th>
+		        <th>Description</th>
+		        <th>Create date</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		    {% for bp in blueprints %}
+			      <tr>
+			        <td>{{ bp.id }}</td>
+			        <td>
+			        	<a href="{% url 'app:blueprintDetail' bp.id %}">{{ bp.name }}</a>
+			        </td>
+			        <td>{{ bp.description }}</td>
+			        <td>{{ bp.created_at }}</td>
+			      </tr>
+			{% endfor %}
+		    </tbody>
+	  </table>
+	{% else %}
+		There is no blueprint.
+	{% endif %}
+
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

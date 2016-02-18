@@ -1,0 +1,50 @@
+{% extends "gui_app/base.html" %}
+{% block title %}System Management{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li>System Management</li>
+{% endblock %}
+{% block content %}
+  <div class="cc-title">System management</div>
+	<br>
+	{% include "gui_app/includes/message.html" %}
+	{% if request.session.system.manage or request.session.system.create %}
+	    <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'app:systemCreate' %}'" style="float:right">
+	    	<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;　new
+	    </button>
+    {% endif %}
+	{% if system %}
+		<table class="table table-hover">
+		    <thead>
+		      <tr>
+		        <th>No</th>
+		        <th>System name</th>
+		        <th>Description</th>
+		        <th>domain</th>
+		        <th>Create data</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		    {% for s in system %}
+			      <tr>
+			        <td>{{ s.id }}</td>
+			        <td>
+			        	<a href="{% url 'app:systemDetail' s.id %}">{{ s.name }}</a>
+			        <td>{{ s.description }}</td>
+			        <td>{{ s.domain }}</td>
+			        <td>{{ s.created_at }}</td>
+			      </tr>
+			{% endfor %}
+		    </tbody>
+	  </table>
+	{% else %}
+		There is no system.
+	{% endif %}
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

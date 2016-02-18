@@ -1,0 +1,35 @@
+{% csrf_token %}
+{% include "gui_app/includes/message.html" %}
+	<div class="cc-select">
+	    <div class="form-group">
+	    	<label><span id="req">*</span>Cloud name</label>
+	        <input id="name" name="name" type="text" class="form-control" value="{{ 《val》.name }}">
+	    </div>
+	    <div class="form-group">
+	    	<label><span id="req">*</span>Cloud type</label>
+	        <input id="type" name="type" type="text" class="form-control" value="{{ 《val》.type }}">
+	    </div>
+	    <div class="form-group">
+	    	<label><span id="req">*</span>key</label>
+	        <input id="key" name="key" type="text" class="form-control" value="{{ 《val》.key }}">
+	    </div>
+	    <div class="form-group">
+	    	<label><span id="req">*</span>secret</label>
+	        <input id="secret" name="secret" type="text" class="form-control" value="{{ 《val》.secret }}">
+	    </div>
+	    <div class="form-group">
+	    	<label><span id="req">*</span>entry_point</label>
+	        <input id="entry_point" name="entry_point" type="text" class="form-control" value="{{ 《val》.entry_point }}">
+	    </div>
+	    <div class="form-group">
+	    	<label>Description</label>
+	        <textarea id="description" name="description" class="form-control">{{ 《val》.description }}</textarea>
+	    </div>
+	    <div class="form-group">
+	    	<label>tenant_name</label>
+	        <textarea id="tenant_name" name="tenant_name" class="form-control">{{ 《val》.tenant_name }}</textarea>
+	    </div>
+   		<div class="button_center">
+			<button class="btn btn-success" type="submit"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;save</button>
+		</div>
+    </div>

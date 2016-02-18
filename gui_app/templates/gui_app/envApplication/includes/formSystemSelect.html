@@ -1,0 +1,14 @@
+<div class="form-group">
+   	<label><span id="req">*</span>System</label>
+	<select class="form-control" name="id" id="id">
+        <option value=""></option>
+		{% for sys in list %}
+			<option value="{'id': {{ sys.id }}, 'name': '{{ sys.name }}'}" {% if sys.id|add:"0" == system.id|add:"0"  %} selected="selected" {% endif %}
+			data-primary_environment_id="{{sys.primary_environment_id}}" data-name="{{sys.name}}" data-description="{{sys.description}}" data-domain="{{sys.domain}}"
+			>
+			{{ sys.name }}
+			</option>
+		{% endfor %}
+    </select>
+    {{ form.id.errors }}
+</div>

@@ -1,0 +1,22 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Environment Create{% endblock %}
+{% block headerscript %}
+<script type="text/javascript" src="/static/gui_app/js/file.js"></script>
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li><a href="{% url 'app:environmentList' %}">Environment Management</a></li>
+	<li>Environment Create</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">Environment Create</div>
+<br>
+	<form method="post" action="{% url 'app:environmentCreate' %}">
+		{% include "gui_app/environment/includes/formEnvironment.html" %}
+	</form>
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

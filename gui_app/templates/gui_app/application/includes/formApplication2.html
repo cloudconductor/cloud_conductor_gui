@@ -1,0 +1,39 @@
+{% csrf_token %}
+{% include "gui_app/includes/message.html" %}
+{{ form.non_field_errors }}
+	<input id="project_id" type="hidden" name="project_id" value="{{ app.project_id }}">
+	<div class="cc-select">
+	    <div class="form-group">
+	    	<label><span id="req">*</span>Application name</label>
+	        <input id="name" name="name" type="text" class="form-control" value="{{ app.name }}">
+	        {{ form.name.errors }}
+	    </div>
+	    {% if save %}
+	    <div class="form-group">
+	    	<label><span id="req">*</span>System</label>
+			<select class="form-control" name="system_id" id="system_id">
+		        <option value=""></option>
+		        {% for s in systems %}
+				   <option value="{{ s.id }}" {% if  app.system_id == s.id %} selected="selected" {% endif %}>{{ s.name }}</option>
+				{% endfor %}
+		    </select>
+		    {{ form.system_id.errors }}
+	    </div>
+	    {% endif %}
+	    <div class="form-group">
+	    	<label>Domain</label>
+	        <input id="domain" name="domain" type="text" class="form-control" value="{{ app.domain }}">
+	        {{ form.domain.errors }}
+	    </div>
+	    <div class="form-group">
+	    	<label>Description</label>
+	        <textarea id="description" name="description" class="form-control">{{ app.description }}</textarea>
+	        {{ form.description.errors }}
+	    </div>
+	    {% if save %}
+	    <div class="button_center">
+			<button class="btn btn-success" type="submit"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;save</button>
+		</div>
+		{% endif %}
+
+    </div>

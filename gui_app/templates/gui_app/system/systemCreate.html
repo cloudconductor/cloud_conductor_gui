@@ -1,0 +1,21 @@
+{% extends "gui_app/base.html" %}
+{% block title %}System Create{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li><a href="{% url 'app:systemList' %}">System Management</a></li>
+	<li>System Create</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">System Create</div>
+<br>
+	<form method="post" action="{% url 'app:systemCreate' %}">
+		{% include "gui_app/system/includes/formSystem.html" %}
+	</form>
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

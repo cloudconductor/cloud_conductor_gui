@@ -1,0 +1,23 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Project Edit{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li><a href="{% url 'app:projectList' %}">Project Management</a></li>
+	<li><a href="{% url 'app:projectDetail' project.id %}">Project Detail</a></li>
+	<li>Project Edit</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">Project Edit</div>
+	<form method="post" action="{% url 'app:projectEdit' project.id %}">
+		<input id="id" type="hidden" name="id" value="{{ project.id }}">
+		<input id="auth_token" type="hidden" name="auth_token" value="{{ project.auth_token }}">
+		{% include "gui_app/project/includes/formProject.html" %}
+	</form>
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

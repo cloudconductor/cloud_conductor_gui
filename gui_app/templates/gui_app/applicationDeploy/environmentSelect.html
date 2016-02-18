@@ -1,0 +1,82 @@
+{% extends "gui_app/base.html" %}
+
+{% block title %}Environment Select{% endblock %}
+
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li>Make new application</li>
+{% endblock %}
+{% block content %}
+
+<div class="cc-title">Application Deploy</div>
+{% if request.session.environment_manage or request.session.environment_create %}
+    <div>
+        <button class="btn btn-primary btn-sm" style="float:right" onclick="location.href='{% url 'app:mkappEnvironmentCreate' %}'" type="button">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;　new
+        </button>
+    </div>
+{% endif %}
+<form method="post" action="{% url 'app:appdeployEnvironmentSelect'%}">
+    <div class="cc-select">
+        {% csrf_token %} {% include "gui_app/includes/message.html" %}
+
+        <h3>Environment select</h3> {% include "gui_app/applicationDeploy/includes/formEnvironmentSelect.html" %}
+
+        <div class="button_left">
+            <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'app:appdeployApplicationSelect' %}'">
+                <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> &nbsp;　back
+            </button>
+            <span class="delete_btn">
+                <button type="submit" class="btn btn-primary btn-sm">
+                    <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>&nbsp;　next
+            </button>
+            </span>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    $(function() {
+
+        if ($("#id").val() != '') {
+            $("#name").html($("#id").find("option:selected").data('name'));
+            $("#system_id").html($("#id").find("option:selected").data('system_id'));
+            $("#blueprint_history_id").html($("#id").find("option:selected").data('blueprint_history_id'));
+            $("#description").html($("#id").find("option:selected").data('description'));
+            $("#status").html($("#id").find("option:selected").data('status'));
+            $("#ip_address").html($("#id").find("option:selected").data('ip_address'));
+            $("#application_status").html($("#id").find("option:selected").data('application_status'));
+        }
+    });
+
+    $('#id').on('change', function() {
+        if ($(this).val() == '') {
+            $("#name").html("");
+            $("#system_id").html("");
+            $("#blueprint_history_id").html("");
+            $("#description").html("");
+            $("#status").html("");
+            $("#ip_address").html("");
+            $("#application_status").html("");
+        } else {
+            $("#name").html($(this).find("option:selected").data('name'));
+            $("#system_id").html($(this).find("option:selected").data('system_id'));
+            $("#blueprint_history_id").html($(this).find("option:selected").data('blueprint_history_id'));
+            $("#description").html($(this).find("option:selected").data('description'));
+            $("#status").html($(this).find("option:selected").data('status'));
+            $("#ip_address").html($(this).find("option:selected").data('ip_address'));
+            $("#application_status").html($(this).find("option:selected").data('application_status'));
+        }
+    });
+</script>
+
+{% endblock %}
+
+{% block bodyscript %}
+{% endblock %}

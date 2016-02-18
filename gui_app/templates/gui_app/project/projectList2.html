@@ -1,0 +1,53 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Project management{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li>Project management</li>
+{% endblock %}
+{% block content %}
+
+<div class="cc-title">Project management</div>
+<br>
+{% include "gui_app/includes/message.html" %}
+{% if request.session.project.manage or request.session.project.create %}
+<div>
+	<button class="btn btn-primary btn-sm" style="float:right" onclick="location.href='{% url 'app:projectCreate' %}'" type="button">
+		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;　new
+	</button>
+</div>
+{% endif %}
+{% if projects %}
+ 	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>No</th>
+				<th>Project Name</th>
+				<th>Description</th>
+				<th>Creation Date</th>
+			</tr>
+		</thead>
+           	<tr>
+				<td>{{ projects.id }}</td>
+				<td>
+					{% if request.session.project.manage or request.session.project.update or request.session.project.destroy  %}
+						<a href="{% url 'app:projectDetail' projects.id %}">{{ projects.name }}</a>
+					{% else %}
+						{{ projects.name }}
+					{% endif %}
+				</td>
+				<td>{{ projects.description }}</td>
+				<td>{{ projects.created_at }}</td>
+			</tr>
+</table>
+{% else %}
+	There is no project.
+{% endif %}
+
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

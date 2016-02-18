@@ -1,0 +1,28 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Pattern Edit{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li><a href="{% url 'app:patternList' %}">Pattern management</a></li>
+	{% if pattern.id %}
+	<li><a href="{% url 'app:patternDetail' pattern.id %}">Pattern Detail</a></li>
+	{% endif %}
+	<li>Pattern Edit</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">Pattern Edit</div>
+	{% if pattern %}
+		<form method="post" action="{% url 'app:patternEdit' pattern.id %}">
+			<input id="id" type="hidden" name="id" value="{{ pattern.id }}">
+			{% include "gui_app/pattern/includes/formPattern.html" %}
+		</form>
+	{% else %}
+		This is no Pattern.
+	{% endif %}
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}
