@@ -50,7 +50,7 @@ urlpatterns = [
 
     url('^baseimage/(?P<id>\d+)/detail/',
         baseImageViews.baseImageDetail, name="baseImageDetail"),
-    url('^cloud/(?P<cid>\d+)/baseimage/create',
+    url('^cloud/(?P<cid>\d+)/baseimage/create/$',
         baseImageViews.baseImageCreate, name="baseImageCreate"),
     url('^baseimage/(?P<id>\d+)/edit/$',
         baseImageViews.baseImageEdit, name="baseImageEdit"),
