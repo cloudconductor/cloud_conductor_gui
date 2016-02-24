@@ -7,7 +7,7 @@ from ..utils import StringUtil
 from ..utils.PathUtil import Path
 from ..utils.PathUtil import Html
 from ..enum.CloudType import CloudType
-from ..enum.OSVersion import OSVersion
+from ..enum.platform import *
 from ..enum.FunctionCode import FuncCode
 from ..logs import log
 
@@ -64,8 +64,7 @@ def baseimageCreate(request):
                 param.update(baseimage)
 
             return render(request, Html.cloudregist_baseimageCreate,
-                          {"baseImage": param, 'osversion': list(OSVersion),
-                           'message': ''})
+                          {"baseImage": param, 'platform': list(Platform), 'platform_version': list(PlatformVersion), 'message': ''})
         elif request.method == "POST":
             param = request.POST
 
@@ -76,7 +75,7 @@ def baseimageCreate(request):
 
                 return render(request, Html.cloudregist_baseimageCreate,
                               {"baseImage": baseimage,
-                               'osversion': list(OSVersion), 'form': form})
+                               'platform': list(Platform), 'platform_version': list(PlatformVersion), 'form': form})
 
             baseimage = baseimagePut(request.POST)
             request.session['w_bi_create'] = baseimage
@@ -161,7 +160,8 @@ def baseimagePut(req):
         return None
 
     baseimage = {
-        'os_version': req.get('os_version'),
+        'platform': req.get('platform'),
+        'platform_version': req.get('platform_version'),
         'source_image': req.get('source_image'),
         'ssh_username': req.get('ssh_username'),
     }
