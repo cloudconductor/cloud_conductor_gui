@@ -1,9 +1,4 @@
 {% extends "gui_app/base.html" %}
-:wqa
-:wa
-:wq
-
-{% block title %}Application Deploy{% endblock %}
 
 {% block headerscript %}
 {% endblock %}
@@ -36,7 +31,7 @@
                 <select class="form-control" name="id" id="id">
                     <option value=""></option>
                     {% for app in list %}
-                        <option value="{'id': {{ app.id }}, 'name': '{{ app.name }}'}" {% ifequal app.id|add: "0" application.id|add: "0" %} selected="selected" {% endifequal %} data-system_id="{{app.system_id}}" data-name="{{ app.name }}" data-description="{{app.description}}" data-domain="{{app.domain}}">
+                        <option value="{'id': {{ app.id }}, 'name': '{{ app.name }}'}" {% ifequal app.id|add:"0" application.id|add:"0" %} selected="selected" {% endifequal %} data-system_id="{{app.system_id}}" data-name="{{ app.name }}" data-description="{{app.description}}" data-domain="{{app.domain}}">
                             {{ app.name }}&nbsp;:&nbsp;{{ app.version }}</option>
                     {% endfor %}
                 </select>
