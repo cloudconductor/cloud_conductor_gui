@@ -148,7 +148,8 @@ def blueprintSelect(request):
 
 def blueprintCreate(request):
     code = FuncCode.blueprintCreate.value
-    osversion = list(OSVersion)
+    platform = list(Platform)
+    platform_version = list(PlatformVersion)
     patterns = ''
     my_pattern = ''
     try:
@@ -169,8 +170,7 @@ def blueprintCreate(request):
         else:
             # -- Get a value from a form
             p = request.POST
-            my_pattern = BlueprintPatternUtil.dic_pattern_list(
-                p.getlist('platform'), p.getlist('platform_version'), p.getlist('pattern_id'))
+            select_patterns = BlueprintPatternUtil.format_pattern(p.getlist('platform'), p.getlist('platform_version'), p.getlist('revision'), p.getlist('pattern_id'))
 
             if p.get('blueprint_id'):
                 bp = BlueprintHistoryUtil.get_new_blueprint_history(
@@ -204,13 +204,11 @@ def blueprintCreate(request):
                 code, token, project_id, form.data)
 
             # -- 2. Add a Pattern, api call
-            BlueprintPatternUtil.add_blueprint_pattern_list(
-                code, token, blueprint.get('id'),
-                p.getlist('platform'), p.getlist('platform_version'), p.getlist('pattern_id'))
+            for pattern in select_patterns:
+                BlueprintPatternUtil.add_blueprint_pattern(code, token, blueprint.get('id'), pattern)
 
             # -- 3. BlueprintBuild, api call
-            BlueprintUtil.create_bluepritn_build(
-                code, token, blueprint.get('id'))
+            BlueprintUtil.create_bluepritn_build(code, token, blueprint.get('id'))
 
             return render(request, Html.envapp_blueprintCreate,
                           {'blueprint': p, 'patterns': patterns,

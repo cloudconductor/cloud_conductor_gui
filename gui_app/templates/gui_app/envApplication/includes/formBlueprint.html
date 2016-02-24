@@ -18,13 +18,21 @@
 			<label for="pattern"><span id="req">*</span> Pattern Select</label>
 			<p class="help-block">Please select one or more.</p>
 				<div class="cc-checkbox vertical_middle">
-					<div class="cc-checkbox-var">Pattern name : revison <span class="right">OS Version</span></div>
+					<div class="cc-checkbox-var">Pattern name : revison <span class="right">Platform：PlatformVersion</span></div>
 			{% for pt in patterns %}
+          <input type="hidden" name="revision" value="{'id': {{ pt.id }}, 'revision': '{{ pt.revision }}'}"></input>
 					<div class="checkbox" style="height:40px;">
-						<label><input type="checkbox" name="pattern_id" value="{{ pt.id }}" {% for my in my_pattern %}{% if my.id == pt.id %} checked="checked" {% endif %}{% endfor %}>{{ pt.name }}:{{ pt.revision }}</label>
-						<select name="os_version" id="os_version" class="form-control input-sm pull-right pull_100" style="width: 100px;">
-							  {% for b in osversion %}
-							  <option value="{'id': {{ pt.id }}, 'revison': '{{ pt.revision }}', 'os_version': '{{ b.value }}'}" {% for my in my_pattern %}{% if my.id == pt.id %}{% if my.os_version == b.value %} selected="selected" {% endif %}{% endif %}{% endfor %}>
+						<label><input type="checkbox" name="pattern_id" value="{{ pt.id }}" {% for my in my_pattern %}{% ifequal my.id pt.id %} checked="checked" {% endifequal %}{% endfor %}>{{ pt.name }}:{{ pt.revision }}</label>
+            <select name="platform_version" id="platform_version" class="form-control input-sm pull-right pull_100" style="width: 100px;">
+							  {% for b in platform_version%}
+							  <option value="{'id': {{ pt.id }}, 'platform_version': '{{ b.value }}'}" {% for my in my_pattern %}{% ifequal my.id pt.id %}{% ifequal my.platform_version b.value %} selected="selected" {% endifequal %}{% endifequal %}{% endfor %}>
+							       {{ b.value }}
+							   </option>
+							  {% endfor %}
+						</select>
+						<select name="platform" id="platform" class="form-control input-sm pull-right pull_100" style="width: 100px;">
+							  {% for b in platform%}
+							  <option value="{'id': {{ pt.id }}, 'platform': '{{ b.value }}'}" {% for my in my_pattern %}{% ifequal my.id pt.id %}{% ifequal my.platform b.value %} selected="selected" {% endifequal %}{% endifequal %}{% endfor %}>
 							       {{ b.value }}
 							   </option>
 							  {% endfor %}
@@ -32,4 +40,4 @@
 					</div>
 			{% endfor %}
     			</div>
-    	</div>
+</div>
