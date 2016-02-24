@@ -76,7 +76,8 @@
 			    <thead>
 			      <tr>
 			        <th>No</th>
-			        <th>OS</th>
+			        <th>Platform</th>
+			        <th>PlatformVersion</th>
 			        <th>Create date</th>
 			      </tr>
 			    </thead>
@@ -84,7 +85,8 @@
 				{% for b in baseImage %}
 			      <tr>
 			        <td><a href="{% url 'app:baseImageDetail' b.id %}">{{ b.id }}</a></td>
-			        <td>{{ b.os_version }}</td>
+			        <td>{{ b.platform }}</td>
+			        <td>{{ b.platform_version }}</td>
 			        <td>{{ b.created_at }}</td>
 			      </tr>
 				{% endfor %}
