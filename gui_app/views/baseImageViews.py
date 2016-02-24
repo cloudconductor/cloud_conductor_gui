@@ -115,7 +115,8 @@ def baseImageEdit(request, id):
                 'cloud_id': p['cloud_id'],
                 'source_image': p['source_image'],
                 'ssh_username': p['ssh_username'],
-                'os_version': p['os_version']
+                'platform': p['platform'],
+                'platform_version': p['platform_version']
             }
             # -- API call, get a response
             ApiUtil.requestPut(url, FuncCode.baseImageEdit.value, data)
