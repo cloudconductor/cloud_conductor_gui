@@ -62,25 +62,17 @@ def get_blueprint_pattern_list3(code, token, id):
     return list
 
 
-def add_blueprint_pattern(code, token, id, pattern_id, revison, os_version):
-    if StringUtil.isEmpty(id):
-        return None
-
-    if StringUtil.isEmpty(pattern_id):
-        return None
-
+def add_blueprint_pattern(code, token, id, pattern):
     url = Url.blueprintPattrnCreate(id, Url.url)
     data = {
         'auth_token': token,
-        'pattern_id': pattern_id,
-        'revison': revison,
-        'os_version': os_version,
+        'pattern_id': pattern['id'],
+        'revision': pattern['revision'],
+        'platform': pattern['platform'],
+        'platform_version': pattern['platform_version']
     }
 
-    bp = ApiUtil.requestPost(url, code, StringUtil.deleteNullDict(data))
-
-    return bp
-
+    return ApiUtil.requestPost(url, code, StringUtil.deleteNullDict(data))
 
 def delete_blueprint_pattern(code, token, id, pattern_id):
     if StringUtil.isEmpty(id):

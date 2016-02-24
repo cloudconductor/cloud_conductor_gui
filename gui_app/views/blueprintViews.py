@@ -9,7 +9,7 @@ from ..utils import SessionUtil
 from ..utils.PathUtil import Path
 from ..utils.PathUtil import Html
 from ..enum.FunctionCode import FuncCode
-from ..enum.OSVersion import OSVersion
+from ..enum.platform import * 
 from ..enum.MessageCode import Error
 from ..logs import log
 
@@ -87,20 +87,20 @@ def blueprintCreate(request):
 
             return render(request, Html.blueprintCreate,
                           {'blueprint': '', 'patterns': patterns,
-                           'osversion': osversion, 'form': '', 'message': ''})
+                           'platform': platform, 'platform_version': platform_version, 'form': '', 'message': ''})
         else:
             # -- Get a value from a form
             p = request.POST
-            my_pattern = BlueprintPatternUtil.dic_pattern_list(
-                p.getlist('os_version'), p.getlist('pattern_id'))
+            select_patterns = BlueprintPatternUtil.format_pattern(p.getlist('platform'), p.getlist('platform_version'), p.getlist('revision'), p.getlist('pattern_id'))
             # -- Validate check
             form = blueprintForm(p)
             if not form.is_valid():
 
                 return render(request, Html.blueprintCreate,
                               {'blueprint': p, 'patterns': patterns,
-                               'my_pattern': my_pattern,
-                               'osversion': osversion,
+                               'my_pattern': select_patterns,
+                               'platform': platform,
+                               'platform_version': platform_version,
                                'form': form, 'message': ''})
 
             checkbox = False
@@ -110,8 +110,8 @@ def blueprintCreate(request):
             if not checkbox:
                 return render(request, Html.blueprintCreate,
                               {'blueprint': p, 'patterns': patterns,
-                               'my_pattern': my_pattern,
-                               'osversion': osversion, 'form': form,
+                               'my_pattern': select_patterns,
+                               'platform': platform, 'platform_version': platform_version, 'form': form,
                                'message': Error.PatternRequired.value})
 
             # -- 1.Create a blueprint, api call
@@ -128,13 +128,14 @@ def blueprintCreate(request):
 
         return render(request, Html.blueprintCreate,
                       {'blueprint': request.POST, 'patterns': patterns,
-                       'my_pattern': my_pattern, 'osversion': osversion,
+                       'my_pattern': select_patterns, 'platform':platform, 'platform_version': platform_version,
                        'form': '', 'message': str(ex)})
 
 
 def blueprintEdit(request, id):
     code = FuncCode.blueprintEdit.value
-    osversion = list(OSVersion)
+    platform= list(Platform)
+    platform_version = list(PlatformVersion)
     blueprint = ''
     patterns = ''
     old_pattern = ''
@@ -157,13 +158,13 @@ def blueprintEdit(request, id):
 
             return render(request, Html.blueprintEdit,
                           {'blueprint': blueprint, 'patterns': patterns,
-                           'my_pattern': old_pattern, 'osversion': osversion,
+                           'my_pattern': old_pattern, 'platform': platform, 'platform_version': platform_version,
                            'form': '', 'message': ''})
         else:
             # -- Get a value from a form
             p = request.POST
             my_pattern = BlueprintPatternUtil.dic_pattern_list(
-                p.getlist('os_version'), p.getlist('pattern_id'))
+                p.getlist('platform'), p.getlist('platform_version'), p.getlist('pattern_id'))
 
             # -- Validate check
             form = blueprintForm(p)
@@ -173,7 +174,7 @@ def blueprintEdit(request, id):
                 return render(request, Html.blueprintEdit,
                               {'blueprint': p, 'patterns': patterns,
                                'my_pattern': my_pattern,
-                               'osversion': osversion, 'form': form,
+                               'platform': platform, 'form': form,
                                'message': ''})
 
             checkbox = False
@@ -184,7 +185,7 @@ def blueprintEdit(request, id):
                 return render(request, Html.blueprintEdit,
                               {'blueprint': p, 'patterns': patterns,
                                'my_pattern': my_pattern,
-                               'osversion': osversion, 'form': form,
+                               'platform': platform, 'platform_version': platform_version, 'form': form,
                                'message': Error.PatternRequired.value})
 
             # -- 1.Edit a blueprint, api call
@@ -203,11 +204,11 @@ def blueprintEdit(request, id):
             add_list = new_set.difference(old_set)
 
             BlueprintPatternUtil.add_blueprint_pattern_list(
-                code, token, id, p.getlist('os_version'), add_list)
+                code, token, id, p.getlist('platform'), p.getlist('platform_version'), add_list)
 
             # -- 3. Delete a Pattern, api call
             BlueprintPatternUtil.delete_blueprint_pattern_list(
-                code, token, id, p.getlist('os_version'), delete_list)
+                code, token, id, p.getlist('platform'), p.getlist('platform_version'), delete_list)
 
             return redirect(Path.blueprintList)
     except Exception as ex:
@@ -215,7 +216,7 @@ def blueprintEdit(request, id):
 
         return render(request, Html.blueprintEdit,
                       {'blueprint': request.POST, 'patterns': patterns,
-                       'my_pattern': my_pattern, 'osversion': osversion,
+                       'my_pattern': my_pattern, 'platform': platform, 'platform_version': platform_version,
                        'form': '', 'message': str(ex)})
 
 
