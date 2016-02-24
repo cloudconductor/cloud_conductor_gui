@@ -118,14 +118,9 @@ def blueprintCreate(request):
             blueprint = BlueprintUtil.create_blueprint(
                 code, token, project_id, form.data)
 
-            # -- 2. Add a Pattern, api call
-            BlueprintPatternUtil.add_blueprint_pattern_list(
-                code, token, blueprint.get('id'),
-                p.getlist('os_version'), p.getlist('pattern_id'))
-
-            # -- 3. BlueprintBuild, api call
-            BlueprintUtil.create_bluepritn_build(
-                code, token, blueprint.get('id'))
+            # -- 2. Add a Patterns, api call
+            for pattern in select_patterns:
+                BlueprintPatternUtil.add_blueprint_pattern(code, token, blueprint.get('id'), pattern)
 
             return redirect(Path.blueprintList)
     except Exception as ex:
