@@ -37,7 +37,8 @@ def get_blueprint_pattern_list2(code, token, id):
     for bp in blueprints:
         dic = {}
         dic['id'] = bp['pattern_id']
-        dic['os_version'] = bp['os_version']
+        dic['platform'] = bp['platform']
+        dic['platform_version'] = bp['platform_version']
         list.append(dic)
 
     return list
