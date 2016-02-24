@@ -1,6 +1,5 @@
 import ast
 
-
 def isEmpty(value):
     if value:
         return False
@@ -68,3 +67,9 @@ def list_to_record(list):
         break
 
     return record
+
+def isNone(*value):
+    for v in value:
+        if v is None: return True
+
+    return False

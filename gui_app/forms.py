@@ -53,7 +53,8 @@ class baseImageForm(forms.Form):
     id = forms.IntegerField(required=False)
     ssh_username = forms.CharField(max_length=500)
     source_image = forms.CharField(max_length=500)
-    os_version = forms.CharField(max_length=500)
+    platform = forms.CharField(max_length=500)
+    platform_version = forms.CharField(max_length=500)
 
 
 class systemForm(forms.Form):

@@ -4,7 +4,7 @@ import json
 from django.shortcuts import render, redirect, render_to_response, HttpResponse
 from ..enum.FunctionCode import FuncCode
 from ..enum.MessageCode import Info
-from ..enum.OSVersion import OSVersion
+from ..enum.platform import * 
 from ..enum.StatusCode import Blueprint
 from ..forms import blueprintForm
 from ..forms import blueprintSelectForm

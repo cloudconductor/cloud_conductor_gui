@@ -11,15 +11,26 @@
         </div>
     {% endif %}
     <div class="form-group">
-        <label><span id="req">*</span>OS Version</label>
-        <select class="form-control" name="os_version" id="os_version">
-            {% for b in osversion %}
-                <option value="{{ b.value }}" {% ifequal baseImage.os_version b.value %} selected="selected" {% endifequal %}>
+        <label><span id="req">*</span>Platform</label>
+        <select class="form-control" name="platform" id="platform">
+            {% for b in platform %}
+                <option value="{{ b.value }}" {% ifequal baseImage.platform b.value %} selected="selected" {% endifequal %}>
                     {{ b.value }}
                 </option>
             {% endfor %}
         </select>
-        {{ form.os_version.errors }}
+        {{ form.platform.errors }}
+    </div>
+    <div class="form-group">
+        <label><span id="req">*</span>PlatformVersion</label>
+        <select class="form-control" name="platform_version" id="platform_version">
+            {% for b in platform_version %}
+                <option value="{{ b.value }}" {% ifequal baseImage.platform b.value %} selected="selected" {% endifequal %}>
+                    {{ b.value }}
+                </option>
+            {% endfor %}
+        </select>
+        {{ form.platform_version.errors }}
     </div>
     <div class="form-group">
         <label><span id="req">*</span>source_image</label>
