@@ -70,7 +70,8 @@ def blueprintDetail(request, id):
 
 def blueprintCreate(request):
     code = FuncCode.blueprintCreate.value
-    osversion = list(OSVersion)
+    platform = list(Platform)
+    platform_version= list(PlatformVersion)
     patterns = ''
     my_pattern = ''
     try:
@@ -163,8 +164,8 @@ def blueprintEdit(request, id):
         else:
             # -- Get a value from a form
             p = request.POST
-            my_pattern = BlueprintPatternUtil.dic_pattern_list(
-                p.getlist('platform'), p.getlist('platform_version'), p.getlist('pattern_id'))
+            select_patterns = BlueprintPatternUtil.format_pattern(
+                p.getlist('platform'), p.getlist('platform_version'), p.getlist('revision'), p.getlist('pattern_id'))
 
             # -- Validate check
             form = blueprintForm(p)
@@ -173,8 +174,10 @@ def blueprintEdit(request, id):
 
                 return render(request, Html.blueprintEdit,
                               {'blueprint': p, 'patterns': patterns,
-                               'my_pattern': my_pattern,
-                               'platform': platform, 'form': form,
+                               'my_pattern': select_patterns,
+                               'platform': platform,
+                               'platform_version': platform_version,
+                               'form': form,
                                'message': ''})
 
             checkbox = False
@@ -184,7 +187,7 @@ def blueprintEdit(request, id):
             if not checkbox:
                 return render(request, Html.blueprintEdit,
                               {'blueprint': p, 'patterns': patterns,
-                               'my_pattern': my_pattern,
+                               'my_pattern': select_patterns,
                                'platform': platform, 'platform_version': platform_version, 'form': form,
                                'message': Error.PatternRequired.value})
 
@@ -192,23 +195,28 @@ def blueprintEdit(request, id):
             blueprint = BlueprintUtil.edit_blueprint(
                 code, token, id, form.data)
 
-            # -- 2. Add a Pattern, api call
-
             # --     get newList
             new_set = set(p.getlist('pattern_id'))
             # --     get oldlist
             old_set = set(BlueprintPatternUtil.get_blueprint_pattern_list3(
                 code, token, id))
 
-            delete_list = old_set.difference(new_set)
-            add_list = new_set.difference(old_set)
+            delete_pattern_ids = old_set.difference(new_set)
+            add_pattern_ids = new_set.difference(old_set)
+            update_pattern_ids = old_set.intersection(new_set)
 
-            BlueprintPatternUtil.add_blueprint_pattern_list(
-                code, token, id, p.getlist('platform'), p.getlist('platform_version'), add_list)
+
+            # -- 2. Add a Pattern, api call
+            for pattern in [x for x in select_patterns if str(x['id']) in add_pattern_ids]:
+                BlueprintPatternUtil.add_blueprint_pattern(code, token, id, pattern)
 
             # -- 3. Delete a Pattern, api call
-            BlueprintPatternUtil.delete_blueprint_pattern_list(
-                code, token, id, p.getlist('platform'), p.getlist('platform_version'), delete_list)
+            for pattern_id in delete_pattern_ids:
+                BlueprintPatternUtil.delete_blueprint_pattern(code, token, id, pattern_id)
+
+            # -- 4. Update a Pattern, api call
+            for pattern in [x for x in select_patterns if str(x['id']) in update_pattern_ids]:
+                BlueprintPatternUtil.update_blueprint_pattern(code, token, id, pattern)
 
             return redirect(Path.blueprintList)
     except Exception as ex:

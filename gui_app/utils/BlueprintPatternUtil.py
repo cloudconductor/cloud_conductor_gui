@@ -63,7 +63,7 @@ def get_blueprint_pattern_list3(code, token, id):
 
 
 def add_blueprint_pattern(code, token, id, pattern):
-    url = Url.blueprintPattrnCreate(id, Url.url)
+    url = Url.blueprintPatternCreate(id, Url.url)
     data = {
         'auth_token': token,
         'pattern_id': pattern['id'],
@@ -74,6 +74,17 @@ def add_blueprint_pattern(code, token, id, pattern):
 
     return ApiUtil.requestPost(url, code, StringUtil.deleteNullDict(data))
 
+def update_blueprint_pattern(code, token, id, pattern):
+    url = Url.blueprintPatternUpdate(id, int(pattern['id']), Url.url)
+    data = {
+            'auth_token': token,
+            'revision': pattern['revision'],
+            'platform': pattern['platform'],
+            'platform_version': pattern['platform_version']
+    }
+
+    return ApiUtil.requestPut(url, code, StringUtil.deleteNullDict(data))
+
 def delete_blueprint_pattern(code, token, id, pattern_id):
     if StringUtil.isEmpty(id):
         return None
@@ -81,7 +92,7 @@ def delete_blueprint_pattern(code, token, id, pattern_id):
     if StringUtil.isEmpty(pattern_id):
         return None
 
-    url = Url.blueprintPattrnDelete(id, pattern_id, Url.url)
+    url = Url.blueprintPattrnDelete(id, int(pattern_id), Url.url)
     data = {
         'auth_token': token,
     }
