@@ -147,7 +147,7 @@ LOGGING = {
             'class': 'logging.handlers.RotatingFileHandler',
             'maxBytes': 1024 * 1024 * 10,  # 10 MB
             'backupCount': 10,
-            'filename': 'C:\\temp\\app.log',
+            'filename': 'log/app.log',
             'formatter': 'verbose'
         },
     },
