@@ -64,7 +64,11 @@ def baseimageCreate(request):
                 param.update(baseimage)
 
             return render(request, Html.cloudregist_baseimageCreate,
-                          {"baseImage": param, 'platform': list(Platform), 'platform_version': list(PlatformVersion), 'message': ''})
+                          {'baseImage': param,
+                           'platform': list(Platform),
+                           'platform_version':
+                           list(PlatformVersion),
+                           'message': ''})
         elif request.method == "POST":
             param = request.POST
 
@@ -75,7 +79,9 @@ def baseimageCreate(request):
 
                 return render(request, Html.cloudregist_baseimageCreate,
                               {"baseImage": baseimage,
-                               'platform': list(Platform), 'platform_version': list(PlatformVersion), 'form': form})
+                               'platform': list(Platform),
+                               'platform_version': list(PlatformVersion),
+                               'form': form})
 
             baseimage = baseimagePut(request.POST)
             request.session['w_bi_create'] = baseimage

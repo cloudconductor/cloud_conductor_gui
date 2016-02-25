@@ -51,8 +51,12 @@ def baseImageCreate(request, cid):
                 'cloud_id': cid,
             }
             return render(request, Html.baseImageCreate,
-                          {'baseImage': p, 'platform': platform, 'platform_version': platform_version,
-                           'form': '', 'message': '', 'save': True})
+                          {'baseImage': p,
+                           'platform': platform,
+                           'platform_version': platform_version,
+                           'form': '',
+                           'message': '',
+                           'save': True})
         else:
             # -- Get a value from a form
             p = request.POST
@@ -62,8 +66,12 @@ def baseImageCreate(request, cid):
                 cpPost = p.copy()
 
                 return render(request, Html.baseImageCreate,
-                              {'baseImage': cpPost, 'platform': platform, 'platform_version': platform_version,
-                               'form': form, 'message': '', 'save': True})
+                              {'baseImage': cpPost,
+                               'platform': platform,
+                               'platform_version': platform_version,
+                               'form': form,
+                               'message': '',
+                               'save': True})
 
             # -- Create a BaseImage, api call
             BaseimageUtil.create_baseimage(code, token, form.data)
@@ -73,8 +81,12 @@ def baseImageCreate(request, cid):
         log.error(FuncCode.baseImageCreate.value, None, ex)
 
         return render(request, Html.baseImageCreate,
-                      {'baseImage': request.POST, 'platform': platform, 'platform_version': platform_version,
-                       'form': '', "message": str(ex), 'save': True})
+                      {'baseImage': request.POST,
+                       'platform': platform,
+                       'platform_version': platform_version,
+                       'form': '',
+                       "message": str(ex),
+                       'save': True})
 
 
 def baseImageEdit(request, id):
@@ -94,8 +106,12 @@ def baseImageEdit(request, id):
             baseimage = BaseimageUtil.get_baseimage_detail(code, token, id)
 
             return render(request, Html.baseImageEdit,
-                          {'baseImage': baseimage, 'platform': platform, 'platform_version': platform_version,
-                           'form': '', 'message': '', 'save': True})
+                          {'baseImage': baseimage,
+                           'platform': platform,
+                           'platform_version': platform_version,
+                           'form': '',
+                           'message': '',
+                           'save': True})
         else:
             # -- Get a value from a form
             p = request.POST
@@ -104,8 +120,12 @@ def baseImageEdit(request, id):
             if not form.is_valid():
 
                 return render(request, Html.baseImageEdit,
-                              {'baseImage': p, 'platform': platform, 'platform_version': platform_version,
-                               'form': form, 'message': '', 'save': True})
+                              {'baseImage': p,
+                               'platform': platform,
+                               'platform_version': platform_version,
+                               'form': form,
+                               'message': '',
+                               'save': True})
 
             # -- URL set
             url = Url.baseImageEdit(id, Url.url)
@@ -126,8 +146,12 @@ def baseImageEdit(request, id):
         log.error(FuncCode.baseImageEdit.value, None, ex)
 
         return render(request, Html.baseImageEdit,
-                      {'baseImage': request.POST, 'platform': platform, 'platform_version': platform_version,
-                       'form': '', 'message': ex, 'save': True})
+                      {'baseImage': request.POST,
+                       'platform': platform,
+                       'platform_version': platform_version,
+                       'form': '',
+                       'message': ex,
+                       'save': True})
 
 
 def baseImageDelete(request, id):

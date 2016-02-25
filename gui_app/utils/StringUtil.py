@@ -1,5 +1,6 @@
 import ast
 
+
 def isEmpty(value):
     if value:
         return False
@@ -16,9 +17,7 @@ def isNotEmpty(value):
 
 def stringToDict(param):
     if isNotEmpty(param) or param != '':
-        param = ast.literal_eval(param)
-
-    return param
+        return ast.literal_eval(param)
 
 
 def stringToDictList(list):
@@ -68,8 +67,10 @@ def list_to_record(list):
 
     return record
 
+
 def isNone(*value):
     for v in value:
-        if v is None: return True
+        if v is None:
+            return True
 
     return False

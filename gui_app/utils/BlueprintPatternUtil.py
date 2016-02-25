@@ -2,6 +2,7 @@ from ..utils import ApiUtil
 from ..utils import StringUtil
 from ..utils.ApiUtil import Url
 from itertools import chain
+from functools import reduce
 
 
 def get_blueprint_pattern_list(code, token, blueprint_id):
@@ -75,6 +76,7 @@ def add_blueprint_pattern(code, token, id, pattern):
 
     return ApiUtil.requestPost(url, code, StringUtil.deleteNullDict(data))
 
+
 def update_blueprint_pattern(code, token, id, pattern):
     url = Url.blueprintPatternUpdate(id, int(pattern['id']), Url.url)
     data = {
@@ -85,6 +87,7 @@ def update_blueprint_pattern(code, token, id, pattern):
     }
 
     return ApiUtil.requestPut(url, code, StringUtil.deleteNullDict(data))
+
 
 def delete_blueprint_pattern(code, token, id, pattern_id):
     if StringUtil.isEmpty(id):
@@ -100,6 +103,7 @@ def delete_blueprint_pattern(code, token, id, pattern_id):
 
     ApiUtil.requestDelete(url, code, data)
 
+
 def add_blueprint_pattern_list(code, token, id, pt_list, id_list):
     if StringUtil.isEmpty(id):
         return None
@@ -114,6 +118,7 @@ def add_blueprint_pattern_list(code, token, id, pt_list, id_list):
     for pt in pt_list:
         add_blueprint_pattern(code, token, id, pt.get('id'),
                               pt.get('revison'), pt.get('os_version'))
+
 
 def delete_blueprint_pattern_list(code, token, id, pt_list, id_list):
     if StringUtil.isEmpty(id):
@@ -146,28 +151,30 @@ def dic_pattern_list(patterns, ids):
 
     return lists
 
+
 def format_pattern(platforms, platform_versions, revisions, ids):
     dict_platforms = StringUtil.stringToDictList(platforms)
     dict_platform_versions = StringUtil.stringToDictList(platform_versions)
     dict_revisions = StringUtil.stringToDictList(revisions)
 
-    dict_platforms = [x for x in dict_platforms if str(x['id']) in ids]
-    dict_platform_versions = [x for x in dict_platform_versions if str(x['id']) in ids]
-    dict_revisions = [x for x in dict_revisions if str(x['id']) in ids]
+    zip_patterns = list(zip(
+                    [x for x in dict_platforms if x['id'] in ids],
+                    [x for x in dict_platform_versions if x['id'] in ids],
+                    [x for x in dict_revisions if x['id'] in ids]))
 
+    def dict_merge(x, y): return dict(chain(x.items(), y.items()))
     result = []
     for id in ids:
-        t_platform = {}
-        t_platform_version = {}
-        t_revision = {}
-        for platform, platform_version, revision in zip(dict_platforms, dict_platform_versions, dict_revisions):
+        select_pattern = []
+        for platform, platform_version, revision in zip_patterns:
             if id == str(platform['id']):
-                t_platform = platform
+                select_pattern.append(platform)
             if id == str(platform_version['id']):
-                t_platform_version = platform_version
+                select_pattern.append(platform_version)
             if id == str(revision['id']):
-                t_revision = revision
+                select_pattern.append(revision)
 
-        result.append(dict(chain(t_platform.items(), t_platform_version.items(), t_revision.items())))
+        if len(select_pattern) != 0:
+            result.append(reduce(dict_merge, select_pattern))
 
     return result
