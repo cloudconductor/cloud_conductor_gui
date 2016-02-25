@@ -4,7 +4,7 @@
     <select class="form-control" name="id" id="id">
         <option value=""></option>
         {% for env in list %}
-            <option value="{'id': {{ env.id }}, 'name': '{{ env.name }}'}" {% ifequal env.id|add: "0" environment.id|add: "0" %} selected="selected" {% endifequal %} data-name="{{ env.name }}" data-system_id="{{ env.system_id }}" data-blueprint_history_id="{{ env.blueprint_history_id }}" data-description="{{ env.description }}" data-status="{{ env.status }}" data-ip_address="{{ env.ip_address }}" data-application_status="{{ env.application_status }}">
+            <option value="{'id': {{ env.id }}, 'name': '{{ env.name }}'}" {% ifequal env.id|add:"0" environment.id|add:"0" %} selected="selected" {% endifequal %} data-name="{{ env.name }}" data-system_id="{{ env.system_id }}" data-blueprint_history_id="{{ env.blueprint_history_id }}" data-description="{{ env.description }}" data-status="{{ env.status }}" data-ip_address="{{ env.ip_address }}" data-application_status="{{ env.application_status }}">
                 {{ env.name }}
             </option>
         {% endfor %}
