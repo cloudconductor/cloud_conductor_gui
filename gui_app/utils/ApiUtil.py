@@ -123,8 +123,11 @@ class Url():
     def blueprintPattrnDetail(id, id2, id3):
         return id3 + 'blueprints/{0}/patterns/{1}'.format(id, id2)
 
-    def blueprintPattrnCreate(id, id2):
+    def blueprintPatternCreate(id, id2):
         return id2 + 'blueprints/{0}/patterns'.format(id)
+
+    def blueprintPatternUpdate(id, id2, id3):
+        return id3 + 'blueprints/{0}/patterns/{1}'.format(id, id2)
 
     def blueprintPattrnEdit(id, id2, id3):
         return id3 + 'blueprints/{0}/patterns/{1}'.format(id, id2)

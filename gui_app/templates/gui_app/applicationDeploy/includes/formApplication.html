@@ -13,7 +13,7 @@
             <select class="form-control" name="system_id" id="system_id">
                 <option value=""></option>
                 {% for s in systems %}
-                    <option value="{{ s.id }}" {% if app.system_id==s .id %} selected="selected" {% endif %}>{{ s.name }}</option>
+                    <option value="{{ s.id }}" {% ifequal app.system_id s.id %} selected="selected" {% endifequal %}>{{ s.name }}</option>
                 {% endfor %}
             </select>
             {{ form.system_id.errors }}
@@ -37,7 +37,7 @@
         <select class="form-control" name="type" id="type">
             <option value=""></option>
             {% for type in apptype %}
-            <option value="{{ type.value }}" {% if history.type==t ype.value %} selected="selected" {% endif %}>{{ type.name }}</option>
+            <option value="{{ type.value }}" {% ifequal history.type type.value %} selected="selected" {% endifequal %}>{{ type.name }}</option>
             {% endfor %}
         </select>
         {{ form.type.errors }}
@@ -47,7 +47,7 @@
         <select class="form-control" name="protocol" id="protocol">
             <option value=""></option>
             {% for pro in protocol %}
-            <option value="{{ pro.value }}" {% if history.protocol==p ro.value %} selected="selected" {% endif %}>{{ pro.name }}</option>
+            <option value="{{ pro.value }}" {% ifequal history.protocol pro.value %} selected="selected" {% endifequal %}>{{ pro.name }}</option>
             {% endfor %}
         </select>
         {{ form.protocol.errors }}

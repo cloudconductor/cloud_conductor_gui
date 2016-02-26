@@ -1,6 +1,8 @@
 from ..utils import ApiUtil
 from ..utils import StringUtil
 from ..utils.ApiUtil import Url
+from itertools import chain
+from functools import reduce
 
 
 def get_blueprint_pattern_list(code, token, blueprint_id):
@@ -36,7 +38,8 @@ def get_blueprint_pattern_list2(code, token, id):
     for bp in blueprints:
         dic = {}
         dic['id'] = bp['pattern_id']
-        dic['os_version'] = bp['os_version']
+        dic['platform'] = bp['platform']
+        dic['platform_version'] = bp['platform_version']
         list.append(dic)
 
     return list
@@ -61,24 +64,29 @@ def get_blueprint_pattern_list3(code, token, id):
     return list
 
 
-def add_blueprint_pattern(code, token, id, pattern_id, revison, os_version):
-    if StringUtil.isEmpty(id):
-        return None
-
-    if StringUtil.isEmpty(pattern_id):
-        return None
-
-    url = Url.blueprintPattrnCreate(id, Url.url)
+def add_blueprint_pattern(code, token, id, pattern):
+    url = Url.blueprintPatternCreate(id, Url.url)
     data = {
         'auth_token': token,
-        'pattern_id': pattern_id,
-        'revison': revison,
-        'os_version': os_version,
+        'pattern_id': pattern['id'],
+        'revision': pattern['revision'],
+        'platform': pattern['platform'],
+        'platform_version': pattern['platform_version']
     }
 
-    bp = ApiUtil.requestPost(url, code, StringUtil.deleteNullDict(data))
+    return ApiUtil.requestPost(url, code, StringUtil.deleteNullDict(data))
 
-    return bp
+
+def update_blueprint_pattern(code, token, id, pattern):
+    url = Url.blueprintPatternUpdate(id, int(pattern['id']), Url.url)
+    data = {
+            'auth_token': token,
+            'revision': pattern['revision'],
+            'platform': pattern['platform'],
+            'platform_version': pattern['platform_version']
+    }
+
+    return ApiUtil.requestPut(url, code, StringUtil.deleteNullDict(data))
 
 
 def delete_blueprint_pattern(code, token, id, pattern_id):
@@ -88,7 +96,7 @@ def delete_blueprint_pattern(code, token, id, pattern_id):
     if StringUtil.isEmpty(pattern_id):
         return None
 
-    url = Url.blueprintPattrnDelete(id, pattern_id, Url.url)
+    url = Url.blueprintPattrnDelete(id, int(pattern_id), Url.url)
     data = {
         'auth_token': token,
     }
@@ -142,3 +150,31 @@ def dic_pattern_list(patterns, ids):
             lists.append(pt)
 
     return lists
+
+
+def format_pattern(platforms, platform_versions, revisions, ids):
+    dict_platforms = StringUtil.stringToDictList(platforms)
+    dict_platform_versions = StringUtil.stringToDictList(platform_versions)
+    dict_revisions = StringUtil.stringToDictList(revisions)
+
+    zip_patterns = list(zip(
+                    [x for x in dict_platforms if x['id'] in ids],
+                    [x for x in dict_platform_versions if x['id'] in ids],
+                    [x for x in dict_revisions if x['id'] in ids]))
+
+    def dict_merge(x, y): return dict(chain(x.items(), y.items()))
+    result = []
+    for id in ids:
+        select_pattern = []
+        for platform, platform_version, revision in zip_patterns:
+            if id == platform['id']:
+                select_pattern.append(platform)
+            if id == platform_version['id']:
+                select_pattern.append(platform_version)
+            if id == revision['id']:
+                select_pattern.append(revision)
+
+        if len(select_pattern) != 0:
+            result.append(reduce(dict_merge, select_pattern))
+
+    return result

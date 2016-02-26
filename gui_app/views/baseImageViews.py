@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect, render_to_response
 from ..forms import baseImageForm
 from ..enum.FunctionCode import FuncCode
-from ..enum.OSVersion import OSVersion
+from ..enum.platform import *
 from ..utils import ApiUtil
 from ..utils.PathUtil import Path
 from ..utils.PathUtil import Html
@@ -36,7 +36,8 @@ def baseImageDetail(request, id):
 
 def baseImageCreate(request, cid):
     code = FuncCode.baseImageCreate.value
-    osversion = list(OSVersion)
+    platform = list(Platform)
+    platform_version = list(PlatformVersion)
     try:
         if not SessionUtil.check_login(request):
             return redirect(Path.logout)
@@ -50,8 +51,12 @@ def baseImageCreate(request, cid):
                 'cloud_id': cid,
             }
             return render(request, Html.baseImageCreate,
-                          {'baseImage': p, 'osversion': osversion,
-                           'form': '', 'message': '', 'save': True})
+                          {'baseImage': p,
+                           'platform': platform,
+                           'platform_version': platform_version,
+                           'form': '',
+                           'message': '',
+                           'save': True})
         else:
             # -- Get a value from a form
             p = request.POST
@@ -61,10 +66,14 @@ def baseImageCreate(request, cid):
                 cpPost = p.copy()
 
                 return render(request, Html.baseImageCreate,
-                              {'baseImage': cpPost, 'osversion': osversion,
-                               'form': form, 'message': '', 'save': True})
+                              {'baseImage': cpPost,
+                               'platform': platform,
+                               'platform_version': platform_version,
+                               'form': form,
+                               'message': '',
+                               'save': True})
 
-            # -- Create a project, api call
+            # -- Create a BaseImage, api call
             BaseimageUtil.create_baseimage(code, token, form.data)
 
             return redirect(Path.cloudDetail(cid))
@@ -72,12 +81,17 @@ def baseImageCreate(request, cid):
         log.error(FuncCode.baseImageCreate.value, None, ex)
 
         return render(request, Html.baseImageCreate,
-                      {'baseImage': request.POST, 'osversion': osversion,
-                       'form': '', "message": str(ex), 'save': True})
+                      {'baseImage': request.POST,
+                       'platform': platform,
+                       'platform_version': platform_version,
+                       'form': '',
+                       "message": str(ex),
+                       'save': True})
 
 
 def baseImageEdit(request, id):
-    osversion = list(OSVersion)
+    platform = list(Platform)
+    platform_version = list(PlatformVersion)
     baseimage = None
     try:
         if not SessionUtil.check_login(request):
@@ -92,8 +106,12 @@ def baseImageEdit(request, id):
             baseimage = BaseimageUtil.get_baseimage_detail(code, token, id)
 
             return render(request, Html.baseImageEdit,
-                          {'baseImage': baseimage, 'osversion': osversion,
-                           'form': '', 'message': '', 'save': True})
+                          {'baseImage': baseimage,
+                           'platform': platform,
+                           'platform_version': platform_version,
+                           'form': '',
+                           'message': '',
+                           'save': True})
         else:
             # -- Get a value from a form
             p = request.POST
@@ -102,8 +120,12 @@ def baseImageEdit(request, id):
             if not form.is_valid():
 
                 return render(request, Html.baseImageEdit,
-                              {'baseImage': p, 'osversion': osversion,
-                               'form': form, 'message': '', 'save': True})
+                              {'baseImage': p,
+                               'platform': platform,
+                               'platform_version': platform_version,
+                               'form': form,
+                               'message': '',
+                               'save': True})
 
             # -- URL set
             url = Url.baseImageEdit(id, Url.url)
@@ -113,7 +135,8 @@ def baseImageEdit(request, id):
                 'cloud_id': p['cloud_id'],
                 'source_image': p['source_image'],
                 'ssh_username': p['ssh_username'],
-                'os_version': p['os_version']
+                'platform': p['platform'],
+                'platform_version': p['platform_version']
             }
             # -- API call, get a response
             ApiUtil.requestPut(url, FuncCode.baseImageEdit.value, data)
@@ -123,8 +146,12 @@ def baseImageEdit(request, id):
         log.error(FuncCode.baseImageEdit.value, None, ex)
 
         return render(request, Html.baseImageEdit,
-                      {'baseImage': request.POST, 'osversion': osversion,
-                       'form': '', 'message': ex, 'save': True})
+                      {'baseImage': request.POST,
+                       'platform': platform,
+                       'platform_version': platform_version,
+                       'form': '',
+                       'message': ex,
+                       'save': True})
 
 
 def baseImageDelete(request, id):

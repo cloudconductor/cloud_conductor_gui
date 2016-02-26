@@ -4,7 +4,7 @@ import json
 from django.shortcuts import render, redirect, render_to_response, HttpResponse
 from ..enum.FunctionCode import FuncCode
 from ..enum.MessageCode import Info
-from ..enum.OSVersion import OSVersion
+from ..enum.platform import *
 from ..enum.StatusCode import Blueprint
 from ..forms import blueprintForm
 from ..forms import blueprintSelectForm
@@ -148,7 +148,8 @@ def blueprintSelect(request):
 
 def blueprintCreate(request):
     code = FuncCode.blueprintCreate.value
-    osversion = list(OSVersion)
+    platform = list(Platform)
+    platform_version = list(PlatformVersion)
     patterns = ''
     my_pattern = ''
     try:
@@ -164,13 +165,20 @@ def blueprintCreate(request):
         if request.method == "GET":
 
             return render(request, Html.envapp_blueprintCreate,
-                          {'blueprint': '', 'patterns': patterns,
-                           'osversion': osversion, 'form': '', 'message': ''})
+                          {'blueprint': '',
+                           'patterns': patterns,
+                           'platform': platform,
+                           'platform_version': platform_version,
+                           'form': '',
+                           'message': ''})
         else:
             # -- Get a value from a form
             p = request.POST
-            my_pattern = BlueprintPatternUtil.dic_pattern_list(
-                p.getlist('os_version'), p.getlist('pattern_id'))
+            select_patterns = BlueprintPatternUtil.format_pattern(
+                                             p.getlist('platform'),
+                                             p.getlist('platform_version'),
+                                             p.getlist('revision'),
+                                             p.getlist('pattern_id'))
 
             if p.get('blueprint_id'):
                 bp = BlueprintHistoryUtil.get_new_blueprint_history(
@@ -195,26 +203,33 @@ def blueprintCreate(request):
                 return render(request, Html.envapp_blueprintCreate,
                               {'blueprint': p, 'patterns': patterns,
                                'my_pattern': my_pattern,
-                               'osversion': osversion,
+                               'platform': platform,
+                               'platform_version': platform_version,
                                'form': form, 'message': ''})
 
             # -- 1.Create a blueprint, api call
-            blueprint = BlueprintUtil.create_blueprint(
-                code, token, project_id, form.data)
+            blueprint = BlueprintUtil.create_blueprint(code,
+                                                       token,
+                                                       project_id,
+                                                       form.data)
 
             # -- 2. Add a Pattern, api call
-            BlueprintPatternUtil.add_blueprint_pattern_list(
-                code, token, blueprint.get('id'),
-                p.getlist('os_version'), p.getlist('pattern_id'))
+            for pattern in select_patterns:
+                BlueprintPatternUtil.add_blueprint_pattern(code,
+                                                           token,
+                                                           blueprint.get('id'),
+                                                           pattern)
 
             # -- 3. BlueprintBuild, api call
-            BlueprintUtil.create_bluepritn_build(
-                code, token, blueprint.get('id'))
+            BlueprintUtil.create_bluepritn_build(code,
+                                                 token,
+                                                 blueprint.get('id'))
 
             return render(request, Html.envapp_blueprintCreate,
                           {'blueprint': p, 'patterns': patterns,
                            'my_pattern': my_pattern,
-                           'osversion': osversion,
+                           'platform': platform,
+                           'platform_version': platform_version,
                            'blueprint_id': blueprint.get("id"),
                            'form': form, 'message': ''})
 
@@ -223,9 +238,13 @@ def blueprintCreate(request):
         log.error(code, None, ex)
 
         return render(request, Html.envapp_blueprintCreate,
-                      {'blueprint': request.POST, 'patterns': patterns,
-                       'my_pattern': my_pattern, 'osversion': osversion,
-                       'form': '', 'message': str(ex)})
+                      {'blueprint': request.POST,
+                       'patterns': patterns,
+                       'my_pattern': my_pattern,
+                       'platform': platform,
+                       'platform_version': platform_version,
+                       'form': '',
+                       'message': str(ex)})
 
 
 def environmentCreate(request):

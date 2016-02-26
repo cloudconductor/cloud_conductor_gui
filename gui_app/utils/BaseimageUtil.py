@@ -22,7 +22,6 @@ def get_baseimege_list(code, token, id=None):
 
 
 def create_baseimage(code, token, form):
-
     if StringUtil.isEmpty(token):
         return None
 
@@ -70,7 +69,8 @@ def put_baseimage(token, form):
         'cloud_id': form.get('cloud_id', ''),
         'ssh_username': form.get('ssh_username', ''),
         'source_image': form.get('source_image', ''),
-        'os_version': form.get('os_version', ''),
+        'platform': form.get('platform', ''),
+        'platform_version': form.get('platform_version', '')
     }
 
     return data

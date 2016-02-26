@@ -195,6 +195,8 @@ def get_pattern_list(code, id, token, pjid):
 
                 dic['id'] = pt.get('id')
                 dic['name'] = pt.get('name')
+                dic['platform'] = bpt.get('platform')
+                dic['platform_version'] = bpt.get('platform_version')
                 dic['revision'] = pt.get('revision')
                 dic['protocol'] = pt.get('protocol')
                 list.append(dic.copy())
