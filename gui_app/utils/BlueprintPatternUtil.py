@@ -167,11 +167,11 @@ def format_pattern(platforms, platform_versions, revisions, ids):
     for id in ids:
         select_pattern = []
         for platform, platform_version, revision in zip_patterns:
-            if id == str(platform['id']):
+            if id == platform['id']:
                 select_pattern.append(platform)
-            if id == str(platform_version['id']):
+            if id == platform_version['id']:
                 select_pattern.append(platform_version)
-            if id == str(revision['id']):
+            if id == revision['id']:
                 select_pattern.append(revision)
 
         if len(select_pattern) != 0:
