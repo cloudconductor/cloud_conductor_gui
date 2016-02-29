@@ -13,6 +13,10 @@
 	        <input id="revision" name="revision" type="text" class="form-control" value="{{ pattern.revision }}">
 	        {{ form.revision.errors }}
 	    </div>
+            <div class="form-group">
+                <label>secret_key</label>
+                <textarea id="secret_key" name="secret_key" class="form-control" value="{{ pattern.secret_key }}"></textarea>
+                {{ form.secret_key.errors }}
 	    <div class="button_center">
 			<button class="btn btn-success" type="submit"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;save</button>
 		</div>
