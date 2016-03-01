@@ -100,7 +100,7 @@ def edit_environment(code, id, form, session):
         return None
 
     param = putBlueprint(form)
-    inputs = parse_env_paramter(param)
+    inputs = parse_env_parameter(param)
     env = addEnvironmentParam(form, inputs, session)
     # -- Create a environment, api call
     url = Url.environmentEdit(id, Url.url)
