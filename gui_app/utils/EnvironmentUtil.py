@@ -1,10 +1,12 @@
 import ast
+import re
 from ..utils import ApiUtil
 from ..utils import StringUtil
 from ..utils import SystemUtil
 from ..utils import BlueprintHistoryUtil
 from ..utils.ApiUtil import Url
 from ..enum.StatusCode import Environment
+from functools import reduce
 PATRITION = '/'
 
 
@@ -98,7 +100,7 @@ def edit_environment(code, id, form, session):
         return None
 
     param = putBlueprint(form)
-    inputs = createJson(param)
+    inputs = parse_env_paramter(param)
     env = addEnvironmentParam(form, inputs, session)
     # -- Create a environment, api call
     url = Url.environmentEdit(id, Url.url)
@@ -117,7 +119,7 @@ def put_environment(form, session):
         return None
 
     param = putBlueprint(form)
-    inputs = createJson(param)
+    inputs = create_env_param(param)
     env = addEnvironmentParam(form, inputs, session)
 
     return StringUtil.deleteNullDict(env)
@@ -134,7 +136,7 @@ def create_environment(code, form, session):
         return None
 
     param = putBlueprint(form)
-    inputs = createJson(param)
+    inputs = parse_env_parameter(param)
     env = addEnvironmentParam(form, inputs, session)
     # -- Create a environment, api call
     url = Url.environmentCreate
@@ -218,6 +220,29 @@ def createJson(prm):
             putMap(pmap, kp, prm[k])
 
     return pmap
+
+
+def parse_env_parameter(params):
+    result_dict = {}
+    for key in params.keys():
+        match = re.match(r'(type/)|(value/)', key)
+        if match is not None:
+            value = (match.group().replace('/', ''), params[key])
+            sp_param = key.split('/')[1:]
+            sp_param.append(value)
+            reduce(_create_dict, sp_param, result_dict)
+    return result_dict
+
+
+def _create_dict(dict, param):
+    if isinstance(param, tuple):
+        k, v = param
+        dict[k] = v
+        return map
+    else:
+        if param not in dict:
+            dict[param] = {}
+        return dict[param]
 
 
 def addEnvironmentParam(param, temp_param, session):

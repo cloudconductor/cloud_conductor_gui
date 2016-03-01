@@ -108,7 +108,6 @@ def environmentCreate(request):
         blueprints = get_blueprint_version(code, data)
 
         if request.method == "GET":
-
             return render(request, Html.environmentCreate,
                           {'env': data, 'clouds': clouds, 'systems': systems,
                            'blueprints': blueprints, 'message': '',
@@ -257,7 +256,6 @@ def environmentAjaxBlueprint(request):
 
 
 def putBlueprint(param):
-
     blueprint = param.get('blueprint', None)
     if blueprint is not None and blueprint != '':
         blueprint = ast.literal_eval(blueprint)
