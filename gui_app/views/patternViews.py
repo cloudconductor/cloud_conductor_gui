@@ -95,6 +95,7 @@ def patternCreate(request):
                 'project_id': request.session['project_id'],
                 'url': p.get('url'),
                 'revision': p.get('revision'),
+                'secret_key': p.get('secret_key'),
             }
             # -- API call, get a response
             ApiUtil.requestPost(url, FuncCode.patternCreate.value, data)
@@ -146,6 +147,7 @@ def patternEdit(request, id):
                 'project_id': p['project_id'],
                 'url': p['url'],
                 'revision': p['revision'],
+                'secret_key': p['secret_key'],
             }
             # -- API call, get a response
             ApiUtil.requestPut(url, FuncCode.patternEdit.value, data)

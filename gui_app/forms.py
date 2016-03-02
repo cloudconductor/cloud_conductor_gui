@@ -247,8 +247,9 @@ class selecttForm(forms.Form):
 
 
 class patternForm(forms.Form):
-    url = forms.URLField(max_length=500)
+    url = forms.CharField(required=True, max_length=500)
     revision = forms.CharField(required=False, max_length=500)
+    secret_key = forms.CharField(required=False, max_length=2000)
 
 
 class accountForm(forms.Form):
