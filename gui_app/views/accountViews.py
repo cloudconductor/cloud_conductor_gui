@@ -15,12 +15,9 @@ def accountList(request):
     try:
         if not SessionUtil.check_login(request):
             return redirect(Path.logout)
-        if not SessionUtil.check_permission(request, 'account', 'list'):
-            return render_to_response(Html.error_403)
 
         code = FuncCode.accountList.value
         token = request.session.get('auth_token')
-
         # -- Get a  list, API call
         accounts = AccountUtil.get_account_list(code, token)
 
