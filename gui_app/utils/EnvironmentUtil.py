@@ -245,6 +245,22 @@ def _create_dict(dict, param):
         return dict[param]
 
 
+def expand_env_parameter(base_params, user_params):
+    result = base_params
+    for pattern_name, templates in base_params.items():
+        user_params_tf = user_params[pattern_name]['terraform']
+        result_tf = result[pattern_name]['terraform']
+        if 'cloud_formation' in user_params[pattern_name]:
+            user_params_cf = user_params[pattern_name]['cloud_formation']
+            result[pattern_name]['cloud_formation'] = user_params_cf
+        for cloud_name, resources in templates['terraform'].items():
+            for resource_name, resource in resources.items():
+                if resource_name in user_params_tf:
+                    user_values = user_params_tf[resource_name]
+                    result_tf[cloud_name][resource_name] = user_values
+    return result
+
+
 def addEnvironmentParam(param, temp_param, session):
     # candidates_attributes
     candidates_attributes = []
