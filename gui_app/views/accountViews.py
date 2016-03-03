@@ -36,8 +36,6 @@ def accountDetail(request, id):
     try:
         if not SessionUtil.check_login(request):
             return redirect(Path.logout)
-        if not SessionUtil.check_permission(request, 'account', 'read'):
-            return render_to_response(Html.error_403)
 
         # -- account DetailAPI call, get a response
         token = request.session['auth_token']
