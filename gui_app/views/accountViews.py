@@ -96,7 +96,7 @@ def accountEdit(request, id):
         if not SessionUtil.check_login(request):
             return redirect(Path.logout)
 
-        if not SessionUtil.check_permission(request, 'account', 'update', id):
+        if not SessionUtil.check_account_permission(request, 'account', 'update', id):
             return render_to_response(Html.error_403)
 
         if request.method == "GET":

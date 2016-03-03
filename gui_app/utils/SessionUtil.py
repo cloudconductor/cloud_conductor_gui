@@ -62,6 +62,26 @@ def check_login(request):
     else:
         return True
 
+def check_account_permission(request, model, action, account_id=None):
+    if request.session.get("account_admin"):
+      return True
+
+    permission = False
+    if action == 'list' or action == 'read':
+      permission = True
+
+    elif action == 'create':
+      pass
+
+    elif action == 'update':
+      if request.session.get('account_id') == int(account_id):
+        permission = True
+
+    elif action == 'destroy':
+      pass
+
+    return permission
+
 def check_permission(request, model, action, account_id=None):
     if request.session.get("account_admin"):
       return True
