@@ -57,7 +57,9 @@ def accountCreate(request):
     try:
         if not SessionUtil.check_login(request):
             return redirect(Path.logout)
-        if not SessionUtil.check_permission(request, 'account', 'create'):
+        if not SessionUtil.check_account_permission(request,
+                                                    'account',
+                                                    'create'):
             return render_to_response(Html.error_403)
 
         token = request.session['auth_token']
@@ -96,7 +98,10 @@ def accountEdit(request, id):
         if not SessionUtil.check_login(request):
             return redirect(Path.logout)
 
-        if not SessionUtil.check_account_permission(request, 'account', 'update', id):
+        if not SessionUtil.check_account_permission(request,
+                                                    'account',
+                                                    'update',
+                                                    id):
             return render_to_response(Html.error_403)
 
         if request.method == "GET":
@@ -152,7 +157,9 @@ def accountDelete(request, id):
     try:
         if not SessionUtil.check_login(request):
             return redirect(Path.logout)
-        if not SessionUtil.check_permission(request, 'account', 'destroy'):
+        if not SessionUtil.check_account_permission(request,
+                                                    'account',
+                                                    'destroy'):
             return render_to_response(Html.error_403)
 
         token = request.session['auth_token']
