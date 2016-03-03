@@ -1,32 +1,19 @@
+{% load dict_accessor %}
 {% for pattern_name, templates in blueprints.items %}
         <h5 style="margin-bottom: 10px;">{{ pattern_name }}</h5>
         {% for template_name, template_values in templates.items %}
   		<div class="form-group">
-            {% ifequal template_name 'cloud_formation'%}
 		        <label class="template_name">● {{ template_name }}</label>
                 {% for user_param_name, user_param in template_values.items %}
                     <br>
+                    {% with env|get_value:"template_parameters"|get_value:pattern_name|get_value:template_name|get_value:user_param_name as current_user_param%}
                     <div class="user_param">{{ user_param_name }}</div>
                     <div class="discription">{{ user_param.Description }} </div>
-                    <input type="radio" value="static" id="radio1_{{ pattern_name }}_{{ template_name }}_{{ user_param_name}}" name="type/{{ pattern_name }}/{{ template_name }}/{{ user_param_name }}" checked ><label for="radio1_{{ pattern_name }}_{{ template_name }}_{{ user_param_name}}">static</label>
-                    <input type="radio" value="module" id="radio2_{{ pattern_name }}_{{ template_name }}_{{ user_param_name}}" name="type/{{ pattern_name }}/{{ template_name }}/{{ user_param_name }}" ><label for="radio2_{{ pattern_name }}_{{ template_name }}_{{ user_param_name}}">module</label>
-                    <input type="text" value="{{ user_param.Default}}" maxlength="{{ user_param.MaxLength }}" minlength="{{ user_param.MinLength }}" class="form-control" name="value/{{ pattern_name }}/{{ template_name }}/{{ user_param_name }}" >
+                    <input type="radio" value="static" id="radio1_{{ pattern_name }}_{{ template_name }}_{{ user_param_name}}" name="type/{{ pattern_name }}/{{ template_name }}/{{ user_param_name }}" {% ifequal current_user_param|get_value:"type" "static"%} checked {% endifequal %}><label for="radio1_{{ pattern_name }}_{{ template_name }}_{{ user_param_name}}">static</label>
+                    <input type="radio" value="module" id="radio2_{{ pattern_name }}_{{ template_name }}_{{ user_param_name}}" name="type/{{ pattern_name }}/{{ template_name }}/{{ user_param_name }}" {% ifequal current_user_param|get_value:"type" "module"%} checked {% endifequal %}><label for="radio2_{{ pattern_name }}_{{ template_name }}_{{ user_param_name}}">module</label>
+                    <input type="text" value="{{ current_user_param|get_value:"value" }}" maxlength="{{ user_param.MaxLength }}" minlength="{{ user_param.MinLength }}" class="form-control" name="value/{{ pattern_name }}/{{ template_name }}/{{ user_param_name }}" >
+                    {% endwith %}
                 {% endfor %}
-            {% endifequal%}
-            {% ifequal template_name 'terraform' %}
-                {% for cloud_name, user_params in template_values.items %}
-                    <br>
-                    <label class="template_name">● {{ template_name }}({{ cloud_name }})</label>
-                    {% for user_param_name, user_param in user_params.items %}
-                        <br>
-                        <div class="user_param">{{ user_param_name }}</div>
-                        <div class="discription">{{ user_param.description }}</div>
-                        <input type="radio" value="static" id="radio3_{{ pattern_name }}_{{ template_name }}_{{ cloud_name }}_{{ user_param_name }}" name="type/{{ pattern_name }}/{{ template_name }}/{{ cloud_name }}/{{ user_param_name }}" checked ><label for="radio3_{{ pattern_name }}_{{ template_name }}_{{ cloud_name }}_{{ user_param_name }}">static</label>
-                        <input type="radio" value="module" id="radio4_{{ pattern_name }}_{{ template_name }}_{{ cloud_name }}_{{ user_param_name }}" name="type/{{ pattern_name }}/{{ template_name }}/{{ cloud_name }}/{{ user_param_name }}"><label for="radio4_{{ pattern_name }}_{{ template_name }}_{{ cloud_name }}_{{ user_param_name }}">module</label>
-                        <input type="text" value="{{ user_param.Default}}" maxlength="{{ user_param.MaxLength }}" minlength="{{ user_param.MinLength }}" class="form-control" name="value/{{ pattern_name }}/{{ template_name }}/{{ cloud_name }}/{{ user_param_name }}">
-                    {% endfor %}
-                {% endfor %}
-            {% endifequal %}
         </div>
 	  	{% endfor %}
 {% endfor %}

@@ -85,7 +85,8 @@ def get_environment_detail(code, token, id):
         'id': id,
     }
     environment = ApiUtil.requestGet(url, code, data)
-
+    environment['template_parameters'] = StringUtil.stringToDict(
+                            environment['template_parameters'])
     return StringUtil.deleteNullDict(environment)
 
 
@@ -100,8 +101,7 @@ def edit_environment(code, id, form, session):
         return None
 
     param = putBlueprint(form)
-    inputs = parse_env_parameter(param)
-    env = addEnvironmentParam(form, inputs, session)
+    env = addEnvironmentParam(form, template_param, session)
     # -- Create a environment, api call
     url = Url.environmentEdit(id, Url.url)
     # -- API call, get a response
@@ -119,8 +119,8 @@ def put_environment(form, session):
         return None
 
     param = putBlueprint(form)
-    inputs = create_env_param(param)
-    env = addEnvironmentParam(form, inputs, session)
+    template_param = create_env_param(param)
+    env = addEnvironmentParam(form, template_param, session)
 
     return StringUtil.deleteNullDict(env)
 
@@ -136,8 +136,14 @@ def create_environment(code, form, session):
         return None
 
     param = putBlueprint(form)
-    inputs = parse_env_parameter(param)
-    env = addEnvironmentParam(form, inputs, session)
+    base_param = BlueprintHistoryUtil.get_blueprint_parameters(
+                                        code,
+                                        session.get('auth_token'),
+                                        param['blueprint_id'],
+                                        param['version'])
+    template_param = parse_env_parameter(param)
+    template_param = expand_env_parameter(base_param, template_param)
+    env = addEnvironmentParam(form, template_param, session)
     # -- Create a environment, api call
     url = Url.environmentCreate
     # -- API call, get a response
