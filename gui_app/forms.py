@@ -254,8 +254,8 @@ class patternForm(forms.Form):
 class accountForm(forms.Form):
     email = forms.EmailField(max_length=500)
     name = forms.CharField(max_length=500)
-    password = forms.CharField(max_length=500)
-    repassword = forms.CharField(max_length=500)
+    password = forms.CharField(min_length=8, max_length=500)
+    repassword = forms.CharField(min_length=8, max_length=500)
     admin = forms.CharField(max_length=500)
 
     def clean_repassword(self):

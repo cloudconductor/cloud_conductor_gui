@@ -97,55 +97,43 @@ def accountEdit(request, id):
     try:
         if not SessionUtil.check_login(request):
             return redirect(Path.logout)
-
         if not SessionUtil.check_account_permission(request,
                                                     'account',
                                                     'update',
                                                     id):
             return render_to_response(Html.error_403)
-
-        if request.method == "GET":
-            token = request.session['auth_token']
-            url = Url.accountDetail(id, Url.url)
-            data = {
-                'auth_token': token
-            }
-            p = ApiUtil.requestGet(url, FuncCode.accountEdit.value, data)
-            p.update(data)
-
-            return render(request, Html.accountEdit,
-                          {'account': p, 'message': '', 'edit': True})
-
-        else:
-            # -- Get a value from a form
-            p = request.POST
+        form = ""
+        if request.method == "POST":
+            p  = request.POST
             # -- Validate check
             form = accountForm(request.POST)
-            form.full_clean()
-            if not form.is_valid():
+            if form.is_valid():
+                url = Url.accountEdit(id, Url.url)
+                # -- Set the value to the form
+                data = {
+                    'auth_token': request.session['auth_token'],
+                    'name': p['name'],
+                    'email': p['email'],
+                    'password': p['password'],
+                    'repassword': p['repassword'],
+                    'admin': p['admin'],
+                }
+                # -- API call, get a response
+                ApiUtil.requestPut(url, FuncCode.accountEdit.value, data)
+                return redirect(Path.accountList)
 
-                return render(request, Html.accountEdit,
-                              {'account': p, 'form': form,
-                               'message': '', 'edit': True})
+        token = request.session['auth_token']
+        url = Url.accountDetail(id, Url.url)
+        data = {
+            'auth_token': token
+        }
+        p = ApiUtil.requestGet(url, FuncCode.accountEdit.value, data)
+        p.update(data)
 
-            # -- URL set
-            url = Url.accountEdit(id, Url.url)
-            # -- Set the value to the form
-            data = {
-                'auth_token': request.session['auth_token'],
-                'name': p['name'],
-                'email': p['email'],
-                'password': p['password'],
-                'repassword': p['repassword'],
-                'admin': p['admin'],
-            }
-            # -- API call, get a response
-            ApiUtil.requestPut(url, FuncCode.accountEdit.value, data)
-
-            return redirect(Path.accountList)
+        return render(request, Html.accountEdit,
+                      {'account': p, 'form': form, 'message': '', 'edit': True})
     except Exception as ex:
         log.error(FuncCode.accountEdit.value, None, ex)
-
         return render(request, Html.accountEdit,
                       {'account': request.POST, 'form': '',
                        'message': str(ex), 'edit': True})
