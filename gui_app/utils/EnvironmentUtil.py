@@ -101,11 +101,36 @@ def edit_environment(code, id, form, session):
         return None
 
     param = putBlueprint(form)
-    env = addEnvironmentParam(form, template_param, session)
+    param['auth_token'] = session.get('auth_token')
     # -- Create a environment, api call
+    env = addEnvironmentParam(form, param, session)
     url = Url.environmentEdit(id, Url.url)
     # -- API call, get a response
     environment = ApiUtil.requestPut(url, code,
+                                     StringUtil.deleteNullDict(env))
+
+    return environment
+
+
+def rebuild_environment(code, id, form, session, blueprints):
+    import pdb; pdb.set_trace()
+    if StringUtil.isEmpty(code):
+        return None
+
+    if StringUtil.isEmpty(form):
+        return None
+
+    if StringUtil.isEmpty(session.get('auth_token')):
+        return None
+
+    param = putBlueprint(form)
+    template_param = parse_env_parameter(param)
+    template_param = expand_env_parameter(blueprints, template_param)
+    env = addEnvironmentParam(form, template_param, session)
+    # -- Create a environment, api call
+    url = Url.environmentRebuild(id, Url.url)
+    # -- API call, get a response
+    environment = ApiUtil.requestPost(url, code,
                                      StringUtil.deleteNullDict(env))
 
     return environment

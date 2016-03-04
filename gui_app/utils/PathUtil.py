@@ -171,6 +171,7 @@ class Html():
     environmentDetail = "gui_app/environment/environmentDetail.html"
     environmentCreate = "gui_app/environment/environmentCreate.html"
     environmentEdit = "gui_app/environment/environmentEdit.html"
+    environmentRebuild = "gui_app/environment/environmentRebuild.html"
     environmentAjaxBlueprint = "gui_app/environment/" + \
                                "environmentAjaxBlueprint.html"
 

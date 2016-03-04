@@ -1,5 +1,5 @@
 {% extends "gui_app/base.html" %}
-{% block title %}Environment Edit{% endblock %}
+{% block title %}Environment Rebuild{% endblock %}
 {% block headerscript %}
 {% endblock %}
 
@@ -18,7 +18,7 @@
 	{% if env %}
 		<form method="post" action="{% url 'app:environmentEdit' env.id %}">
 			<input id="id" type="hidden" name="id" value="{{ env.id }}">
-			{% include "gui_app/environment/includes/formEnvironment.html" %}
+            {% include "gui_app/environment/includes/editFormEnvironment.html" %}
 		</form>
 	{% else %}
 		This is no Environment.

@@ -76,6 +76,8 @@ urlpatterns = [
         name="environmentAjaxBlueprint"),
     url('^environment/(?P<id>\d+)/edit/$',
         environmentViews.environmentEdit, name="environmentEdit"),
+    url('^environment/(?P<id>\d+)/rebuild/$',
+        environmentViews.environmentRebuild, name="environmentRebuild"),
     url('^environment/(?P<id>\d+)/delete/',
         environmentViews.environmentDelete, name="environmentDelete"),
 
