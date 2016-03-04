@@ -1,0 +1,28 @@
+{% extends "gui_app/base.html" %}
+{% block title %}Environment Rebuild{% endblock %}
+{% block headerscript %}
+{% endblock %}
+
+{% block nav %}
+    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}
+{% block breadcrumb %}
+	<li><a href="{% url 'app:environmentList' %}">Environment management</a></li>
+	{% if env.id %}
+	<li><a href="{% url 'app:environmentDetail' env.id %}">Environment Detail</a></li>
+	{% endif %}
+	<li>Environment Rebuild</li>
+{% endblock %}
+{% block content %}
+<div class="cc-title">Environment Rebuild</div>
+	{% if env %}
+		<form method="post" action="{% url 'app:environmentRebuild' env.id %}">
+			<input id="id" type="hidden" name="id" value="{{ env.id }}">
+			{% include "gui_app/environment/includes/rebuildFormEnvironment.html" %}
+		</form>
+	{% else %}
+		This is no Environment.
+	{% endif %}
+{% endblock %}
+
+{% block bodyscript %}{% endblock %}

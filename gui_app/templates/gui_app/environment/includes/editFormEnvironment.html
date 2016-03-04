@@ -1,0 +1,31 @@
+{% csrf_token %} {% include "gui_app/includes/message.html" %}
+<input id="project_id" type="hidden" name="project_id" value="{{ env.project_id }}">
+<input id="auth_token" type="hidden" name="auth_token" value="{{ env.auth_token }}">
+<div class="cc-select">
+	<div class="form-group">
+		<label><span id="req">*</span>Environment name</label> <input
+			id="name" name="name" type="text" class="form-control"
+			value="{{ env.name }}">
+			{{ form.name.errors }}
+	</div>
+	<div class="form-group">
+		<label>user_attributes</label>
+		<input type="file" onchange="read(this, 'user_attributes', 'user_output')" accept="application/json"  />
+		<div id="user_output" class="col-md-10 error_message"></div>
+		<textarea id="user_attributes" name="user_attributes" class="form-control" cols="80" rows="20" wrap="off" onchange="json_check('user_attributes', 'user_output')">{{ env.user_attributes }}</textarea>
+		{{ form.user_attributes.errors }}
+	</div>
+
+	<div class="form-group">
+		<label>Description</label>
+		<textarea id="description" name="description" class="form-control">{{ env.description }}</textarea>
+		{{ form.description.errors }}
+	</div>
+	{% if save %}
+	<div class="button_center">
+		<button class="btn btn-success" type="submit">
+			<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;save
+		</button>
+	</div>
+	{% endif %}
+ </div>
