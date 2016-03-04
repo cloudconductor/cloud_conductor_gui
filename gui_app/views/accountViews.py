@@ -104,7 +104,7 @@ def accountEdit(request, id):
             return render_to_response(Html.error_403)
         form = ""
         if request.method == "POST":
-            p  = request.POST
+            p = request.POST
             # -- Validate check
             form = accountForm(request.POST)
             if form.is_valid():
@@ -131,7 +131,8 @@ def accountEdit(request, id):
         p.update(data)
 
         return render(request, Html.accountEdit,
-                      {'account': p, 'form': form, 'message': '', 'edit': True})
+                      {'account': p, 'form': form,
+                       'message': '', 'edit': True})
     except Exception as ex:
         log.error(FuncCode.accountEdit.value, None, ex)
         return render(request, Html.accountEdit,
