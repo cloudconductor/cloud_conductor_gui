@@ -113,7 +113,6 @@ def edit_environment(code, id, form, session):
 
 
 def rebuild_environment(code, id, form, session, blueprints):
-    import pdb; pdb.set_trace()
     if StringUtil.isEmpty(code):
         return None
 
@@ -136,7 +135,7 @@ def rebuild_environment(code, id, form, session, blueprints):
     return environment
 
 
-def put_environment(form, session):
+def put_environment(form, session, blueprints):
     if StringUtil.isEmpty(form):
         return None
 
@@ -144,7 +143,8 @@ def put_environment(form, session):
         return None
 
     param = putBlueprint(form)
-    template_param = create_env_param(param)
+    template_param = parse_env_parameter(param)
+    template_param = expand_env_parameter(blueprints, template_param)
     env = addEnvironmentParam(form, template_param, session)
 
     return StringUtil.deleteNullDict(env)

@@ -13,7 +13,7 @@
 <div class="cc-title">Application Environment</div>
 <br>
 	<form method="post" action="{% url 'app:envapp_environmentCreate' %}">
-		{% include "gui_app/envApplication/includes/baseFormEnvironment.html" %}
+		{% include "gui_app/envApplication/includes/formEnvironment.html" %}
 
 		<div class="button_left">
 			<button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'app:envapp_bluprintSelect' %}'" >
