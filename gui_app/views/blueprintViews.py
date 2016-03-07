@@ -8,6 +8,7 @@ from ..utils import BlueprintHistoryUtil
 from ..utils import SessionUtil
 from ..utils.PathUtil import Path
 from ..utils.PathUtil import Html
+from ..api_models.blueprints import *
 from ..enum.FunctionCode import FuncCode
 from ..enum.platform import *
 from ..enum.MessageCode import Error
@@ -23,10 +24,11 @@ def blueprintList(request):
             return render_to_response(Html.error_403)
 
         # -- Get a blueprint list, API call
-        project_id = request.session['project_id']
+        code = FuncCode.blueprintList.value
         token = request.session['auth_token']
-        blueprints = BlueprintUtil.get_blueprint_list(
-            FuncCode.blueprintList.value, token, project_id)
+        project_id = request.session['project_id']
+
+        blueprints = Blueprints(code, token, project_id)
 
         return render(request, Html.blueprintList,
                       {'blueprints': blueprints, 'message': ''})

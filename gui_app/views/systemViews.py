@@ -7,6 +7,7 @@ from ..utils import SessionUtil
 from ..utils.PathUtil import Path
 from ..utils.PathUtil import Html
 from ..utils.ApiUtil import Url
+from ..api_models.systems import *
 from ..enum.FunctionCode import FuncCode
 from ..logs import log
 
@@ -18,16 +19,12 @@ def systemList(request):
         if not SessionUtil.check_permission(request, 'system', 'list'):
             return render_to_response(Html.error_403)
 
-        systems = None
         # -- Get a system list, API call
-        url = Url.systemList
 
-        data = {
-            'auth_token': request.session['auth_token'],
-            'project_id': request.session['project_id']
-        }
-        systems = ApiUtil.requestGet(url, FuncCode.systemList.value, data)
-#         systems = systems['lists']
+        code = FuncCode.systemList.value
+        auth_token = request.session['auth_token'],
+        project_id = request.session['project_id']
+        systems = Systems(code, auth_token, project_id)
 
         return render(request, Html.systemList,
                       {'system': systems, 'message': ''})

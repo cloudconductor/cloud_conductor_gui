@@ -42,9 +42,9 @@ def environmentList(request):
                 if env['blueprint_history_id'] == blueprint_history['id']:
                     blueprint_id = blueprint_history['blueprint_id']
                     blueprint = blueprints.get_blueprint(blueprint_id)
-                    system_name = systems.get_system(env['system_id'])['name']
+                    system = systems.get_system(env['system_id'])
                     env['bp_name'] = blueprint['name']
-                    env['system_name'] = system_name
+                    env['system_name'] = system['name']
                     break
 
         return render(request, Html.environmentList,
