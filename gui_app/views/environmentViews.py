@@ -4,6 +4,7 @@ import ast
 from ..forms import environmentForm
 from ..forms import edit_environmentForm
 from ..utils import ApiUtil
+from ..utils import BlueprintUtil
 from ..utils import BlueprintHistoryUtil
 from ..utils import EnvironmentUtil
 from ..utils import SessionUtil
@@ -12,6 +13,9 @@ from ..utils.PathUtil import Path
 from ..utils.PathUtil import Html
 from ..utils.ApiUtil import Url
 from ..utils.BlueprintUtil import get_blueprint_version
+from ..api_models.systems import *
+from ..api_models.blueprints import *
+from ..api_models.environments import *
 from ..enum.FunctionCode import FuncCode
 from ..logs import log
 PATRITION = '/'
@@ -24,26 +28,24 @@ def environmentList(request):
         if not SessionUtil.check_permission(request, 'environment', 'list'):
             return render_to_response(Html.error_403)
 
-        envs = None
-        # -- Get a environment list, API call
-        url = Url.environmentList
+        code = FuncCode.environmentList.value
+        auth_token = request.session['auth_token']
+        project_id = request.session['project_id']
 
-        data = {
-            'auth_token': request.session['auth_token'],
-            'project_id': request.session['project_id']
-        }
-        envs = ApiUtil.requestGet(url, FuncCode.environmentList.value, data)
+        envs = Environments(code, auth_token, project_id)
+        blueprints = Blueprints(code, auth_token, project_id)
+        systems = Systems(code, auth_token, project_id)
+        blueprint_histories = blueprints.get_all_blueprint_histories()
 
         for env in envs:
-            system = SystemUtil.get_system_detail(
-                FuncCode.environmentList.value, request.session['auth_token'],
-                env.get("system_id"))
-            bp = BlueprintHistoryUtil.get_blueprint_history_list_id(
-                FuncCode.environmentList.value, request.session['auth_token'],
-                request.session['project_id'], env.get("blueprint_history_id"))
-
-            env["system_name"] = system.get("system_name")
-            env["bp_name"] = bp.get("name")
+            for blueprint_history in blueprint_histories:
+                if env['blueprint_history_id'] == blueprint_history['id']:
+                    blueprint_id = blueprint_history['blueprint_id']
+                    blueprint = blueprints.get_blueprint(blueprint_id)
+                    system_name = systems.get_system(env['system_id'])['name']
+                    env['bp_name'] = blueprint['name']
+                    env['system_name'] = system_name
+                    break
 
         return render(request, Html.environmentList,
                       {'envs': envs, 'message': ''})
@@ -248,7 +250,9 @@ def environmentRebuild(request, id):
                                'message': '',
                                'save': True})
 
-            EnvironmentUtil.rebuild_environment(code, id, cpPost,
+            EnvironmentUtil.rebuild_environment(code,
+                                                id,
+                                                cpPost,
                                                 request.session,
                                                 blueprints)
 
