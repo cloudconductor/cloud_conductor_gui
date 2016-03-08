@@ -108,7 +108,6 @@ def environmentCreate(request):
         blueprints = get_blueprint_version(code, data)
 
         if request.method == "GET":
-
             return render(request, Html.environmentCreate,
                           {'env': data, 'clouds': clouds, 'systems': systems,
                            'blueprints': blueprints, 'message': '',
@@ -118,12 +117,15 @@ def environmentCreate(request):
             p = request.POST
             # -- Validate check
             cpPost = p.copy()
-            param = putBlueprint(cpPost)
-
-            form = environmentForm(param)
+            bp = putBlueprint(cpPost)
+            param = BlueprintHistoryUtil.get_blueprint_parameters(
+                                                            code,
+                                                            token,
+                                                            bp['blueprint_id'],
+                                                            bp['version'])
+            form = environmentForm(bp)
             form.full_clean()
             if not form.is_valid():
-
                 return render(request, Html.environmentCreate,
                               {'env': cpPost, 'clouds': clouds,
                                'systems': systems, 'blueprints': blueprints,
@@ -155,21 +157,23 @@ def environmentEdit(request, id):
 
         token = request.session['auth_token']
         project_id = request.session['project_id']
-
         env = EnvironmentUtil.get_environment_detail(code, token, id)
+
         history = BlueprintHistoryUtil.get_blueprint_history_list_id(
             code, token, project_id, env.get('blueprint_history_id'))
-
         blueprints = BlueprintHistoryUtil.get_blueprint_parameters(
             code, token, history.get('blueprint_id'), history.get('version'))
 
         if request.method == "GET":
 
             return render(request, Html.environmentEdit,
-                          {'env': env, 'blueprints': blueprints, 'form': '',
-                           'message': '', 'save': True})
+                          {'env': env,
+                           'blueprints': blueprints,
+                           'form': '',
+                           'message': '',
+                           'save': True})
         else:
-            # -- Get a value from a form
+            # -- Get a value from a for
             p = request.POST
             cpPost = p.copy()
             # -- Validate check
@@ -177,8 +181,11 @@ def environmentEdit(request, id):
             if not form.is_valid():
 
                 return render(request, Html.environmentEdit,
-                              {'env': cpPost, 'blueprints': blueprints,
-                               'form': form, 'message': '', 'save': True})
+                              {'env': cpPost,
+                               'blueprints': uniq_blueprints,
+                               'form': form,
+                               'message': '',
+                               'save': True})
 
             EnvironmentUtil.edit_environment(code, id, cpPost,
                                              request.session)
@@ -188,8 +195,72 @@ def environmentEdit(request, id):
         log.error(code, None, ex)
 
         return render(request, Html.environmentEdit,
-                      {'env': request.POST, 'blueprints': blueprints,
-                       'message': str(ex), 'save': True})
+                      {'env': request.POST,
+                       'blueprints': blueprints,
+                       'message': str(ex),
+                       'save': True})
+
+
+def environmentRebuild(request, id):
+    code = FuncCode.environmentRebuild.value
+    env = None
+    blueprints = None
+    try:
+        if not SessionUtil.check_login(request):
+            return redirect(Path.logout)
+        if not SessionUtil.check_permission(request, 'environment', 'update'):
+            return render_to_response(Html.error_403)
+
+        token = request.session['auth_token']
+        project_id = request.session['project_id']
+        env = EnvironmentUtil.get_environment_detail(code, token, id)
+        env_template = BlueprintHistoryUtil.uniq_terraform_param(
+                                        env['template_parameters'])
+        env['template_parameters'] = env_template
+
+        history = BlueprintHistoryUtil.get_blueprint_history_list_id(
+            code, token, project_id, env.get('blueprint_history_id'))
+        blueprints = BlueprintHistoryUtil.get_blueprint_parameters(
+            code, token, history.get('blueprint_id'), history.get('version'))
+
+        uniq_blueprints = BlueprintHistoryUtil.uniq_terraform_param(blueprints)
+
+        if request.method == "GET":
+
+            return render(request, Html.environmentRebuild,
+                          {'env': env,
+                           'blueprints': uniq_blueprints,
+                           'form': '',
+                           'message': '',
+                           'save': True})
+        else:
+            # -- Get a value from a for
+            p = request.POST
+            cpPost = p.copy()
+            # -- Validate check
+            form = edit_environmentForm(cpPost)
+            if not form.is_valid():
+
+                return render(request, Html.environmentRebuild,
+                              {'env': cpPost,
+                               'blueprints': uniq_blueprints,
+                               'form': form,
+                               'message': '',
+                               'save': True})
+
+            EnvironmentUtil.rebuild_environment(code, id, cpPost,
+                                             request.session,
+                                             blueprints)
+
+            return redirect(Path.environmentList)
+    except Exception as ex:
+        log.error(code, None, ex)
+
+        return render(request, Html.environmentRebuild,
+                      {'env': request.POST,
+                       'blueprints': uniq_blueprints,
+                       'message': str(ex),
+                       'save': True})
 
 
 def environmentDelete(request, id):
@@ -244,7 +315,7 @@ def environmentAjaxBlueprint(request):
         token = request.session['auth_token']
         param = BlueprintHistoryUtil.get_blueprint_parameters(
             code, token, bp['blueprint_id'], bp['version'])
-
+        param = BlueprintHistoryUtil.uniq_terraform_param(param)
         key = param.keys()
 
         return render(request, Html.environmentAjaxBlueprint,
@@ -257,7 +328,6 @@ def environmentAjaxBlueprint(request):
 
 
 def putBlueprint(param):
-
     blueprint = param.get('blueprint', None)
     if blueprint is not None and blueprint != '':
         blueprint = ast.literal_eval(blueprint)

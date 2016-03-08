@@ -96,6 +96,9 @@ class Url():
     def environmentEdit(id, id2):
         return id2 + 'environments/{0}'.format(id)
 
+    def environmentRebuild(id, id2):
+        return id2 + 'environments/{0}/rebuild'.format(id, id2)
+
     def environmentDetail(id, id2):
         return id2 + 'environments/{0}'.format(id)
 

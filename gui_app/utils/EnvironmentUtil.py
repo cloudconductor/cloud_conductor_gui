@@ -1,10 +1,12 @@
 import ast
+import re
 from ..utils import ApiUtil
 from ..utils import StringUtil
 from ..utils import SystemUtil
 from ..utils import BlueprintHistoryUtil
 from ..utils.ApiUtil import Url
 from ..enum.StatusCode import Environment
+from functools import reduce
 PATRITION = '/'
 
 
@@ -83,7 +85,8 @@ def get_environment_detail(code, token, id):
         'id': id,
     }
     environment = ApiUtil.requestGet(url, code, data)
-
+    environment['template_parameters'] = StringUtil.stringToDict(
+                            environment['template_parameters'])
     return StringUtil.deleteNullDict(environment)
 
 
@@ -98,9 +101,9 @@ def edit_environment(code, id, form, session):
         return None
 
     param = putBlueprint(form)
-    inputs = createJson(param)
-    env = addEnvironmentParam(form, inputs, session)
+    param['auth_token'] = session.get('auth_token')
     # -- Create a environment, api call
+    env = addEnvironmentParam(form, param, session)
     url = Url.environmentEdit(id, Url.url)
     # -- API call, get a response
     environment = ApiUtil.requestPut(url, code,
@@ -109,7 +112,30 @@ def edit_environment(code, id, form, session):
     return environment
 
 
-def put_environment(form, session):
+def rebuild_environment(code, id, form, session, blueprints):
+    if StringUtil.isEmpty(code):
+        return None
+
+    if StringUtil.isEmpty(form):
+        return None
+
+    if StringUtil.isEmpty(session.get('auth_token')):
+        return None
+
+    param = putBlueprint(form)
+    template_param = parse_env_parameter(param)
+    template_param = expand_env_parameter(blueprints, template_param)
+    env = addEnvironmentParam(form, template_param, session)
+    # -- Create a environment, api call
+    url = Url.environmentRebuild(id, Url.url)
+    # -- API call, get a response
+    environment = ApiUtil.requestPost(url, code,
+                                     StringUtil.deleteNullDict(env))
+
+    return environment
+
+
+def put_environment(form, session, blueprints):
     if StringUtil.isEmpty(form):
         return None
 
@@ -117,8 +143,9 @@ def put_environment(form, session):
         return None
 
     param = putBlueprint(form)
-    inputs = createJson(param)
-    env = addEnvironmentParam(form, inputs, session)
+    template_param = parse_env_parameter(param)
+    template_param = expand_env_parameter(blueprints, template_param)
+    env = addEnvironmentParam(form, template_param, session)
 
     return StringUtil.deleteNullDict(env)
 
@@ -134,8 +161,14 @@ def create_environment(code, form, session):
         return None
 
     param = putBlueprint(form)
-    inputs = createJson(param)
-    env = addEnvironmentParam(form, inputs, session)
+    base_param = BlueprintHistoryUtil.get_blueprint_parameters(
+                                        code,
+                                        session.get('auth_token'),
+                                        param['blueprint_id'],
+                                        param['version'])
+    template_param = parse_env_parameter(param)
+    template_param = expand_env_parameter(base_param, template_param)
+    env = addEnvironmentParam(form, template_param, session)
     # -- Create a environment, api call
     url = Url.environmentCreate
     # -- API call, get a response
@@ -218,6 +251,45 @@ def createJson(prm):
             putMap(pmap, kp, prm[k])
 
     return pmap
+
+
+def parse_env_parameter(params):
+    result_dict = {}
+    for key in params.keys():
+        match = re.match(r'(type/)|(value/)', key)
+        if match is not None:
+            value = (match.group().replace('/', ''), params[key])
+            sp_param = key.split('/')[1:]
+            sp_param.append(value)
+            reduce(_create_dict, sp_param, result_dict)
+    return result_dict
+
+
+def _create_dict(dict, param):
+    if isinstance(param, tuple):
+        k, v = param
+        dict[k] = v
+        return map
+    else:
+        if param not in dict:
+            dict[param] = {}
+        return dict[param]
+
+
+def expand_env_parameter(base_params, user_params):
+    result = base_params
+    for pattern_name, templates in base_params.items():
+        user_params_tf = user_params[pattern_name]['terraform']
+        result_tf = result[pattern_name]['terraform']
+        if 'cloud_formation' in user_params[pattern_name]:
+            user_params_cf = user_params[pattern_name]['cloud_formation']
+            result[pattern_name]['cloud_formation'] = user_params_cf
+        for cloud_name, resources in templates['terraform'].items():
+            for resource_name, resource in resources.items():
+                if resource_name in user_params_tf:
+                    user_values = user_params_tf[resource_name]
+                    result_tf[cloud_name][resource_name] = user_values
+    return result
 
 
 def addEnvironmentParam(param, temp_param, session):

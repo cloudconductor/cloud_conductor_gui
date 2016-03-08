@@ -7,7 +7,7 @@ $(function(){
     //alert($(this).val());
     var param = {blueprint:$(this).val()};
     if ($(this).val() === '' || param === null) {
-    	$('#template_parameters-div').html('');
+        $('#template_parameters-div').html('');
     } else {
 	    $.get('ajax', param, function(data) {
 			$('#template_parameters-div').html(data);
@@ -125,3 +125,4 @@ $(function(){
 		</button>
 	</div>
 	{% endif %}
+</div>

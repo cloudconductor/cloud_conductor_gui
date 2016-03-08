@@ -2,6 +2,7 @@ from ..utils import ApiUtil
 from ..utils import StringUtil
 from ..utils import BlueprintUtil
 from ..utils.ApiUtil import Url
+from functools import reduce
 
 
 def get_blueprint_history_list(code, token, id):
@@ -160,3 +161,16 @@ def get_blueprint_history_list_id(code, token, project_id, history_id):
             break
 
     return history
+
+
+def uniq_terraform_param(params):
+    result = {}
+    for pattern_name, templates in params.items():
+        result[pattern_name] = {}
+        for template_name, cloud in templates.items():
+            if template_name == 'terraform':
+                merge_param = reduce(lambda x, y: dict(x, **y), cloud.values())
+                result[pattern_name][template_name] = merge_param
+            else:
+                result[pattern_name][template_name] = cloud
+    return result

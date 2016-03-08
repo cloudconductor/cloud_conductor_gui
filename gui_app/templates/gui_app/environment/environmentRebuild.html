@@ -11,14 +11,14 @@
 	{% if env.id %}
 	<li><a href="{% url 'app:environmentDetail' env.id %}">Environment Detail</a></li>
 	{% endif %}
-	<li>Environment Edit</li>
+	<li>Environment Rebuild</li>
 {% endblock %}
 {% block content %}
-<div class="cc-title">Environment Edit</div>
+<div class="cc-title">Environment Rebuild</div>
 	{% if env %}
-		<form method="post" action="{% url 'app:environmentEdit' env.id %}">
+		<form method="post" action="{% url 'app:environmentRebuild' env.id %}">
 			<input id="id" type="hidden" name="id" value="{{ env.id }}">
-            {% include "gui_app/environment/includes/editFormEnvironment.html" %}
+			{% include "gui_app/environment/includes/baseFormEnvironment.html" %}
 		</form>
 	{% else %}
 		This is no Environment.

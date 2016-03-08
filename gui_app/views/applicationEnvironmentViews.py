@@ -264,12 +264,14 @@ def environmentCreate(request):
             request.session['w_bp_select'].get('id'),
             request.session['w_bp_select'].get('version'))
 
+        blueprints_uniq = BlueprintHistoryUtil.uniq_terraform_param(blueprints)
+
         if request.method == "GET":
             environment = request.session.get('w_env_create')
 
             return render(request, Html.envapp_environmentCreate,
                           {'clouds': clouds, 'systems': None,
-                           'blueprints': blueprints,
+                           'blueprints': blueprints_uniq,
                            'env': environment,
                            'message': '', 'create': True})
         elif request.method == "POST":
@@ -280,12 +282,12 @@ def environmentCreate(request):
 
                 return render(request, Html.envapp_environmentCreate,
                               {'clouds': clouds, 'systems': None,
-                               'blueprints': blueprints, 'env': param,
+                               'blueprints': blueprints_uniq, 'env': param,
                                'form': form, 'create': True})
 
             # -- Session add
             environment = EnvironmentUtil.put_environment(
-                form.data, request.session)
+                form.data, request.session, blueprints)
             request.session['w_env_create'] = environment
 
             return redirect(Path.envapp_confirm)
@@ -294,7 +296,7 @@ def environmentCreate(request):
 
         return render(request, Html.envapp_environmentCreate,
                       {'clouds': clouds, 'systems': None,
-                       'blueprints': blueprints, 'env': request.POST,
+                       'blueprints': blueprints_uniq, 'env': request.POST,
                        'create': True, 'message': str(ex)})
 
 

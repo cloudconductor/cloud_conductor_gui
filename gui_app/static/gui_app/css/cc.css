@@ -19,6 +19,14 @@ h2 {
     font-family: inherit;
 }
 
+label {
+    font-size: 15;
+}
+
+label.template_name {
+    font-size: 14;
+}
+
 .cc-main{
     border-top: 1px solid rgba(0, 0, 0, 0.15);
     margin-top: -1px;

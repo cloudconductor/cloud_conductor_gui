@@ -28,6 +28,7 @@ class FuncCode(Enum):
     environmentCreate = 'GM2130'
     environmentEdit = 'GM2140'
     environmentDelete = 'GM2150'
+    environmentRebuild = 'GM2160'
 
     applicationList = 'GM2210'
     applicationDetail = 'GM2220'
