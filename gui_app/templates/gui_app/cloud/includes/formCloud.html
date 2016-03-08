@@ -12,8 +12,8 @@
 			<select class="form-control" name="type" id="type">
 		        <option value=""></option>
 		        {% for c in cloudType %}
-				   <option value="{{ c.name }}" {% if  cloud.type == c.name %} selected="selected" {% endif %}>
-				       {{ c.value }}
+				   <option value="{{ c.value.name }}" {% if  cloud.type == c.value.name %} selected="selected" {% endif %}>
+				       {{ c.value.display }}
 				   </option>
 				{% endfor %}
 		    </select>

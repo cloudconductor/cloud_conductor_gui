@@ -2,5 +2,6 @@ from enum import Enum
 
 
 class CloudType(Enum):
-    openstack = 'OpenStack'
-    aws = 'AWS'
+    openstack = {'name': 'openstack', 'display': 'OpenStack'}
+    aws = {'name': 'aws', 'display': 'AWS'}
+    wakamevdc = {'name': 'wakame-vdc', 'display': 'Wakame-vdc'}
