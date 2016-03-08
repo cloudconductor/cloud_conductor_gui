@@ -14,13 +14,11 @@
 <div class="cc-title">Project management</div>
 <br>
 {% include "gui_app/includes/message.html" %}
-{% if request.session.project.manage or request.session.project.create %}
 <div>
 	<button class="btn btn-primary btn-sm" style="float:right" onclick="location.href='{% url 'app:projectCreate' %}'" type="button">
 		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;　new
 	</button>
 </div>
-{% endif %}
 {% if projects %}
  	<table class="table table-hover">
 		<thead>

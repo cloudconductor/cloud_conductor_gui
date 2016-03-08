@@ -1,7 +1,6 @@
 {% csrf_token %}
 {% include "gui_app/includes/message.html" %}
 {{ form.non_field_errors }}
-
 <div class="cc-select">
     <input id="auth_token" type="hidden" name="auth_token" value="{{ account.auth_token }}">
     <div class="form-group">

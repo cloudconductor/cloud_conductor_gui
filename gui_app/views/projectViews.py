@@ -41,8 +41,6 @@ def projectCreate(request):
     try:
         if not SessionUtil.check_login(request):
             return redirect(Path.logout)
-        if not SessionUtil.check_permission(request, 'project', 'create'):
-            return render_to_response(Html.error_403)
 
         code = FuncCode.projectCreate.value
         token = request.session['auth_token']

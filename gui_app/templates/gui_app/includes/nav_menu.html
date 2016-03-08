@@ -91,18 +91,14 @@
 			<div class="var-heading">Management</div>
 			<ul class="nav">
 					</li>
-				{% if request.session.project.m_project %}
 					<li>
 						<a href="{% url 'app:projectList' %}" id="var-menu" >
 						<span class="glyphicon glyphicon-folder-close cc-icon" aria-hidden="true"></span>&nbsp;&nbsp;Project</a>
 					</li>
-				{% endif %}
-				{% if request.session.account.m_account %}
 					<li>
 						<a href="{% url 'app:accountList' %}" id="var-menu" >
 						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;Account</a>
 					</li>
-				{% endif %}
 			</ul>
 		</nav>
 	</div>

@@ -2,6 +2,7 @@ from ..utils import RoleUtil
 from ..utils import StringUtil
 from ..utils import ProjectUtil
 from ..utils import PermissionUtil
+import pprint
 
 
 def edit_project_session(code, token, session, id=None, name=None):
@@ -64,10 +65,36 @@ def check_login(request):
         return True
 
 
+def check_account_permission(request, model, action, account_id=None):
+    if request.session.get("account_admin"):
+        return True
+
+    permission = False
+    if action == 'list' or action == 'read':
+        permission = True
+
+    elif action == 'create':
+        pass
+
+    elif action == 'update':
+        if request.session.get('account_id') == int(account_id):
+            permission = True
+
+    elif action == 'destroy':
+        pass
+
+    return permission
+
+
 def check_permission(request, model, action, account_id=None):
+    if request.session.get("account_admin"):
+        return True
 
     permission = False
     model_action = request.session.get(model)
+    if StringUtil.isEmpty(model_action):
+        return False
+
     if action == 'list' or action == 'read':
         if model_action.get('manage') is True or \
            model_action.get('read') is True or \
