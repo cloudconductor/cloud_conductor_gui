@@ -23,7 +23,7 @@ urlpatterns = [
     url('^logout/', loginViews.logout, name="logout"),
     url(r"^$", projectViews.projectList, name="top"),
 
-    url('^project/list', projectViews.projectList, name="projectList"),
+    url('^project/list/$', projectViews.projectList, name="projectList"),
     url('^project/create', projectViews.projectCreate, name="projectCreate"),
     url('^project/(?P<id>\d+)/detail/',
         projectViews.projectDetail, name="projectDetail"),

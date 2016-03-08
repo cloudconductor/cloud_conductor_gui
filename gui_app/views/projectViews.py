@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect, render_to_response
+from django.core.urlresolvers import reverse
 from ..forms import projectForm
 from ..utils import RoleUtil
 from ..utils import ProjectUtil
@@ -176,7 +177,10 @@ def projectDelete(request, id):
 
         SessionUtil.edit_project_session(code, token, session, id)
 
-        return redirect(Path.logout)
+        if session['project_id'] == '':
+            return redirect(Path.logout)
+        return redirect(reverse('app:projectList'))
+
     except Exception as ex:
         log.error(FuncCode.projectDelete.value, None, ex)
 
