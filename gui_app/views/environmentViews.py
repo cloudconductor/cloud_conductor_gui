@@ -244,7 +244,7 @@ def environmentRebuild(request, id):
             if not form.is_valid():
 
                 return render(request, Html.environmentRebuild,
-                              {'env': cpPost,
+                              {'env': env,
                                'blueprints': uniq_blueprints,
                                'form': form,
                                'message': '',
@@ -261,7 +261,7 @@ def environmentRebuild(request, id):
         log.error(code, None, ex)
 
         return render(request, Html.environmentRebuild,
-                      {'env': request.POST,
+                      {'env': env,
                        'blueprints': uniq_blueprints,
                        'message': str(ex),
                        'save': True})
