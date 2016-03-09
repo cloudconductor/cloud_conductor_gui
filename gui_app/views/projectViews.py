@@ -216,6 +216,8 @@ def projectChange(request, id):
 
         RoleUtil.delete_session_role(session)
         RoleUtil.add_session_role(session, role, permissions)
+        if session['account_admin']:
+            session.update(RoleUtil.get_admin_role())
 
         return redirect(Path.top)
     except Exception as ex:
