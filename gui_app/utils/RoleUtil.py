@@ -212,6 +212,41 @@ def delete_role(code, token, id):
     ApiUtil.requestDelete(url, code, data)
 
 
+def get_admin_role():
+    admin_role = {
+            'project': {'m_project': True, 'manage': True},
+            'application_history': {
+                'm_application_history': True,
+                'manage': True
+                },
+            'base_image': {'m_base_image': True, 'manage': True},
+            'environment': {'manage': True, 'm_environment': True},
+            'permission': {'m_permission': True, 'manage': True},
+            'pattern': {'m_pattern': True, 'manage': True},
+            'blueprint_history': {
+                'manage': True,
+                'm_blueprint_history': True
+                },
+            'system': {'m_system': True, 'manage': True},
+            'blueprint_pattern': {
+                'm_blueprint_pattern': True,
+                'manage': True
+                },
+            'assignment': {'m_assignment': True, 'manage': True},
+            'deployment': {'manage': True, 'm_deployment': True},
+            'w_app_env': True,
+            'w_make_new_app': True,
+            'blueprint': {'manage': True, 'm_blueprint': True},
+            'application': {'manage': True, 'm_application': True},
+            'cloud': {'m_cloud': True, 'manage': True},
+            'w_deploying_app': True,
+            'role': {'m_role': True, 'manage': True},
+            'w_cloud_registrarion': True,
+            'account': {'m_account': True, 'manage': True}
+            }
+    return admin_role
+
+
 def add_session_role(session, role, permissions):
     session['role_id'] = role.get('id')
 
