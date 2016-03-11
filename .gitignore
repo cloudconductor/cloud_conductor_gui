@@ -1,4 +1,5 @@
 db.sqlite3
 config/__pycache__/
 gui_app/__pycache__/
+gui_app/templatetags/__pycache__/
 log/
