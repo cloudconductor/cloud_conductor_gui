@@ -249,8 +249,8 @@ def environmentRebuild(request, id):
                                'save': True})
 
             EnvironmentUtil.rebuild_environment(code, id, cpPost,
-                                             request.session,
-                                             blueprints)
+                                                request.session,
+                                                blueprints)
 
             return redirect(Path.environmentList)
     except Exception as ex:
