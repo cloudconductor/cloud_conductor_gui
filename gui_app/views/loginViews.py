@@ -104,6 +104,8 @@ def addLoginSession(token, account, project_list, project,
     # -- Role and role_id and menu
     if role:
         RoleUtil.add_session_role(session, role, permissions)
+    if account.get('admin'):
+        session.update(RoleUtil.get_admin_role())
 
 
 def logout(request):

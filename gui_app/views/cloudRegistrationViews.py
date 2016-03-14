@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect
+from django.core.urlresolvers import reverse
 from ..forms import cloudForm
 from ..forms import baseImageForm
 from ..utils import CloudUtil
 from ..utils import StringUtil
+from ..utils import BaseimageUtil
 from ..utils.PathUtil import Path
 from ..utils.PathUtil import Html
 from ..enum.CloudType import CloudType
@@ -42,6 +44,8 @@ def cloudCreate(request):
             # -- Session add
             cloud = cloudPut(param)
             request.session['w_cl_select'] = cloud
+            if cloud['type'] == 'aws':
+                return redirect(reverse('app:cloudregistConfirm'))
 
             return redirect(Path.cloudregist_baseimageCreate)
     except Exception as ex:
@@ -119,7 +123,9 @@ def confirm(request):
                                             project_id, cl_session)
 
             # -- baseimage Create
-            bi_session['cloud_id'] = cloud.get('id')
+            if cl_session['type'] != 'aws':
+                bi_session['cloud_id'] = cloud.get('id')
+                BaseimageUtil.create_baseimage(code, token, bi_session)
 
             # -- session delete
             sessionDelete(session)

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect, render_to_response
+from django.core.urlresolvers import reverse
 from ..forms import projectForm
 from ..utils import RoleUtil
 from ..utils import ProjectUtil
@@ -176,7 +177,10 @@ def projectDelete(request, id):
 
         SessionUtil.edit_project_session(code, token, session, id)
 
-        return redirect(Path.logout)
+        if session['project_id'] == '':
+            return redirect(Path.logout)
+        return redirect(reverse('app:projectList'))
+
     except Exception as ex:
         log.error(FuncCode.projectDelete.value, None, ex)
 
@@ -212,6 +216,8 @@ def projectChange(request, id):
 
         RoleUtil.delete_session_role(session)
         RoleUtil.add_session_role(session, role, permissions)
+        if session['account_admin']:
+            session.update(RoleUtil.get_admin_role())
 
         return redirect(Path.top)
     except Exception as ex:

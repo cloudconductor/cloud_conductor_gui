@@ -1,9 +1,8 @@
 {% extends "gui_app/base.html" %}
 {% block title %}Project Create{% endblock %}
 {% block headerscript %}
-{% endblock %}
-{% block nav %}
-    {% include "gui_app/includes/nav_menu.html" %}
+{% endblock %}{% block nav %}
+{% include "gui_app/includes/nav_menu.html" %}
 {% endblock %}
 {% block breadcrumb %}
 	<li>Cloud registration</li>
@@ -11,54 +10,87 @@
 {% block content %}
 <div class="cc-title">Confirm</div>
 <br>
-	<form method="post" action="{% url 'app:cloudregistConfirm'%}">
-	{% csrf_token %}
-	{% include "gui_app/includes/message.html" %}
-		<div class="cc-select">
-		<div class="panel panel-info">
-			<div class="panel-heading">
-				<div class="panel-title" id="panel-title">Confirmation of input contents</div>
-			</div>
-			<div class="panel-body">
-				<p class="help-block">Are you sure you want to be registered with this content?</p>
-				<h3>Cloud</h3>
-				<table class="table">
-					<tbody>
-						<tr><th>Cloud name</th><td>{{ cloud.name }}</td></tr>
-						<tr><th>Cloud type</th><td>{{ cloud.type }}</td></tr>
-						<tr><th>Region name</th><td>{{ cloud.entry_point }}</td></tr>
-						<tr><th>Decription</th><td>{{ cloud.description }}</td></tr>
-						{% if  cloud.type == 'openstack' %}
-						<tr><th>Tenant name</th><td>{{ cloud.tenant_name }}</td></tr>
-						{% endif %}
-					</tbody>
-				</table>
-				<h3>BaseImage</h3>
-				<table class="table">
-					<tbody>
-						<tr><th>Platform</th><td>{{ baseImage.platform }}</td></tr>
-						<tr><th>PlatformVersion</th><td>{{ baseImage.platform_version }}</td></tr>
-						<tr><th>source_image</th><td>{{ baseImage.source_image }}</td></tr>
-						<tr><th>SSH user name</th><td>{{ baseImage.ssh_username }}</td></tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-		</div>
-		<div class="button_left">
-			<button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'app:cloudregistBaseimage' %}'" >
-				<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
-				 &nbsp;　back
-			</button>
-			<span class="delete_btn">
-				<button type="submit" class="btn btn-success btn-sm">
-					<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;　save
-				</button>
-			</span>
-		</div>
+<form method="post" action="{% url 'app:cloudregistConfirm'%}">
+    {% csrf_token %} {% include "gui_app/includes/message.html" %}
+    <div class="cc-select">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="panel-title" id="panel-title">Confirmation of input contents</div>
+            </div>
+            <div class="panel-body">
+                <p class="help-block">Are you sure you want to be registered with this content?</p>
+                <h3>Cloud</h3>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Cloud name</th>
+                            <td>{{ cloud.name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Cloud type</th>
+                            <td>{{ cloud.type }}</td>
+                        </tr>
+                        <tr>
+                            <th>Region name</th>
+                            <td>{{ cloud.entry_point }}</td>
+                        </tr>
+                        <tr>
+                            <th>Decription</th>
+                            <td>{{ cloud.description }}</td>
+                        </tr>
+                        {% if cloud.type == 'openstack' %}
+                        <tr>
+                            <th>Tenant name</th>
+                            <td>{{ cloud.tenant_name }}</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+                <h3>BaseImage</h3> {% ifnotequal cloud.type 'aws' %}
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Platform</th>
+                            <td>{{ baseImage.platform }}</td>
+                        </tr>
+                        <tr>
+                            <th>PlatformVersion</th>
+                            <td>{{ baseImage.platform_version }}</td>
+                        </tr>
+                        <tr>
+                            <th>source_image</th>
+                            <td>{{ baseImage.source_image }}</td>
+                        </tr>
+                        <tr>
+                            <th>SSH user name</th>
+                            <td>{{ baseImage.ssh_username }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                {% else %}
+                <h5>aws default</h5> {% endifnotequal %}
+            </div>
+        </div>
+    </div>
+    <div class="button_left">
+        {% ifequal cloud.type 'aws'%}
+        <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'app:cloudregistCloud' %}'">
+            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> &nbsp;　back
+        </button>
+        {% else %}
+        <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'app:cloudregistBaseimage' %}'">
+            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> &nbsp;　back
+        </button>
+        {% endifequal %}
+        <span class="delete_btn">
+                <button type="submit" class="btn btn-success btn-sm">
+                    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;　save
+        </button>
+        </span>
+    </div>
 
-	</form>
+</form>
 
 {% endblock %}
-
-{% block bodyscript %}{% endblock %}
+{% block bodyscript %}
+{% endblock %}

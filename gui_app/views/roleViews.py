@@ -195,6 +195,8 @@ def roleEdit(request, id):
                                request.POST.get('description'), request.POST)
 
             SessionUtil.edit_role_session(code, request.session, id)
+            if request.session.get('account_admin'):
+                request.session.update(RoleUtil.get_admin_role())
 
             return redirect(Path.roleList)
 

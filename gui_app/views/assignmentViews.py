@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from ..utils import ApiUtil
 from ..utils import AccountUtil
 from ..utils import SessionUtil
+from ..utils import RoleUtil
 from ..utils.PathUtil import Path
 from ..utils.PathUtil import Html
 from ..utils.ApiUtil import Url
@@ -329,6 +330,9 @@ def assignmentEdit(request, id=None):
             # role session update
             if roleid:
                 SessionUtil.edit_role_session(code, request.session, roleid)
+
+            if request.session['account_admin']:
+                request.session.update(RoleUtil.get_admin_role())
 
             if logout:
                 return redirect('/ccgui/logout')
