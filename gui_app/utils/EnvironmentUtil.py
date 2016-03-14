@@ -129,7 +129,6 @@ def rebuild_environment(code, id, form, session, blueprints):
     # -- Create a environment, api call
     url = Url.environmentRebuild(id, Url.url)
     # -- API call, get a response
-    environment = ApiUtil.requestPost(url, code,
     environment = ApiUtil.requestPost(url,
                                       code,
                                       StringUtil.deleteNullDict(env))
