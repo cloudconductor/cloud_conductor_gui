@@ -21,7 +21,7 @@ urlpatterns = [
 
     url('^login/', loginViews.login, name="login"),
     url('^logout/', loginViews.logout, name="logout"),
-    url(r"^$", environmentViews.environmentList, name="top"),
+    url(r"^$", projectViews.projectList, name="top"),
 
     url('^project/list', projectViews.projectList, name="projectList"),
     url('^project/create', projectViews.projectCreate, name="projectCreate"),

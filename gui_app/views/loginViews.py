@@ -60,21 +60,18 @@ def login(request):
                 project_list = ProjectUtil.get_project_list(code, token)
 
             project = StringUtil.list_to_record(project_list)
-            if not project:
-                raise Exception(Error.NoAssginment.value)
 
             # -- RoleListAPI call, get a response
-            role = RoleUtil.get_account_role(
-                code, token, project.get('id'), account.get('id'))
-            if not role:
-                raise Exception(Error.NoRole.value)
+            role = None
+            if project:
+                role = RoleUtil.get_account_role(
+                    code, token, project.get('id'), account.get('id'))
 
             # -- PermissionListAPI call, get a response
-            permissions = PermissionUtil.get_permission_list(
-                code, token, role.get('id'))
-
-            if not permissions:
-                raise Exception(Error.NoPermission.value)
+            permissions = None
+            if role:
+                permissions = PermissionUtil.get_permission_list(
+                    code, token, role.get('id'))
 
             # -- Add to session
             addLoginSession(token, account, project_list, project,
@@ -100,11 +97,13 @@ def addLoginSession(token, account, project_list, project,
 
     # -- projects
     session['project_list'] = project_list
-    session['project_id'] = project.get('id')
-    session['project_name'] = project.get('name')
+    if project:
+        session['project_id'] = project.get('id')
+        session['project_name'] = project.get('name')
 
     # -- Role and role_id and menu
-    RoleUtil.add_session_role(session, role, permissions)
+    if role:
+        RoleUtil.add_session_role(session, role, permissions)
 
 
 def logout(request):
