@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect, render_to_response
+from django.core.urlresolvers import reverse
 from ..forms import applicationForm
 from ..forms import applicationForm2
 from ..forms import applicationHistoryForm
@@ -219,7 +220,6 @@ def applicationHistoryDetail(request, id, hid):
         token = request.session['auth_token']
         history = ApplicationHistoryUtil.get_history_detail(code, token,
                                                             id, hid)
-
         return render(request, Html.applicationHistoryDetail,
                       {'history': history, 'message': ''})
     except Exception as ex:

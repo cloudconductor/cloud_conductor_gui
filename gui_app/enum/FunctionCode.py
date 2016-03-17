@@ -38,6 +38,7 @@ class FuncCode(Enum):
     applicationDeploy = 'GM2260'
     applicationHistoryDetail = 'GM2221'
     applicationHistoryEdit = 'GM2241'
+    applicationHistoryDelete = 'GM2251'
 
     patternList = 'GM2310'
     patternDetail = 'GM2320'

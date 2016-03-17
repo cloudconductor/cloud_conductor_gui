@@ -101,6 +101,9 @@ urlpatterns = [
     url('^application/(?P<id>\d+)/history/(?P<hid>\d+)/edit/',
         applicationViews.applicationHistoryEdit,
         name="applicationHistoryEdit"),
+    url('^application/(?P<ap_id>\d+)/history/(?P<ap_history_id>\d+)/delete/',
+        applicationViews.applicationHistoryDelete,
+        name="applicationHistoryDelete"),
 
     url('^blueprint/list', blueprintViews.blueprintList,
         name="blueprintList"),
