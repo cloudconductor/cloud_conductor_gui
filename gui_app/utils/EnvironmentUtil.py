@@ -90,7 +90,7 @@ def get_environment_detail(code, token, id):
     return StringUtil.deleteNullDict(environment)
 
 
-def edit_environment(code, id, form, session):
+def edit_environment(code, id, form, session, blueprints):
     if StringUtil.isEmpty(code):
         return None
 
@@ -101,9 +101,10 @@ def edit_environment(code, id, form, session):
         return None
 
     param = putBlueprint(form)
-    param['auth_token'] = session.get('auth_token')
+    template_param = parse_env_parameter(param)
+    template_param = expand_env_parameter(blueprints, template_param)
+    env = addEnvironmentParam(form, template_param, session)
     # -- Create a environment, api call
-    env = addEnvironmentParam(form, param, session)
     url = Url.environmentEdit(id, Url.url)
     # -- API call, get a response
     environment = ApiUtil.requestPut(url, code,

@@ -18,7 +18,7 @@
 	{% if env %}
 		<form method="post" action="{% url 'app:environmentEdit' env.id %}">
 			<input id="id" type="hidden" name="id" value="{{ env.id }}">
-            {% include "gui_app/environment/includes/editFormEnvironment.html" %}
+            {% include "gui_app/environment/includes/baseFormEnvironment.html" %}
 		</form>
 	{% else %}
 		This is no Environment.
