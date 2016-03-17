@@ -134,6 +134,10 @@ def edit_history(code, token, id, his_id, form):
 
     return response
 
+def delete_history(code, token, ap_id, ap_history_id):
+    url = Url.applicationHistoryDelete(ap_id, ap_history_id, Url.url)
+    data = {'auth_token': token}
+    ApiUtil.requestDelete(url, code, data)
 
 def put_history(token, form):
     if StringUtil.isEmpty(form):
