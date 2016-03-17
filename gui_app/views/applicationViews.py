@@ -229,6 +229,7 @@ def applicationHistoryDetail(request, id, hid):
                       {'app': app, 'history_list': history_list,
                        'message': str(ex)})
 
+
 def applicationHistoryDelete(request, ap_id, ap_history_id):
     code = FuncCode.applicationHistoryDelete.value
 
@@ -239,7 +240,10 @@ def applicationHistoryDelete(request, ap_id, ap_history_id):
             return render_to_response(Html.error_403)
 
         token = request.session['auth_token']
-        ApplicationHistoryUtil.delete_history(code, token, ap_id, ap_history_id)
+        ApplicationHistoryUtil.delete_history(code,
+                                              token,
+                                              ap_id,
+                                              ap_history_id)
 
         return redirect(reverse('app:applicationDetail', args=[ap_id]))
     except Exception as ex:
@@ -250,7 +254,6 @@ def applicationHistoryDelete(request, ap_id, ap_history_id):
                                                             ap_history_id)
         return render(request, Html.applicationHistoryDetail,
                       {'history': history, 'message': str(ex)})
-
 
 
 def applicationDeploy(request, id):
