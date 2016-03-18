@@ -147,6 +147,9 @@ class Url():
     def blueprintHistoriesDetail(id, id2, id3):
         return id3 + 'blueprints/{0}/histories/{1}'.format(id, id2)
 
+    def blueprintHistoriesDelete(id, id2, id3):
+        return id3 + 'blueprints/{0}/histories/{1}'.format(id, id2)
+
     patternList = url + 'patterns'
     patternCreate = url + 'patterns/'
 

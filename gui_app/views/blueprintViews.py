@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect, render_to_response
+from django.core.urlresolvers import reverse
 from ..forms import blueprintForm
 from ..utils import PatternUtil
 from ..utils import BlueprintUtil
@@ -366,5 +367,30 @@ def blueprintHistoryDetail(request, id, ver):
     except Exception as ex:
         log.error(FuncCode.blueprintDetail.value, None, ex)
 
+        return render(request, Html.blueprintHistoryDetail,
+                      {'history': history, 'message': str(ex)})
+
+
+def blueprintHistoryDelete(request, bl_id, version):
+    code = FuncCode.blueprintHistoryDelete.value
+    try:
+        if not SessionUtil.check_login(request):
+            return redirect(Path.logout)
+        if not SessionUtil.check_permission(request, 'blueprint_history', 'destroy'):
+            return render_to_response(Html.error_403)
+
+        token = request.session['auth_token']
+        BlueprintHistoryUtil.delete_history(code,
+                                            token,
+                                            bl_id,
+                                            version)
+
+        return redirect(reverse('app:blueprintDetail', args=[bl_id]))
+    except Exception as ex:
+        log.error(FuncCode.blueprintHistoryDelete.value, None, ex)
+        history = BlueprintHistoryUtil.get_history_detail(code,
+                                                          token,
+                                                          bl_id,
+                                                          version)
         return render(request, Html.blueprintHistoryDetail,
                       {'history': history, 'message': str(ex)})

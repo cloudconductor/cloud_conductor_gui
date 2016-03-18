@@ -121,6 +121,9 @@ urlpatterns = [
     url('^blueprint/(?P<id>\d+)/history/(?P<ver>\d+)/detail/',
         blueprintViews.blueprintHistoryDetail,
         name="blueprintHistoryDetail"),
+    url('^blueprint/(?P<bl_id>\d+)/history/(?P<version>\d+)/delete/',
+        blueprintViews.blueprintHistoryDelete,
+        name="blueprintHistoryDelete"),
 
     url('^pattern/list', patternViews.patternList, name="patternList"),
     url('^pattern/(?P<id>\d+)/detail/',

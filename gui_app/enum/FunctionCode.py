@@ -53,6 +53,7 @@ class FuncCode(Enum):
     blueprintDelete = 'GM2450'
     blueprintBuild = 'GM2460'
     blueprintHistoryDetail = 'GM2421'
+    blueprintHistoryDelete = 'GM2422'
 
     systemList = 'GM2510'
     systemDetail = 'GM2520'

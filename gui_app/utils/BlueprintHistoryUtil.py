@@ -163,6 +163,12 @@ def get_blueprint_history_list_id(code, token, project_id, history_id):
     return history
 
 
+def delete_history(code, token, bl_id, bl_history_id):
+    url = Url.blueprintHistoriesDelete(bl_id, bl_history_id, Url.url)
+    data = {'auth_token': token}
+    ApiUtil.requestDelete(url, code, data)
+
+
 def uniq_terraform_param(params):
     result = {}
     for pattern_name, templates in params.items():
