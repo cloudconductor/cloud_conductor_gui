@@ -219,8 +219,10 @@ def environmentCreate(request):
             if not form.is_valid():
 
                 return render(request, Html.newapp_environmentCreate,
-                              {'clouds': clouds, 'systems': systems,
-                               'blueprints': blueprints, 'env': param,
+                              {'clouds': clouds,
+                               'systems': systems,
+                               'blueprints': blueprints,
+                               'env': param,
                                'form': form,
                                'create': True,
                                'message': ''})
@@ -242,9 +244,12 @@ def environmentCreate(request):
 
     except Exception as ex:
         log.error(FuncCode.newapp_environment.value, None, ex)
-
         return render(request, Html.newapp_environmentCreate,
-                      {"env": '', 'message': str(ex)})
+                      {'clouds': clouds,
+                       'systems': systems,
+                       'blueprints': blueprints,
+                       'create': True,
+                       'message': str(ex)})
 
 
 def confirm(request):
@@ -334,7 +339,7 @@ def putCreateEnvironment(param, env):
 def putBlueprint(param):
 
     blueprint = param.get('blueprint', None)
-    if blueprint is not None or blueprint != '':
+    if blueprint is not None and blueprint != '':
         blueprint = ast.literal_eval(blueprint)
 
         param['blueprint_id'] = blueprint.get('id')
