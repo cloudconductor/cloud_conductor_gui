@@ -129,6 +129,7 @@ button.cc-menu-change{
 .cc-select{
     width:600px;
     padding: 30px;
+    word-wrap:break-word;
 }
 
 .menu-menu{
