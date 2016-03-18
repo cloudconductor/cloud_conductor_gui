@@ -235,8 +235,9 @@ def requestGet(url, scid, payload):
 
 
 def requestPost(url, scid, payload):  # -- change post
+    headers = {'Content-Type': 'application/json'}
     if payload is not None:
-        r = requests.post(url, data=json.dumps(payload))
+        r = requests.post(url, data=json.dumps(payload), headers=headers)
     else:
         r = requests.post(url)
     log.info(scid, r, None, Message.api_url.value)
@@ -251,8 +252,9 @@ def requestPost(url, scid, payload):  # -- change post
 
 
 def requestPut(url, scid, payload):  # -- change post
+    headers = {'Content-Type': 'application/json'}
     if payload is not None:
-        r = requests.put(url, data=json.dumps(payload))
+        r = requests.put(url, data=json.dumps(payload), headers=headers)
     else:
         r = requests.put(url)
     log.info(scid, r, None, Message.api_url.value)
