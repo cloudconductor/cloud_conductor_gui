@@ -368,3 +368,8 @@ ul.errorlist li{
 	color: #c0c0c0;
 	font-size: 11px;
 }
+
+.table {
+    width: 100%;
+    table-layout: fixed;
+}
