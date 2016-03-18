@@ -373,4 +373,5 @@ ul.errorlist li{
 .table {
     width: 100%;
     table-layout: fixed;
+    word-wrap:break-word;
 }
