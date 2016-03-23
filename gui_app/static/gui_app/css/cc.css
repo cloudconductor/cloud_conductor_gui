@@ -129,6 +129,7 @@ button.cc-menu-change{
 .cc-select{
     width:600px;
     padding: 30px;
+    word-wrap:break-word;
 }
 
 .menu-menu{
@@ -367,4 +368,10 @@ ul.errorlist li{
 .discription {
 	color: #c0c0c0;
 	font-size: 11px;
+}
+
+.table {
+    width: 100%;
+    table-layout: fixed;
+    word-wrap:break-word;
 }

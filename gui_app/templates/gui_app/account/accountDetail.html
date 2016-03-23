@@ -58,21 +58,21 @@
     </table>
 
 
-    <div class="button_center">
+    <span class="back_btn">
         <button type="button" class="btn btn-default btn-sm" onclick="location.href='{% url 'app:accountList' %}'">
             <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> &nbsp;　back
         </button>
-        {% if account.id %}
-            {% if request.session.account_admin %}
-                <span class="delete_btn">
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal">
-                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                        &nbsp;　delete
-                    </button>
-                </span>
-            {% endif %}
+    </span>
+    {% if account.id %}
+        {% if request.session.account_admin %}
+            <span class="delete_btn">
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    &nbsp;　delete
+                </button>
+            </span>
         {% endif %}
-    </div>
+    {% endif %}
     <!-- Button trigger modal -->
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

@@ -160,17 +160,22 @@ def environmentEdit(request, id):
         token = request.session['auth_token']
         project_id = request.session['project_id']
         env = EnvironmentUtil.get_environment_detail(code, token, id)
+        env_template = BlueprintHistoryUtil.uniq_terraform_param(
+                                        env['template_parameters'])
+        env['template_parameters'] = env_template
 
         history = BlueprintHistoryUtil.get_blueprint_history_list_id(
             code, token, project_id, env.get('blueprint_history_id'))
         blueprints = BlueprintHistoryUtil.get_blueprint_parameters(
             code, token, history.get('blueprint_id'), history.get('version'))
 
+        uniq_blueprints = BlueprintHistoryUtil.uniq_terraform_param(blueprints)
+
         if request.method == "GET":
 
             return render(request, Html.environmentEdit,
                           {'env': env,
-                           'blueprints': blueprints,
+                           'blueprints': uniq_blueprints,
                            'form': '',
                            'message': '',
                            'save': True})
@@ -183,22 +188,26 @@ def environmentEdit(request, id):
             if not form.is_valid():
 
                 return render(request, Html.environmentEdit,
-                              {'env': cpPost,
+                              {'env': env,
                                'blueprints': uniq_blueprints,
                                'form': form,
                                'message': '',
                                'save': True})
 
-            EnvironmentUtil.edit_environment(code, id, cpPost,
-                                             request.session)
+            EnvironmentUtil.edit_environment(code,
+                                             id,
+                                             cpPost,
+                                             request.session,
+                                             blueprints)
 
             return redirect(Path.environmentList)
     except Exception as ex:
         log.error(code, None, ex)
 
         return render(request, Html.environmentEdit,
-                      {'env': request.POST,
-                       'blueprints': blueprints,
+                      {'env': env,
+                       'blueprints': uniq_blueprints,
+                       'form': form,
                        'message': str(ex),
                        'save': True})
 

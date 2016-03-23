@@ -38,6 +38,7 @@ class FuncCode(Enum):
     applicationDeploy = 'GM2260'
     applicationHistoryDetail = 'GM2221'
     applicationHistoryEdit = 'GM2241'
+    applicationHistoryDelete = 'GM2251'
 
     patternList = 'GM2310'
     patternDetail = 'GM2320'
@@ -52,6 +53,7 @@ class FuncCode(Enum):
     blueprintDelete = 'GM2450'
     blueprintBuild = 'GM2460'
     blueprintHistoryDetail = 'GM2421'
+    blueprintHistoryDelete = 'GM2422'
 
     systemList = 'GM2510'
     systemDetail = 'GM2520'

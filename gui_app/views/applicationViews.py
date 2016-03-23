@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect, render_to_response
+from django.core.urlresolvers import reverse
 from ..forms import applicationForm
 from ..forms import applicationForm2
 from ..forms import applicationHistoryForm
@@ -219,7 +220,6 @@ def applicationHistoryDetail(request, id, hid):
         token = request.session['auth_token']
         history = ApplicationHistoryUtil.get_history_detail(code, token,
                                                             id, hid)
-
         return render(request, Html.applicationHistoryDetail,
                       {'history': history, 'message': ''})
     except Exception as ex:
@@ -228,6 +228,32 @@ def applicationHistoryDetail(request, id, hid):
         return render(request, Html.applicationHistoryDetail,
                       {'app': app, 'history_list': history_list,
                        'message': str(ex)})
+
+
+def applicationHistoryDelete(request, ap_id, ap_history_id):
+    code = FuncCode.applicationHistoryDelete.value
+
+    try:
+        if not SessionUtil.check_login(request):
+            return redirect(Path.logout)
+        if not SessionUtil.check_permission(request, 'application', 'destroy'):
+            return render_to_response(Html.error_403)
+
+        token = request.session['auth_token']
+        ApplicationHistoryUtil.delete_history(code,
+                                              token,
+                                              ap_id,
+                                              ap_history_id)
+
+        return redirect(reverse('app:applicationDetail', args=[ap_id]))
+    except Exception as ex:
+        log.error(FuncCode.applicationHistoryDelete.value, None, ex)
+        history = ApplicationHistoryUtil.get_history_detail(code,
+                                                            token,
+                                                            ap_id,
+                                                            ap_history_id)
+        return render(request, Html.applicationHistoryDetail,
+                      {'history': history, 'message': str(ex)})
 
 
 def applicationDeploy(request, id):

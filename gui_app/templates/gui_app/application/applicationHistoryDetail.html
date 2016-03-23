@@ -61,7 +61,7 @@
 	</table>
 
 	<div class="button_left">
-		<button type="button" class="btn btn-default btn-sm" onclick="location.href='{% url 'app:applicationList' %}'">
+		<button type="button" class="btn btn-default btn-sm" onclick="location.href='{% url 'app:applicationDetail' history.application_id %}'">
 			<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
 			 &nbsp;　back
 		</button>
@@ -93,7 +93,7 @@
         	<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 		</button>
 		{% if history.id %}
-        <button type="button" class="btn btn-danger" onclick="location.href='#'">
+        <button type="button" class="btn btn-danger" onclick="location.href='{% url 'app:applicationHistoryDelete' history.application_id history.id %}'">
 			<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 		</button>
 		{% endif %}
