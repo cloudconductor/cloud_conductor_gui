@@ -239,6 +239,7 @@ def requestGet(url, scid, payload):
 
 def requestPost(url, scid, payload):  # -- change post
     headers = {'Content-Type': 'application/json'}
+
     if payload is not None:
         r = requests.post(url, data=json.dumps(payload), headers=headers)
     else:

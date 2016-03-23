@@ -376,7 +376,9 @@ def blueprintHistoryDelete(request, bl_id, version):
     try:
         if not SessionUtil.check_login(request):
             return redirect(Path.logout)
-        if not SessionUtil.check_permission(request, 'blueprint_history', 'destroy'):
+        if not SessionUtil.check_permission(request,
+                                            'blueprint_history',
+                                            'destroy'):
             return render_to_response(Html.error_403)
 
         token = request.session['auth_token']
