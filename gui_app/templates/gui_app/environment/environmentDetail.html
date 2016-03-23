@@ -48,8 +48,11 @@
 			<th>Status</th><td>{{ env.status }}</td>
 		</tr>
 		<tr>
-			<th>IP address</th><td>{{ env.ip_address }}</td>
+			<th>Frontend address</th><td>{{ env.frontend_address }}</td>
 		</tr>
+        <tr>
+            <th>Consul address</th><td>{{ env.consul_addresses }}</td>
+        </tr>
 		<tr>
 			<th>Create date</th><td>{{ env.created_at }}</td>
 		</tr>
@@ -58,6 +61,9 @@
 		</tr>
 		<tr>
 			<th>Application Status</th><td>{{ env.application_status }}</td>
+		</tr>
+		<tr>
+			<th>Template parameters</th><td>{{ env.template_parameters }}</td>
 		</tr>
 </table>
 
