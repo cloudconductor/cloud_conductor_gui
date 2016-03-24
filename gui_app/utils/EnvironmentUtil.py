@@ -281,6 +281,8 @@ def _create_dict(dict, param):
 def expand_env_parameter(base_params, user_params):
     result = base_params
     for pattern_name, templates in base_params.items():
+        if not pattern_name in user_params:
+            continue
         if 'cloud_formation' in user_params[pattern_name]:
             user_params_cf = user_params[pattern_name]['cloud_formation']
             result[pattern_name]['cloud_formation'] = user_params_cf
