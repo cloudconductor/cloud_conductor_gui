@@ -301,7 +301,7 @@ def addEnvironmentParam(param, temp_param, session):
     # candidates_attributes
     candidates_attributes = []
     dic = {
-        "cloud_id": param.get("candidates_attributes_1"), "priority": "1"}
+        "cloud_id": param.get("candidates_attributes_1"), "priority": "3"}
     candidates_attributes.append(dic)
 
     if param.get("candidates_attributes_2"):
@@ -311,7 +311,7 @@ def addEnvironmentParam(param, temp_param, session):
 
     if param.get("candidates_attributes_3"):
         dic = {
-            "cloud_id": param.get("candidates_attributes_3"), "priority": "3"}
+            "cloud_id": param.get("candidates_attributes_3"), "priority": "1"}
         candidates_attributes.append(dic)
 
     data = {
