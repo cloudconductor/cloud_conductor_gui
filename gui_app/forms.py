@@ -37,6 +37,41 @@ class cloudForm(forms.Form):
 
         return tenant_name
 
+class BaseCloudForm(forms.Form):
+    name = forms.CharField(max_length=500)
+    type = forms.CharField(max_length=500)
+    key = forms.CharField(max_length=500)
+    secret = forms.CharField(max_length=500)
+    entry_point = forms.CharField(max_length=500)
+    description = forms.CharField(required=False, max_length=500)
+    tenant_name = forms.CharField(required=False, max_length=500)
+
+    def clean_tenant_name(self):
+        tenant_name = self.cleaned_data['tenant_name']
+        type = self.cleaned_data.get('type')
+        if StringUtil.isNotEmpty(type) and CloudType.openstack.name == type:
+            if StringUtil.isEmpty(tenant_name):
+                raise forms.ValidationError(Error.Required.value)
+
+        return tenant_name
+
+class WakameCloudForm(forms.Form):
+    name = forms.CharField(max_length=500)
+    type = forms.CharField(max_length=500)
+    key = forms.CharField(max_length=500)
+    secret = forms.CharField(required=False, max_length=500)
+    entry_point = forms.CharField(max_length=500)
+    description = forms.CharField(required=False, max_length=500)
+    tenant_name = forms.CharField(required=False, max_length=500)
+
+    def clean_tenant_name(self):
+        tenant_name = self.cleaned_data['tenant_name']
+        type = self.cleaned_data.get('type')
+        if StringUtil.isNotEmpty(type) and CloudType.openstack.name == type:
+            if StringUtil.isEmpty(tenant_name):
+                raise forms.ValidationError(Error.Required.value)
+
+        return tenant_name
 
 class cloudForm2(forms.Form):
     name = forms.CharField(required=False, max_length=500)
