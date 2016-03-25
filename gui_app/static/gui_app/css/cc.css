@@ -116,18 +116,19 @@ button.cc-menu-change{
 }
 
 .cc-checkbox {
-    width:90%;
+    width:50%;
     border: dotted 1px #C0C0C0;
     padding: 10px 10px 10px 10px;
 }
 
 .cc-checkbox-var {
+    font-size: 10pt;
     width:100%;
     background-color:#F5F5F5;
 }
 
 .cc-select{
-    width:600px;
+    width 60%;
     padding: 30px;
     word-wrap:break-word;
 }
@@ -175,6 +176,12 @@ button.cc-menu-change{
 
 .right {
 	float:right;
+}
+
+.column_right {
+    margin-right: 5pt;
+    margin-left: 30pt;
+    float: right;
 }
 
 .button_button{
