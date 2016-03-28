@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect, HttpResponse
+from django.core.urlresolvers import reverse
 import json
 import ast
 from ..forms import w_applicationForm
@@ -295,7 +296,7 @@ def confirm(request):
             # -- session delete
             sessionDelete(session)
 
-            return redirect(Path.top)
+            return redirect(reverse('app:applicationList'))
     except Exception as ex:
         log.error(FuncCode.newapp_confirm.value, None, ex)
         session = request.session
