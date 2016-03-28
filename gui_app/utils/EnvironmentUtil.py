@@ -127,6 +127,11 @@ def rebuild_environment(code, id, form, session, blueprints):
     template_param = parse_env_parameter(param)
     template_param = expand_env_parameter(blueprints, template_param)
     env = addEnvironmentParam(form, template_param, session)
+    if form['switch'] == 'true':
+        env['switch'] = True
+    elif form['switch'] == 'false':
+        env['switch'] = False
+
     # -- Create a environment, api call
     url = Url.environmentRebuild(id, Url.url)
     # -- API call, get a response
