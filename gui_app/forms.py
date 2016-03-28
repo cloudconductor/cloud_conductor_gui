@@ -37,6 +37,7 @@ class cloudForm(forms.Form):
 
         return tenant_name
 
+
 class BaseCloudForm(forms.Form):
     name = forms.CharField(max_length=500)
     type = forms.CharField(max_length=500)
@@ -55,6 +56,7 @@ class BaseCloudForm(forms.Form):
 
         return tenant_name
 
+
 class WakameCloudForm(forms.Form):
     name = forms.CharField(max_length=500)
     type = forms.CharField(max_length=500)
@@ -72,6 +74,7 @@ class WakameCloudForm(forms.Form):
                 raise forms.ValidationError(Error.Required.value)
 
         return tenant_name
+
 
 class cloudForm2(forms.Form):
     name = forms.CharField(required=False, max_length=500)

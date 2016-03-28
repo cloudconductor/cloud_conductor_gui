@@ -390,9 +390,9 @@ def blueprintHistoryDelete(request, bl_id, version):
         return redirect(reverse('app:blueprintDetail', args=[bl_id]))
     except Exception as ex:
         log.error(FuncCode.blueprintHistoryDelete.value, None, ex)
-        history = BlueprintHistoryUtil.get_history_detail(code,
-                                                          token,
-                                                          bl_id,
-                                                          version)
+        history = BlueprintHistoryUtil.get_blueprint_history_detail(code,
+                                                                    token,
+                                                                    bl_id,
+                                                                    version)
         return render(request, Html.blueprintHistoryDetail,
                       {'history': history, 'message': str(ex)})
