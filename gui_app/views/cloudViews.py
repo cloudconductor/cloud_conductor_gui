@@ -120,29 +120,23 @@ def cloudEdit(request, id):
             return render_to_response(Html.error_403)
 
         token = request.session['auth_token']
-
-        if request.method == "GET":
-            cloud = CloudUtil.get_cloud_detail(code, token, id)
-
-            return render(request, Html.cloudEdit,
-                          {'cloud': cloud, 'form': '', 'message': '',
-                           'cloudType': cloudType, 'save': True})
-        elif request.method == "POST":
+        form = ""
+        if request.method == "POST":
             # -- Get a value from a form
             p = request.POST
             # -- Validate check
-            form = cloudForm2(request.POST)
-            form.full_clean()
-            if not form.is_valid():
+            form = cloudForm(request.POST)
+            if form.is_valid():
+                # -- API call, get a response
+                cloud = CloudUtil.edit_cloud(code, token, id, form.data.copy())
 
-                return render(request, Html.cloudEdit,
-                              {'cloud': p, 'form': form, 'message': '',
-                               'cloudType': cloudType, 'save': True})
+                return redirect(Path.cloudList)
+        cloud = CloudUtil.get_cloud_detail(code, token, id)
 
-            # -- API call, get a response
-            cloud = CloudUtil.edit_cloud(code, token, id, form.data.copy())
+        return render(request, Html.cloudEdit,
+                      {'cloud': cloud, 'form': form, 'message': '',
+                       'cloudType': cloudType, 'save': True})
 
-            return redirect(Path.cloudList)
     except Exception as ex:
         log.error(code, None, ex)
 
