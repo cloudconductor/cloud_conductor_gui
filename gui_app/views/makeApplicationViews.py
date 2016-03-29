@@ -296,7 +296,7 @@ def confirm(request):
             # -- session delete
             sessionDelete(session)
 
-            return redirect(reverse('app:applicationList'))
+            return redirect(reverse('app:environmentList'))
     except Exception as ex:
         log.error(FuncCode.newapp_confirm.value, None, ex)
         session = request.session
