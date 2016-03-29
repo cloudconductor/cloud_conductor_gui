@@ -35,16 +35,6 @@
 					<td>
 						<div class="checkbox-inline">
 							<input name="{{subitem.item_name}}" id="{{subitem.item_name}}" {{subitem.checked}}
-							{% if 'manage' in subitem.item_name  %}
-								onchange="changeManage(this,'{{subitem.item_name}}')"
-							{% else %}
-								{% if item.items.0.checked  %}
-									disabled="disabled"
-								{% endif %}
-							{% endif %}
-							{% if subitem.item_name = 'project-read' or subitem.item_name = 'environment-read' or subitem.item_name = 'role-read' %}
-								onclick="return false"
-							{% endif %}
 							type="checkbox">
 						</div>
 					</td>
