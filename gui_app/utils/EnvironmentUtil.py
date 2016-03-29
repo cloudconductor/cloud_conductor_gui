@@ -127,6 +127,11 @@ def rebuild_environment(code, id, form, session, blueprints):
     template_param = parse_env_parameter(param)
     template_param = expand_env_parameter(blueprints, template_param)
     env = addEnvironmentParam(form, template_param, session)
+    if form['switch'] == 'true':
+        env['switch'] = True
+    elif form['switch'] == 'false':
+        env['switch'] = False
+
     # -- Create a environment, api call
     url = Url.environmentRebuild(id, Url.url)
     # -- API call, get a response
@@ -281,6 +286,8 @@ def _create_dict(dict, param):
 def expand_env_parameter(base_params, user_params):
     result = base_params
     for pattern_name, templates in base_params.items():
+        if pattern_name not in user_params:
+            continue
         if 'cloud_formation' in user_params[pattern_name]:
             user_params_cf = user_params[pattern_name]['cloud_formation']
             result[pattern_name]['cloud_formation'] = user_params_cf
@@ -299,7 +306,7 @@ def addEnvironmentParam(param, temp_param, session):
     # candidates_attributes
     candidates_attributes = []
     dic = {
-        "cloud_id": param.get("candidates_attributes_1"), "priority": "1"}
+        "cloud_id": param.get("candidates_attributes_1"), "priority": "3"}
     candidates_attributes.append(dic)
 
     if param.get("candidates_attributes_2"):
@@ -309,7 +316,7 @@ def addEnvironmentParam(param, temp_param, session):
 
     if param.get("candidates_attributes_3"):
         dic = {
-            "cloud_id": param.get("candidates_attributes_3"), "priority": "3"}
+            "cloud_id": param.get("candidates_attributes_3"), "priority": "1"}
         candidates_attributes.append(dic)
 
     data = {

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
-from ..forms import cloudForm
+from ..forms import BaseCloudForm
+from ..forms import WakameCloudForm
 from ..forms import baseImageForm
 from ..utils import CloudUtil
 from ..utils import StringUtil
@@ -33,7 +34,11 @@ def cloudCreate(request):
             param = request.POST
 
             # -- Validate check
-            form = cloudForm(param)
+            if param['type'] == 'wakame-vdc':
+                form = WakameCloudForm(param)
+            else:
+                form = BaseCloudForm(param)
+
             if not form.is_valid():
                 cloud = param.copy()
 

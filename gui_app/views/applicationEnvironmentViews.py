@@ -2,6 +2,7 @@
 import ast
 import json
 from django.shortcuts import render, redirect, render_to_response, HttpResponse
+from django.core.urlresolvers import reverse
 from ..enum.FunctionCode import FuncCode
 from ..enum.MessageCode import Info
 from ..enum.platform import *
@@ -322,7 +323,7 @@ def confirm(request):
             # -- session delete
             sessionDelete(session)
 
-            return redirect(Path.top)
+            return redirect(reverse('app:environmentList'))
     except Exception as ex:
         log.error(FuncCode.appenv_confirm.value, None, ex)
         session = request.session
