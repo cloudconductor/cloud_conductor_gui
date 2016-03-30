@@ -184,4 +184,4 @@ NOSE_ARGS = ['--with-coverage', '--with-xunit',
              '--cover-package=gui_app\tests', '--cover-xml', '--cover-html', ]
 
 
-CLOUDCONDUCTOR_URL = ''
+CLOUDCONDUCTOR_URL = 'http://localhost:8080/api/v1/'
