@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect
+from django.core.urlresolvers import reverse
 from ..utils import ApiUtil
 from ..utils import AccountUtil
 from ..utils import SessionUtil
 from ..utils import RoleUtil
+from ..utils import ProjectUtil
+from ..utils import TokenUtil
 from ..utils.PathUtil import Path
 from ..utils.PathUtil import Html
 from ..utils.ApiUtil import Url
@@ -327,6 +330,17 @@ def assignmentEdit(request, id=None):
 
                 del request.session['select_account']
 
+            # reload project list
+            project_list = ''
+
+            if request.session['account_admin']:
+                project_list = ProjectUtil.get_project_list_admin(
+                    code, token, request.session['account_id'])
+            else:
+                project_list = ProjectUtil.get_project_list(code, token)
+
+            request.session['project_list'] = project_list
+
             # role session update
             if roleid:
                 SessionUtil.edit_role_session(code, request.session, roleid)
@@ -337,7 +351,8 @@ def assignmentEdit(request, id=None):
             if logout:
                 return redirect('/ccgui/logout')
 
-            return redirect(Path.projectDetail(id))
+            return redirect(reverse('app:projectList'))
+
     except Exception as ex:
         log.error(FuncCode.projectEdit.value, None, ex)
         if request.session.get('select_account'):
